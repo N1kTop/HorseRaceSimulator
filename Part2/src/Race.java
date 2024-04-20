@@ -102,9 +102,10 @@ public class Race
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
 
-        //reset all the horseLanes (all horses not fallen and back to 0).
+        //reset all the horseLanes (all horses not fallen and back to 0) and increment total number of taken races.
         for (Horse horse : horseLanes) {
             horse.goBackToStart();
+            horse.incTotalRaces();
         }
 
         while (!finished)
@@ -141,6 +142,7 @@ public class Race
         for (Horse horse : horseLanes) {
             if (raceWonBy(horse)) {
                 printWinner(horse);
+                horse.incTotalWins();
                 winnerExists = true;
             }
         }
