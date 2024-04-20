@@ -122,13 +122,19 @@ public class Horse
     public int getTotalRaces() {return totalRaces;}
     public int getTotalDistance() {return totalDistance;}
     public int getTotalTime() {return totalTime;}
-    public double getAverageSpeed() {return (double) totalDistance / (double) totalTime;}
+    public double getAverageSpeed() {
+        if (totalDistance == 0) return 0;
+        return (double) totalDistance / (double) totalTime;
+    }
 
     public int getTotalFalls() {return totalFalls;}
     public void incTotalFalls() {totalFalls++;}
     public void incTotalWins() {totalWins++;}
     public void incTotalRaces() {totalRaces++;}
-    public double getWinRate() {return (double) totalWins / (double) totalRaces;}
+    public double getWinRate() {
+        if (totalRaces == 0) return 0;
+        return (double) totalWins / (double) totalRaces;
+    }
 
     public ArrayList<Integer> getFinishingTimes() {return finishingTimes;}
     public void addFinishingTime(int newTime) {finishingTimes.add(newTime);}
