@@ -83,19 +83,27 @@ public class Race
      */
     public void startRace()
     {
+        //check if every lane has a horse
+        for (Horse horse : horseLanes) {
+            if (horse == null) {
+                System.out.println("Cannot start race, since not all lanes are filled");
+                return;
+            }
+        }
+
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
 
         //reset all the horseLanes (all horses not fallen and back to 0).
         for (Horse horse : horseLanes) {
-            if (horse != null) horse.goBackToStart();
+            horse.goBackToStart();
         }
 
         while (!finished)
         {
             //move each horse
             for (Horse horse : horseLanes) {
-                if (horse != null) horse.moveForward();
+                horse.moveForward();
             }
 
             //print the race positions
