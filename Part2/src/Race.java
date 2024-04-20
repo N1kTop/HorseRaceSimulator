@@ -13,6 +13,7 @@ public class Race
     private int raceLength;
     private Horse[] horseLanes;
     private static char fallenSymbol = 'X';
+    private static char fenceSymbol = '-';
 
 
     /**
@@ -56,6 +57,10 @@ public class Race
     public static void setFallenSymbol(char newSymbol) {fallenSymbol = newSymbol;}
 
     public static char getFallenSymbol() {return fallenSymbol;}
+
+    public static void setFenceSymbol(char newSymbol) {fenceSymbol = newSymbol;}
+
+    public static char getFenceSymbol() {return fenceSymbol;}
 
     /**
      * Adds a horse to the race in a given lane
@@ -188,7 +193,7 @@ public class Race
     {
         System.out.print('\u000C');  //clear the terminal window
 
-        multiplePrint('=',raceLength+3); //top edge of track
+        multiplePrint(fenceSymbol,raceLength+3); //top edge of track
         System.out.println();
 
         for (Horse horse : horseLanes) {
