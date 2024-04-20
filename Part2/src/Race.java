@@ -65,6 +65,7 @@ public class Race
      */
     public void addHorse(Horse theHorse, int laneNumber)
     {
+        laneNumber--;
         if (laneNumber >= 0 && laneNumber < horseLanes.length) {
             horseLanes[laneNumber] = theHorse;
         }
