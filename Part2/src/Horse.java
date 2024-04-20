@@ -117,7 +117,7 @@ public class Horse
     public void setAccessory(String newAcc) {coatColor = accessory = newAcc;}
 
     public void addTotalDistance(int plusDistance) {totalDistance += plusDistance;}
-    public void addTotalTime(int plusTime) {totalTime += plusTime;}
+    public void incTotalTime() {totalTime++;}
     public int getTotalWins() {return totalWins;}
     public int getTotalRaces() {return totalRaces;}
     public int getTotalDistance() {return totalDistance;}

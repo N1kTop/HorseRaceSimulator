@@ -167,6 +167,8 @@ public class Race
                 theHorse.moveForward();
             }
 
+            theHorse.incTotalTime();
+
             //the probability that the horse will fall is very small (max is 0.1)
             //but will also depend exponentially on confidence
             //so if you double the confidence, the probability that it will fall is *2
