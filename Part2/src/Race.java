@@ -165,9 +165,10 @@ public class Race
             if (Math.random() < theHorse.getConfidence())
             {
                 theHorse.moveForward();
+                theHorse.incTotalDistance(); //increment total distance statistic of the horse
             }
 
-            theHorse.incTotalTime();
+            theHorse.incTotalTime(); //increment total run time statistic of the horse
 
             //the probability that the horse will fall is very small (max is 0.1)
             //but will also depend exponentially on confidence
