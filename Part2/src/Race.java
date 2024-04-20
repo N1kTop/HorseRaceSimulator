@@ -201,7 +201,7 @@ public class Race
             System.out.println();
         }
 
-        multiplePrint('=',raceLength+3); //bottom edge of track
+        multiplePrint(fenceSymbol,raceLength+3); //bottom edge of track
         System.out.println();
     }
 
