@@ -5,7 +5,7 @@ public class Main {
         Horse horse3 = new Horse('♕', "#32424", 0.8);
         Horse horse4 = new Horse('X', "Xero", 0.6);
         Horse horse5 = new Horse('Q', "Qill", 0.4);
-        Race race1 = new Race(10, 5);
+        Race race1 = new Race(30, 5);
         race1.addHorse(horse1, 1);
         race1.addHorse(horse2, 2);
         race1.addHorse(horse3, 3);
