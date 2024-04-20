@@ -13,6 +13,17 @@ public class Horse
     private double confidence;
     private int distance = 0;
     private boolean fallen = false;
+    //Customisation:
+    private String breed;
+    private String coatColor;
+    private String accessory;
+    //Statistics:
+    private int total_wins;
+    private int total_races;
+    private double average_speed;
+    private int[] finishing_times;
+    private raceRecord[] records;
+
 
 
     //Constructor of class Horse
