@@ -3,7 +3,7 @@ public class Main {
         Horse horse1 = new Horse('♘', "Anya", 0.3);
         Horse horse2 = new Horse('♞', "Oliver", 0.5);
         Horse horse3 = new Horse('♕', "#32424", 0.8);
-        Race race1 = new Race(50);
+        Race race1 = new Race(10);
         race1.addHorse(horse1, 1);
         race1.addHorse(horse2, 2);
         race1.addHorse(horse3, 3);
