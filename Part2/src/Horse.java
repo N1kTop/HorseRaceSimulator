@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 
 /**
  * Write a description of class Horse here.
@@ -20,9 +21,9 @@ public class Horse
     //Statistics:
     private int total_wins;
     private int total_races;
-    private double average_speed;
-    private int[] finishing_times;
-    private raceRecord[] records;
+    private int total_distance;
+    private int total_time;
+    private ArrayList<Integer> finishing_times;
 
 
 
@@ -106,4 +107,23 @@ public class Horse
         symbol = newSymbol;
     }
 
+    public String getBreed() {return breed;}
+    public String getCoatColor() {return coatColor;}
+    public String getAccessory() {return accessory;}
+    public void setCoatColor(String newColor) {coatColor = newColor;}
+    public void setAccessory(String newAcc) {coatColor = accessory = newAcc;}
+
+    public int getTotal_wins() {return total_wins;}
+    public int getTotal_races() {return total_races;}
+    public int getTotal_distance() {return total_distance;}
+    public int getTotal_time() {return total_time;}
+    public double getAverage_speed() {return (double) total_distance / (double) total_time;}
+
+    public void setTotal_wins(int newWins) {total_wins = newWins;}
+    public void setTotal_races(int newRaces) {total_races = newRaces;}
+    public void incTotal_wins() {total_wins++;}
+    public void incTotal_races() {total_races++;}
+    public double getWinRate() {return (double) total_wins / (double) total_races;}
+    public ArrayList<Integer> getFinishing_times() {return finishing_times;}
+    public void addFinishingTime(int newTime) {finishing_times.add(newTime);}
 }

@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
 
@@ -14,6 +15,7 @@ public class Race
     private Horse[] horseLanes;
     private static char fallenSymbol = 'X';
     private static char fenceSymbol = '=';
+    private static ArrayList<raceRecord> records = new ArrayList<raceRecord>();
 
 
     /**
