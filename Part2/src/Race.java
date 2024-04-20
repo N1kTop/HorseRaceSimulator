@@ -13,7 +13,7 @@ public class Race
     private int raceLength;
     private Horse[] horseLanes;
     private static char fallenSymbol = 'X';
-    private static char fenceSymbol = '~';
+    private static char fenceSymbol = '=';
 
 
     /**
