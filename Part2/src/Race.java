@@ -21,7 +21,7 @@ public class Race
      *
      * @param distance the length of the racetrack (in metres/yards...)
      */
-    public Race(int distance, int lanes_num, Horse horses[])
+    public Race(int distance, int lanes_num, Horse[] horses)
     {
         // initialise instance variables
         raceLength = distance;
@@ -116,7 +116,8 @@ public class Race
             //wait for 100 milliseconds
             try{
                 TimeUnit.MILLISECONDS.sleep(100);
-            }catch(Exception e){}
+            }
+            catch(Exception e) {e.printStackTrace();}
         }
 
         //check winner
@@ -151,7 +152,7 @@ public class Race
             }
 
             //the probability that the horse will fall is very small (max is 0.1)
-            //but will also will depends exponentially on confidence
+            //but will also depend exponentially on confidence
             //so if you double the confidence, the probability that it will fall is *2
             if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
             {
@@ -168,14 +169,7 @@ public class Race
      */
     private boolean raceWonBy(Horse theHorse)
     {
-        if (theHorse.getDistanceTravelled() == raceLength)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return theHorse.getDistanceTravelled() >= raceLength;
     }
 
     /***
