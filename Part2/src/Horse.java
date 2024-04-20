@@ -19,11 +19,13 @@ public class Horse
     private String coatColor;
     private String accessory;
     //Statistics:
-    private int total_wins = 0;
-    private int total_races = 0;
-    private int total_distance = 0;
-    private int total_time = 0;
-    private ArrayList<Integer> finishing_times;
+    private int totalWins = 0;
+    private int totalRaces = 0;
+    private int totalDistance = 0;
+    private int totalTime = 0;
+    private int raceDistance;
+    private int raceTime;
+    private ArrayList<Integer> finishingTimes;
 
 
 
@@ -113,17 +115,17 @@ public class Horse
     public void setCoatColor(String newColor) {coatColor = newColor;}
     public void setAccessory(String newAcc) {coatColor = accessory = newAcc;}
 
-    public void addTotal_distance(int plusDistance) {total_distance += plusDistance;}
-    public void addTotal_time(int plusTime) {total_time += plusTime;}
-    public int getTotal_wins() {return total_wins;}
-    public int getTotal_races() {return total_races;}
-    public int getTotal_distance() {return total_distance;}
-    public int getTotal_time() {return total_time;}
-    public double getAverage_speed() {return (double) total_distance / (double) total_time;}
+    public void addTotalDistance(int plusDistance) {totalDistance += plusDistance;}
+    public void addTotalTime(int plusTime) {totalTime += plusTime;}
+    public int getTotalWins() {return totalWins;}
+    public int getTotalRaces() {return totalRaces;}
+    public int getTotalDistance() {return totalDistance;}
+    public int getTotalTime() {return totalTime;}
+    public double getAverageSpeed() {return (double) totalDistance / (double) totalTime;}
 
-    public void incTotal_wins() {total_wins++;}
-    public void incTotal_races() {total_races++;}
-    public double getWinRate() {return (double) total_wins / (double) total_races;}
-    public ArrayList<Integer> getFinishing_times() {return finishing_times;}
-    public void addFinishingTime(int newTime) {finishing_times.add(newTime);}
+    public void incTotalWins() {totalWins++;}
+    public void incTotalRaces() {totalRaces++;}
+    public double getWinRate() {return (double) totalWins / (double) totalRaces;}
+    public ArrayList<Integer> getFinishingTimes() {return finishingTimes;}
+    public void addFinishingTime(int newTime) {finishingTimes.add(newTime);}
 }
