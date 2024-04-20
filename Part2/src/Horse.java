@@ -21,6 +21,7 @@ public class Horse
     //Statistics:
     private int totalWins = 0;
     private int totalRaces = 0;
+    private int totalFalls = 0;
     private int totalDistance = 0;
     private int totalTime = 0;
     private int raceDistance;
@@ -123,9 +124,12 @@ public class Horse
     public int getTotalTime() {return totalTime;}
     public double getAverageSpeed() {return (double) totalDistance / (double) totalTime;}
 
+    public int getTotalFalls() {return totalFalls;}
+    public void incTotalFalls() {totalFalls++;}
     public void incTotalWins() {totalWins++;}
     public void incTotalRaces() {totalRaces++;}
     public double getWinRate() {return (double) totalWins / (double) totalRaces;}
+
     public ArrayList<Integer> getFinishingTimes() {return finishingTimes;}
     public void addFinishingTime(int newTime) {finishingTimes.add(newTime);}
 }
