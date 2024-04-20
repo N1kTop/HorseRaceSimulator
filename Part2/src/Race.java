@@ -104,7 +104,7 @@ public class Race
         {
             //move each horse
             for (Horse horse : horseLanes) {
-                horse.moveForward();
+                moveHorse(horse);
             }
 
             //print the race positions
