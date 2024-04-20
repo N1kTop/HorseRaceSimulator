@@ -88,14 +88,14 @@ public class Race
 
         //reset all the horseLanes (all horses not fallen and back to 0).
         for (Horse horse : horseLanes) {
-            horse.goBackToStart();
+            if (horse != null) horse.goBackToStart();
         }
 
         while (!finished)
         {
             //move each horse
             for (Horse horse : horseLanes) {
-                horse.moveForward();
+                if (horse != null) horse.moveForward();
             }
 
             //print the race positions
