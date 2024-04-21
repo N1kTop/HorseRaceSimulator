@@ -29,6 +29,9 @@ public class Horse
     private int totalTime = 0;
     private ArrayList<Integer> finishingTimes;
 
+    private static int horseCost = 250;
+    private final static int horseCostMultiplier = 2;
+
     public static final Horse[] defaultHorses = {new Horse('♘', "Anya", 0.4, "Arabian"), new Horse('♞', "Oliver", 0.5, "Friesian"), new Horse('♔', "King", 0.6, "Appaloosa")};
     private static ArrayList<Horse> allHorses = new ArrayList<>(Arrays.asList(defaultHorses));
     private final static String[] breedChoices = {"Arabian", "Friesian", "Mustang Shire", "Thoroughbred", "Appaloosa", "American Quarter", "Clydesdale", "Breton", "Cob", "American Paint", "Rahvan"};
@@ -199,6 +202,10 @@ public class Horse
         System.out.println("\nFinishing Times:\n" + finishingTimes);
     }
 
+
+    public static int getHorseCost() {return horseCost;}
+
+    public static void multiplyHorseCost() {horseCost *= horseCostMultiplier;}
 
     public static ArrayList<Horse> getAllHorses() {
         return allHorses;

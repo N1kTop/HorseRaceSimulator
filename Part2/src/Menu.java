@@ -37,6 +37,7 @@ public class Menu {
     public static void menu() {
         String message = """
                 
+                ---Main Menu---
                 (r)ace
                 (h)orses
                 (s)tatistics
@@ -114,6 +115,18 @@ public class Menu {
 
     }
 
+    public static void buyHorse() {
+        System.out.println("Money: " + Race.getMoney());
+        System.out.println("Do you want to buy a horse  (" + Horse.getHorseCost() + ")");
+        if (new Scanner(System.in).nextLine().charAt(0) == 'y') {
+            if (Race.getMoney() >= Horse.getHorseCost()) {
+                Race.subtractMoney(Horse.getHorseCost());
+                Horse.multiplyHorseCost();
+                createHorse();
+            }
+        }
+    }
+
     public static void createHorse() {
         String name = input("Enter name: ");
         char symbol = inputChar("Enter symbol: ");
@@ -133,16 +146,17 @@ public class Menu {
 
     public static void horsesMenu() {
         String message = """
-
+                
+                ---Horses Menu---
                 (l)ist horses
-                (c)reate horse
+                (b)uy horse
                 (e)xit
                 Enter a letter to choose:
                 """;
         char choice;
         while ((choice = inputChar(message)) != 'e') {
-            if (choice == 'c') {
-                createHorse();
+            if (choice == 'b') {
+                buyHorse();
             }
             else if (choice == 'l') {
                 listHorses();
