@@ -132,8 +132,10 @@ public class Race {
         }
         betAmount = 0;
         betLaneIndex = -1;
-        char choice = Menu.inputChar("\nDo you want to gamble?\n");
-        if (choice == 'y') gamble();
+        if (horseLanes.length > 1) {
+            char choice = Menu.inputChar("\nDo you want to gamble?\n");
+            if (choice == 'y') gamble();
+        }
         Menu.input("\nPress enter to start the race");
         startRace();
     }
@@ -226,7 +228,7 @@ public class Race {
         }
         if (!winnerExists) {
             System.out.println("\n No Winner - all the horses failed to finish the race.");
-            System.out.println("\nYou have lost your bet of " + betAmount);
+            if (betAmount > 0) System.out.println("\nYou have lost your bet of " + betAmount);
         }
 
         raceMoneyBonus();
