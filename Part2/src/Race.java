@@ -381,7 +381,7 @@ public class Race
                 writer.write("\n");
             }
             for (Horse horse : horseLanes) {
-                String s = horse.getCurrentRaceRecord().toString().replace("[","").replace("]","");
+                String s = horse.getCurrentRaceRecord().toString().replace(", ","").replace(", ","").replace("[","").replace("]","");
                 writer.write(s);
                 writer.write("\n");
             }
