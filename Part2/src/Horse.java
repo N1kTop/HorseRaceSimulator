@@ -196,8 +196,7 @@ public class Horse
         int count = 1;
         System.out.println("List of all horses:");
         for (Horse horse : allHorses) {
-            System.out.println(count + " " + horse.name + " (" + horse.breed + ") " + horse.symbol + " - " + horse.confidence);
-            count++;
+            System.out.println(count++ + " " + horse.name + " (" + horse.breed + ") " + horse.symbol + " - " + horse.confidence);
         }
         System.out.println("");
     }
@@ -219,23 +218,20 @@ public class Horse
     public static void printBreedChoices() {
         int count = 1;
         for (String breedChoice : breedChoices) {
-            System.out.println(count + " " + breedChoice);
-            count++;
+            System.out.println(count++ + " " + breedChoice);
         }
     }
 
     public static void printColorChoices() {
         int count = 1;
         for (String colorChoice : colorChoices) {
-            System.out.println(count + " " + colorChoice);
-            count++;
+            System.out.println(count++ + " " + colorChoice);
         }
     }
     public static void printAccessoryChoices() {
         int count = 1;
         for (String accessoryChoice : accessoryChoices) {
-            System.out.println(count + " " + accessoryChoice);
-            count++;
+            System.out.println(count++ + " " + accessoryChoice);
         }
     }
 }

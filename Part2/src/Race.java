@@ -289,7 +289,7 @@ public class Race
     }
 
     public void saveRaceRecord() {
-        try (FileWriter writer = new FileWriter("rac_record" + recordsNumber++)) {
+        try (FileWriter writer = new FileWriter("rac_record" + recordsNumber++ + ".txt")) {
             for (Horse horse : horseLanes) {
                 String s = horse.getCurrentRaceRecord().toString();
                 writer.write(s);
