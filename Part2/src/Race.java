@@ -138,12 +138,13 @@ public class Race {
 
     public void gamble() {
         printHorseLanes();
-        while (betLaneIndex < 1 || betLaneIndex > horseLanes.length) {
-            betLaneIndex = Menu.inputInt("Enter lane number to be on: ");
+        while (betLaneIndex < 0 || betLaneIndex >= horseLanes.length) {
+            betLaneIndex = Menu.inputInt("Enter lane number to be on: ") - 1;
         }
         while (betAmount < 5 || betAmount > money) {
             betAmount = Menu.inputInt("Enter bet amount (minimal bet is 5): ");
         }
+        subtractMoney(betAmount);
     }
 
     /**
@@ -214,7 +215,6 @@ public class Race {
                     }
                     else {
                         System.out.println("You have lost your bet");
-                        subtractMoney(betAmount);
                         printMoney();
                     }
                 }
