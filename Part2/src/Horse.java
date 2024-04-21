@@ -207,6 +207,8 @@ public class Horse
 
     public static void multiplyHorseCost() {horseCost *= horseCostMultiplier;}
 
+    public static void divideHorseCost() {horseCost /= horseCostMultiplier;}
+
     public static ArrayList<Horse> getAllHorses() {
         return allHorses;
     }
@@ -217,6 +219,10 @@ public class Horse
 
     public static void addHorse(Horse newHorse) {
         allHorses.add(newHorse);
+    }
+
+    public static void removeHorse(int horseIndex) {
+        allHorses.remove(horseIndex);
     }
 
     public static void printHorses() {

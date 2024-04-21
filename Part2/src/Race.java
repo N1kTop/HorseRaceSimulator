@@ -14,6 +14,8 @@ import java.lang.Math;
 public class Race {
     private int raceLength;
     private Horse[] horseLanes;
+    private int betAmount;
+    private int betLaneIndex;
     private static char fallenSymbol = 'X';
     private static char fenceSymbol = '=';
     private static int totalRaces = 0;
@@ -96,6 +98,13 @@ public class Race {
 
     public static void subtractMoney(int moneyLoss) {money -= moneyLoss;}
 
+    public void printHorseLanes() {
+        int i = 0;
+        for (Horse horse : horseLanes) {
+            System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence());
+        }
+    }
+
     /**
      * Adds a horse to the race in a given lane
      *
@@ -119,6 +128,8 @@ public class Race {
                 return;
             }
         }
+        betAmount = 0;
+        betLaneIndex = 0;
         System.out.println("Do you want to gamble?");
         String choice = new Scanner(System.in).nextLine();
         if (choice.charAt(0) == 'y') gamble();
@@ -126,7 +137,13 @@ public class Race {
     }
 
     public void gamble() {
-
+        printHorseLanes();
+        while (betLaneIndex < 1 || betLaneIndex > horseLanes.length) {
+            betLaneIndex = Menu.inputInt("Enter lane number to be on: ");
+        }
+        while (betAmount < 5 || betAmount > money) {
+            betAmount = Menu.inputInt("Enter bet amount (minimal bet is 5): ");
+        }
     }
 
     /**
@@ -188,6 +205,19 @@ public class Race {
                 horse.addStepToCurrentRaceRecord('w');
                 totalFinishes++;
                 winnerExists = true;
+                if (betAmount > 0) {
+                    if (horseLanes[betLaneIndex].equals(horse)) {
+                        int winningAmount = betAmount * horseLanes.length;
+                        System.out.println("Your bet was successful\nYou have won " + winningAmount);
+                        addMoney(winningAmount);
+                        printMoney();
+                    }
+                    else {
+                        System.out.println("You have lost your bet");
+                        subtractMoney(betAmount);
+                        printMoney();
+                    }
+                }
             }
         }
         if (!winnerExists) System.out.println("\n No Winner - all the horses failed to finish the race.");
@@ -316,6 +346,10 @@ public class Race {
     private void printWinner(Horse winnerHorse) {
         winnerHorse.win();
         System.out.println("\nThe Winner of the race is " + winnerHorse.getName() + "!\n");
+    }
+
+    public static void printMoney() {
+        System.out.println("Money: " + money);
     }
 
     public static void printOverallStats() {

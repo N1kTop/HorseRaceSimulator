@@ -82,6 +82,7 @@ public class Menu {
                 (c)oat
                 (a)ccessory
                 (v)iew statistics
+                (r)emove horse
                 (e)xit
                 Enter a letter to choose:
                 """;
@@ -108,23 +109,36 @@ public class Menu {
                 }
                 case 'v' -> {
                     chosenHorse.printHorseStats();
+                    return;
+                }
+                case 'r' -> {
+                    if (Horse.getTotalHorseNumber() < 3) {
+                        System.out.println("You cannot remove anymore horses right now");
+                        return;
+                    }
+                    Horse.removeHorse(horseChoice);
+                    Horse.divideHorseCost();
+                    System.out.println("Horse was removed from the collection");
+                    return;
                 }
             }
-            if (choice != 'v') chosenHorse.printHorseInfo();
+            chosenHorse.printHorseInfo();
         }
 
     }
 
     public static void buyHorse() {
-        System.out.println("Money: " + Race.getMoney());
-        System.out.println("Do you want to buy a horse  (" + Horse.getHorseCost() + ")");
-        if (new Scanner(System.in).nextLine().charAt(0) == 'y') {
-            if (Race.getMoney() >= Horse.getHorseCost()) {
-                Race.subtractMoney(Horse.getHorseCost());
-                Horse.multiplyHorseCost();
-                createHorse();
-            }
+        int cost = Horse.getHorseCost();
+        Race.printMoney();
+        System.out.println("Do you want to buy a horse (" + cost + ")");
+        if (new Scanner(System.in).nextLine().charAt(0) != 'y') return;
+        if (Race.getMoney() < cost) {
+            System.out.println("Not enough money (" + Race.getMoney() + "/" + cost + ")");
+            return;
         }
+        Race.subtractMoney(cost);
+        Horse.multiplyHorseCost();
+        createHorse();
     }
 
     public static void createHorse() {
