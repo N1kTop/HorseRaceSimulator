@@ -55,6 +55,9 @@ public class Menu {
         while (horseChoice < 0 || horseChoice >= Horse.getAllHorses().size()) {
             horseChoice = inputInt("Enter horse index: ");
         }
+        Horse ChosenHorse = Horse.getHorse(horseChoice);
+        ChosenHorse.printHorseInfo();
+
     }
 
     public static void createHorse() {

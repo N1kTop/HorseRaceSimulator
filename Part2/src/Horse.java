@@ -25,8 +25,6 @@ public class Horse
     private int totalFalls = 0;
     private int totalDistance = 0;
     private int totalTime = 0;
-    private int raceDistance;
-    private int raceTime;
     private ArrayList<Integer> finishingTimes;
 
     public static final Horse[] defaultHorses = {new Horse('♘', "Anya", 0.4, "Arabian"), new Horse('♞', "Oliver", 0.5, "Friesian"), new Horse('♔', "King", 0.6, "Appaloosa")};
@@ -151,8 +149,31 @@ public class Horse
     public ArrayList<Integer> getFinishingTimes() {return finishingTimes;}
     public void addFinishingTime(int newTime) {finishingTimes.add(newTime);}
 
+    public void printHorseInfo() {
+        System.out.println("Name: " + name);
+        System.out.println("Symbol: " + symbol);
+        System.out.println("Confidence: " + confidence);
+        System.out.println("Breed: " + breed);
+        System.out.println("\nFinishing Times: " + finishingTimes);
+    }
+
+    public void printHorseStats() {
+        System.out.println("Total Distance: " + totalDistance);
+        System.out.println("Average Speed: " + getAverageSpeed());
+        System.out.println("Wins: " + totalWins);
+        System.out.println("Races: " + totalRaces);
+        System.out.println("Win Rate: " + getWinRate());
+        System.out.println("Coat Color: " + coatColor);
+        System.out.println("Accessory: " + accessory);
+    }
+
+
     public static ArrayList<Horse> getAllHorses() {
         return allHorses;
+    }
+
+    public static Horse getHorse(int horseIndex) {
+        return allHorses.get(horseIndex);
     }
 
     public static void addHorse(Horse newHorse) {
@@ -170,7 +191,7 @@ public class Horse
     }
 
     public static void printBreedChoices() {
-        int count = 0;
+        int count = 1;
         for (String breedChoice : breedChoices) {
             System.out.println(count + " " + breedChoice);
             count++;
