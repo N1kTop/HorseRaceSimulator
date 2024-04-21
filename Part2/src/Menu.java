@@ -53,7 +53,7 @@ public class Menu {
         Horse.printHorses();
         int horseChoice = -1;
         while (horseChoice < 0 || horseChoice >= Horse.getAllHorses().size()) {
-            horseChoice = inputInt("Enter horse index: ");
+            horseChoice = inputInt("Enter horse index: ") - 1;
         }
         Horse ChosenHorse = Horse.getHorse(horseChoice);
         ChosenHorse.printHorseInfo();

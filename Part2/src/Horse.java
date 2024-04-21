@@ -17,8 +17,8 @@ public class Horse
     private boolean fallen = false;
     //Customisation:
     private String breed;
-    private String coatColor;
-    private String accessory;
+    private String coatColor = "Brown";
+    private String accessory = "None";
     //Statistics:
     private int totalWins = 0;
     private int totalRaces = 0;
@@ -154,7 +154,8 @@ public class Horse
         System.out.println("Symbol: " + symbol);
         System.out.println("Confidence: " + confidence);
         System.out.println("Breed: " + breed);
-        System.out.println("\nFinishing Times: " + finishingTimes);
+        System.out.println("Coat Color: " + coatColor);
+        System.out.println("Accessory: " + accessory);
     }
 
     public void printHorseStats() {
@@ -163,8 +164,7 @@ public class Horse
         System.out.println("Wins: " + totalWins);
         System.out.println("Races: " + totalRaces);
         System.out.println("Win Rate: " + getWinRate());
-        System.out.println("Coat Color: " + coatColor);
-        System.out.println("Accessory: " + accessory);
+        System.out.println("\nFinishing Times:\n" + finishingTimes);
     }
 
 
