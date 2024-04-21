@@ -15,6 +15,7 @@ public class Horse
     private double confidence;
     private int distance = 0;
     private boolean fallen = false;
+    private ArrayList<Character> currentRaceRecord;
     //Customisation:
     private String breed;
     private String coatColor = "Brown";
@@ -151,6 +152,10 @@ public class Horse
 
     public ArrayList<Integer> getFinishingTimes() {return finishingTimes;}
     public void addFinishingTime(int newTime) {finishingTimes.add(newTime);}
+
+    public ArrayList<Character> getCurrentRaceRecord() {return currentRaceRecord;}
+
+    public void addStepToRecord(char step) {currentRaceRecord.add(step);}
 
     public void printHorseInfo() {
         System.out.println("\n---Horse Info---");

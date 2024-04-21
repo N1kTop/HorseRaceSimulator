@@ -1,3 +1,6 @@
+import java.io.BufferedReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
@@ -15,7 +18,7 @@ public class Race
     private Horse[] horseLanes;
     private static char fallenSymbol = 'X';
     private static char fenceSymbol = '=';
-    private static ArrayList<raceRecord> records = new ArrayList<raceRecord>();
+    private static int recordsNumber = 0;
 
 
     /**
@@ -147,6 +150,8 @@ public class Race
             }
         }
         if (!winnerExists) System.out.println("\n No Winner - all the horses failed to finish the race.");
+
+        saveRaceRecord();
     }
 
     /**
@@ -168,6 +173,10 @@ public class Race
             {
                 theHorse.moveForward();
                 theHorse.incTotalDistance(); //increment total distance statistic of the horse
+                theHorse.addStepToRecord('m'); //adds 'm' to record (representing movement)
+            }
+            else {
+                theHorse.addStepToRecord('n'); //adds 'n' to record (representing no movement)
             }
 
             theHorse.incTotalTime(); //increment total run time statistic of the horse
@@ -178,6 +187,8 @@ public class Race
             if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
             {
                 theHorse.fall();
+                theHorse.addStepToRecord('f'); //adds 'f' to record (representing fall)
+
             }
         }
     }
@@ -274,5 +285,15 @@ public class Race
     private void printWinner(Horse winnerHorse) {
         winnerHorse.win();
         System.out.println("\nThe Winner of the race is " + winnerHorse.getName() + "!\n");
+    }
+
+    public void saveRaceRecord() {
+        try (FileWriter writer = new FileWriter("rac_record" + recordsNumber++)) {
+            for (Horse horse : horseLanes) {
+                String s = horse.getCurrentRaceRecord().toString();
+                writer.write(s);
+            }
+        }
+        catch (IOException e) {throw new RuntimeException(e);} ;
     }
 }
