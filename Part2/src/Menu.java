@@ -151,10 +151,10 @@ public class Menu {
         Race newRace = new Race(distance, lanesNum);
 
         int horseIndex;
-        for (int i = 0; i < lanesNum; i++) {
+        for (int i = 1; i <= lanesNum; i++) {
             Horse.printHorses();
             horseIndex = inputInt("Enter Horse Index for lane " + i + ": ");
-            newRace.addHorse(Horse.getHorse(horseIndex), i + 1);
+            newRace.addHorse(Horse.getHorse(horseIndex - 1), i);
         }
     }
 }
