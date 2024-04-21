@@ -156,5 +156,6 @@ public class Menu {
             horseIndex = inputInt("Enter Horse Index for lane " + i + ": ");
             newRace.addHorse(Horse.getHorse(horseIndex - 1), i);
         }
+        newRace.startRace();
     }
 }
