@@ -386,9 +386,10 @@ public class Race
                 writer.write(s);
                 writer.write("\n");
             }
+            recordFileNames.add(saveFileName);
             System.out.println("Race recording has been saved successfully\nYou can watch it in the statistics menu\n");
         }
-        catch (IOException e) {throw new RuntimeException(e);} ;
+        catch (IOException e) {System.out.println("Could not save teh recording");} ;
     }
 
     public static Race loadRaceRecord(String saveFileName) {
