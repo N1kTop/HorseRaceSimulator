@@ -84,8 +84,8 @@ public class Race {
         return recordFileNames;
     }
 
-    public static void updateRecordFileNames() {
-        recordFileNames = loadRecordingNames();
+    public static int getNumberOfRecords() {
+        return recordFileNames.size();
     }
 
     /**
