@@ -29,8 +29,9 @@ public class Horse
 
     public static final Horse[] defaultHorses = {new Horse('♘', "Anya", 0.4, "Arabian"), new Horse('♞', "Oliver", 0.5, "Friesian"), new Horse('♔', "King", 0.6, "Appaloosa")};
     private static ArrayList<Horse> allHorses = new ArrayList<>(Arrays.asList(defaultHorses));
-    public final static String[] breedChoices = {"Arabian", "Friesian", "Mustang Shire", "Thoroughbred", "Appaloosa", "American Quarter", "Clydesdale", "Breton", "Cob", "American Paint", "Rahvan"};
-
+    private final static String[] breedChoices = {"Arabian", "Friesian", "Mustang Shire", "Thoroughbred", "Appaloosa", "American Quarter", "Clydesdale", "Breton", "Cob", "American Paint", "Rahvan"};
+    private final static String[] colorChoices = {"Brown", "Red", "Orange", "Yellow", "Green", "Lime", "Aqua", "Turquoise", "Blue", "Purple", "Pink", "Black", "Grey", "White", "Coffee"};
+    private final static String[] accessoryChoices = {"None", "Lucky Charm", "Amulet of Speed", "Viking Helmet", "Advanced Saddle", "Chain Armor"};
 
     //Constructor of class Horse
     /**
@@ -110,6 +111,8 @@ public class Horse
         distance++;
     }
 
+    public void setName(String newName) {name = newName;}
+
     public void setConfidence(double newConfidence)
     {
         confidence = newConfidence;
@@ -150,6 +153,7 @@ public class Horse
     public void addFinishingTime(int newTime) {finishingTimes.add(newTime);}
 
     public void printHorseInfo() {
+        System.out.println("\n---Horse Info---");
         System.out.println("Name: " + name);
         System.out.println("Symbol: " + symbol);
         System.out.println("Confidence: " + confidence);
@@ -159,6 +163,7 @@ public class Horse
     }
 
     public void printHorseStats() {
+        System.out.println("\n---Horse Statistic---");
         System.out.println("Total Distance: " + totalDistance);
         System.out.println("Average Speed: " + getAverageSpeed());
         System.out.println("Wins: " + totalWins);
@@ -190,10 +195,37 @@ public class Horse
         System.out.println("");
     }
 
+    public static String getBreedChoice(int breedIndex) {return breedChoices[breedIndex];}
+
+    public static String getColorChoice(int colorIndex) {return colorChoices[colorIndex];}
+
+    public static String getAccessoryChoice(int accessoryIndex) {return accessoryChoices[accessoryIndex];}
+
+    public static int getBreedChoicesLength() {return breedChoices.length;}
+
+    public static int getColorChoicesLength() {return colorChoices.length;}
+
+    public static int getAccessoryChoicesLength() {return accessoryChoices.length;}
+
     public static void printBreedChoices() {
         int count = 1;
         for (String breedChoice : breedChoices) {
             System.out.println(count + " " + breedChoice);
+            count++;
+        }
+    }
+
+    public static void printColorChoices() {
+        int count = 1;
+        for (String colorChoice : colorChoices) {
+            System.out.println(count + " " + colorChoice);
+            count++;
+        }
+    }
+    public static void printAccessoryChoices() {
+        int count = 1;
+        for (String accessoryChoice : accessoryChoices) {
+            System.out.println(count + " " + accessoryChoice);
             count++;
         }
     }

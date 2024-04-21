@@ -36,7 +36,8 @@ public class Menu {
                 (h)orses
                 (r)ace
                 (e)xit
-                Enter a letter to choose:\n""";
+                Enter a letter to choose:
+                """;
         char choice;
         while ((choice = inputChar(message)) != 'e') {
             if (choice == 'h') {
@@ -55,8 +56,39 @@ public class Menu {
         while (horseChoice < 0 || horseChoice >= Horse.getAllHorses().size()) {
             horseChoice = inputInt("Enter horse index: ") - 1;
         }
-        Horse ChosenHorse = Horse.getHorse(horseChoice);
-        ChosenHorse.printHorseInfo();
+        Horse chosenHorse = Horse.getHorse(horseChoice);
+        chosenHorse.printHorseInfo();
+
+        String message = """
+                (n)ame
+                (s)ymbol
+                (c)oat
+                (a)ccessory
+                (e)xit
+                """;
+        char choice;
+        while ((choice = inputChar(message)) != 'e') {
+            switch (choice) {
+                case 'n' -> chosenHorse.setName(input("Enter new name: "));
+                case 's' -> chosenHorse.setSymbol(inputChar("Enter new symbol: "));
+                case 'c' -> {
+                    int colorIndex = -1;
+                    Horse.printColorChoices();
+                    while (colorIndex < 0 || colorIndex > Horse.getColorChoicesLength()) {
+                        colorIndex = inputInt("Enter color number: ") - 1;
+                    }
+                    chosenHorse.setCoatColor(Horse.getColorChoice(colorIndex));
+                }
+                case 'a' -> {
+                    int accessoryIndex = -1;
+                    Horse.printAccessoryChoices();
+                    while (accessoryIndex < 0 || accessoryIndex > Horse.getAccessoryChoicesLength()) {
+                        accessoryIndex = inputInt("Enter accessory number: ") - 1;
+                    }
+                    chosenHorse.setAccessory(Horse.getAccessoryChoice(accessoryIndex));
+                }
+            }
+        }
 
     }
 
@@ -67,11 +99,11 @@ public class Menu {
         int breedIndex = -1;
 
         Horse.printBreedChoices();
-        while (breedIndex < 0 || breedIndex > Horse.breedChoices.length) {
+        while (breedIndex < 0 || breedIndex > Horse.getBreedChoicesLength()) {
             breedIndex = inputInt("Enter breed number: ") - 1;
         }
 
-        Horse newHorse = new Horse(symbol, name, 0.5, Horse.breedChoices[breedIndex]);
+        Horse newHorse = new Horse(symbol, name, 0.5, Horse.getBreedChoice(breedIndex));
 
         Horse.addHorse(newHorse);
         System.out.println("New horse added to the list: " + name + " (" + newHorse.getBreed() + ") " + symbol);
@@ -84,7 +116,8 @@ public class Menu {
                 (l)ist horses
                 (c)reate horse
                 (e)xit
-                Enter a letter to choose:\n""";
+                Enter a letter to choose:
+                """;
         char choice;
         while ((choice = inputChar(message)) != 'e') {
             if (choice == 'c') {
