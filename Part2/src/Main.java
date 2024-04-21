@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Main {
     public static void main(String[] args) {
         Horse horse1 = new Horse('♘', "Anya", 0.3);

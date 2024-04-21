@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Write a description of class Horse here.
@@ -28,12 +29,23 @@ public class Horse
     private int raceTime;
     private ArrayList<Integer> finishingTimes;
 
+    public static final Horse[] defaultHorses = {new Horse('♘', "Anya", 0.4, "Arabian"), new Horse('♞', "Oliver", 0.5, "Friesian"), new Horse('♔', "King", 0.6, "Appaloosa")};
+    private static ArrayList<Horse> allHorses = new ArrayList<>(Arrays.asList(defaultHorses));
+    public final static String[] breedChoices = {"Arabian", "Friesian", "Mustang Shire", "Thoroughbred", "Appaloosa", "American Quarter", "Clydesdale", "Breton", "Cob", "American Paint", "Rahvan"};
 
 
     //Constructor of class Horse
     /**
      * Constructor for objects of class Horse
      */
+    public Horse(char horseSymbol, String horseName, double horseConfidence, String horseBreed)
+    {
+        symbol = horseSymbol;
+        name = horseName;
+        confidence = horseConfidence;
+        breed = horseBreed;
+    }
+
     public Horse(char horseSymbol, String horseName, double horseConfidence)
     {
         symbol = horseSymbol;
@@ -138,4 +150,30 @@ public class Horse
 
     public ArrayList<Integer> getFinishingTimes() {return finishingTimes;}
     public void addFinishingTime(int newTime) {finishingTimes.add(newTime);}
+
+    public static ArrayList<Horse> getAllHorses() {
+        return allHorses;
+    }
+
+    public static void addHorse(Horse newHorse) {
+        allHorses.add(newHorse);
+    }
+
+    public static void printHorses() {
+        int count = 1;
+        System.out.println("List of all horses:");
+        for (Horse horse : allHorses) {
+            System.out.println(count + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol());
+            count++;
+        }
+        System.out.println("");
+    }
+
+    public void printBreedChoices() {
+        int count = 0;
+        for (String breedChoice : breedChoices) {
+            System.out.println(count + " " + breedChoice);
+            count++;
+        }
+    }
 }
