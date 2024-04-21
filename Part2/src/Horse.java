@@ -163,9 +163,16 @@ public class Horse
 
     public ArrayList<Character> getCurrentRaceRecord() {return currentRaceRecord;}
 
-    public void addStepToRecord(char step) {currentRaceRecord.add(step);}
+    public void addStepToCurrentRaceRecord(char step) {currentRaceRecord.add(step);}
 
-    public void clearRaceRecord() {currentRaceRecord = new ArrayList<>();}
+    public void clearCurrentRaceRecord() {currentRaceRecord = new ArrayList<>();}
+
+    public void loadCurrentRaceRecord(String steps) {
+        currentRaceRecord = new ArrayList<Character>();
+        for (char c : steps.toCharArray()) {
+            currentRaceRecord.add(c);
+        }
+    }
 
     public void printHorseInfo() {
         System.out.println("\n---Horse Info---");

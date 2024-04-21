@@ -1,6 +1,4 @@
-import java.io.BufferedReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
@@ -68,6 +66,8 @@ public class Race
 
     public static char getFenceSymbol() {return fenceSymbol;}
 
+    public static int getTotalRaces() {return totalRaces;}
+
     /**
      * Adds a horse to the race in a given lane
      *
@@ -113,7 +113,7 @@ public class Race
         for (Horse horse : horseLanes) {
             horse.goBackToStart();
             horse.incTotalRaces();
-            horse.clearRaceRecord();
+            horse.clearCurrentRaceRecord();
         }
 
         while (!finished)
@@ -151,6 +151,7 @@ public class Race
             if (raceWonBy(horse)) {
                 printWinner(horse);
                 horse.incTotalWins();
+                horse.addStepToCurrentRaceRecord('w');
                 totalFinishes++;
                 winnerExists = true;
             }
@@ -179,10 +180,10 @@ public class Race
             {
                 theHorse.moveForward();
                 theHorse.incTotalDistance(); //increment total distance statistic of the horse
-                theHorse.addStepToRecord('m'); //adds 'm' to record (representing movement)
+                theHorse.addStepToCurrentRaceRecord('m'); //adds 'm' to record (representing movement)
             }
             else {
-                theHorse.addStepToRecord('n'); //adds 'n' to record (representing no movement)
+                theHorse.addStepToCurrentRaceRecord('n'); //adds 'n' to record (representing no movement)
             }
 
             theHorse.incTotalTime(); //increment total run time statistic of the horse
@@ -193,7 +194,7 @@ public class Race
             if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
             {
                 theHorse.fall();
-                theHorse.addStepToRecord('f'); //adds 'f' to record (representing fall)
+                theHorse.addStepToCurrentRaceRecord('f'); //adds 'f' to record (representing fall)
 
             }
         }
@@ -302,21 +303,106 @@ public class Race
         System.out.println("Top Horse: " + topHorse.getName() + " " + topHorse.getSymbol() + " with " + topHorse.getTotalWins() + " wins");
     }
 
+    public void watchRecording() {
+        //declare a local variable to tell us when the race is finished
+        boolean finished = false;
+        int stepCount = 0;
+        char c;
+
+        //reset all the horseLanes (all horses not fallen and back to 0) and increment total number of taken races.
+        for (Horse horse : horseLanes) {
+            horse.goBackToStart();
+        }
+
+        while (!finished)
+        {
+            //move each horse
+            for (Horse horse : horseLanes) {
+                if (stepCount < horse.getCurrentRaceRecord().size()) {
+                    c = horse.getCurrentRaceRecord().get(stepCount);
+                    if (c == 'm') {
+                        horse.moveForward();
+                    }
+                    else if (c == 'f') {
+                        horse.fall();
+                    }
+                }
+
+            }
+
+            //print the race positions
+            printRace();
+
+
+            //if all the horses have fallen, the race is finished
+            finished = true;
+            for (int i = 0; finished && i < horseLanes.length; i++) {
+                if (!horseLanes[i].hasFallen()) finished = false;
+            }
+
+            //if any of the horses has won, the race is finished
+            for (Horse horse : horseLanes) {
+                if (raceWonBy(horse)) finished = true;
+            }
+
+            //wait for 100 milliseconds
+            try{
+                TimeUnit.MILLISECONDS.sleep(100);
+            }
+            catch(Exception e) {e.printStackTrace();}
+        }
+
+        //check winner
+        boolean winnerExists = false;
+        for (Horse horse : horseLanes) {
+            if (raceWonBy(horse)) {
+                printWinner(horse);
+                horse.incTotalWins();
+                totalFinishes++;
+                winnerExists = true;
+            }
+        }
+        if (!winnerExists) System.out.println("\n No Winner - all the horses failed to finish the race.");
+
+        saveRaceRecord();
+    }
+
     public void saveRaceRecord() {
         try (FileWriter writer = new FileWriter("race_record" + totalRaces + ".txt")) {
+            writer.write(horseLanes.length + "\n");
+            writer.write(raceLength + "\n");
+
             for (Horse horse : horseLanes) {
-                writer.write(horse.getSymbol());
                 writer.write(horse.getName());
+                writer.write("\n");
+                writer.write(horse.getSymbol());
+                writer.write("\n");
             }
             for (Horse horse : horseLanes) {
-                String s = horse.getCurrentRaceRecord().toString();
+                String s = horse.getCurrentRaceRecord().toString().replace("[","").replace("]","");
                 writer.write(s);
+                writer.write("\n");
             }
         }
         catch (IOException e) {throw new RuntimeException(e);} ;
     }
 
-    public void loadRaceRecord(Horse horse) {
+    public static Race loadRaceRecord(String saveFileName) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(saveFileName))) {
+            int lanesNum = Integer.parseInt(reader.readLine());
+            Race recordedRace = new Race(Integer.parseInt(reader.readLine()), lanesNum);
+            String s;
+            for (int i = 1; i <= lanesNum && (s = reader.readLine()) != null; i++) {
+                Horse newHorse = new Horse(s.charAt(0), s.substring(1));
+                recordedRace.addHorse(newHorse, i);
+            }
+            for (Horse horse : recordedRace.horseLanes) {
+                horse.loadCurrentRaceRecord(reader.readLine());
+            }
+
+            return recordedRace;
+        }
+        catch (IOException e) {throw new RuntimeException(e);}
 
     }
 }
