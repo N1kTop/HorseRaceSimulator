@@ -188,6 +188,7 @@ public class Menu {
     public static void recordsMenu() {
         int totalRaces = Race.getTotalRaces();
         if (totalRaces == 0) return;
+        Race.updateRecordFileNames();
         System.out.println("Race Recordings:\n" + Race.getRecordFileNames());
         String fileName = input("Enter recording name: ");
         Race recordedRace = Race.loadRaceRecord(fileName + ".txt");

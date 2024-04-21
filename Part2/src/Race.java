@@ -18,7 +18,7 @@ public class Race {
     private static char fenceSymbol = '=';
     private static int totalRaces = 0;
     private static int totalFinishes = 0;
-    public static ArrayList<String> recordFileNames = loadRecordingNames();
+    private static ArrayList<String> recordFileNames = loadRecordingNames();
 
 
     /**
@@ -82,6 +82,10 @@ public class Race {
 
     public static ArrayList<String> getRecordFileNames() {
         return recordFileNames;
+    }
+
+    public static void updateRecordFileNames() {
+        recordFileNames = loadRecordingNames();
     }
 
     /**
