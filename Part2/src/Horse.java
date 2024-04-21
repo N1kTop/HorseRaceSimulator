@@ -83,6 +83,7 @@ public class Horse
     {
         if (confidence < 0.9) confidence += 0.1;
         else confidence = 1.0;
+        totalWins++;
     }
 
     public double getConfidence()
@@ -254,7 +255,7 @@ public class Horse
     public static Horse getTopHorse() {
         Horse topHorse = allHorses.get(0);
         for (Horse horse : allHorses) {
-            if (horse.totalWins > horse.totalWins) topHorse = horse;
+            if (horse.totalWins > topHorse.totalWins) topHorse = horse;
         }
         return topHorse;
     }

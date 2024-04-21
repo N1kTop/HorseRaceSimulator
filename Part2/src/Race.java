@@ -150,7 +150,6 @@ public class Race
         for (Horse horse : horseLanes) {
             if (raceWonBy(horse)) {
                 printWinner(horse);
-                horse.incTotalWins();
                 horse.addStepToCurrentRaceRecord('w');
                 totalFinishes++;
                 winnerExists = true;
@@ -360,8 +359,6 @@ public class Race
         for (Horse horse : horseLanes) {
             if (raceWonBy(horse)) {
                 printWinner(horse);
-                horse.incTotalWins();
-                totalFinishes++;
                 winnerExists = true;
             }
         }
