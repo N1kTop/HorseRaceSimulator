@@ -187,7 +187,7 @@ public class Menu {
         while (raceIndex < 1 || raceIndex > totalRaces) {
             raceIndex = inputInt("Enter race index (from 1 to " + totalRaces + "): ");
         }
-        Race recordedRace = Race.loadRaceRecord("race_record" + raceIndex);
+        Race recordedRace = Race.loadRaceRecord("race_record" + raceIndex + ".txt");
         recordedRace.watchRecording();
     }
 }
