@@ -99,7 +99,7 @@ public class Race {
     public static void subtractMoney(int moneyLoss) {money -= moneyLoss;}
 
     public void printHorseLanes() {
-        int i = 0;
+        int i = 1;
         for (Horse horse : horseLanes) {
             System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence());
         }
@@ -129,7 +129,7 @@ public class Race {
             }
         }
         betAmount = 0;
-        betLaneIndex = 0;
+        betLaneIndex = -1;
         System.out.println("Do you want to gamble?");
         String choice = new Scanner(System.in).nextLine();
         if (choice.charAt(0) == 'y') gamble();
@@ -211,11 +211,9 @@ public class Race {
                         int winningAmount = betAmount * horseLanes.length;
                         System.out.println("Your bet was successful\nYou have won " + winningAmount);
                         addMoney(winningAmount);
-                        printMoney();
                     }
                     else {
                         System.out.println("You have lost your bet");
-                        printMoney();
                     }
                 }
             }
@@ -223,6 +221,7 @@ public class Race {
         if (!winnerExists) System.out.println("\n No Winner - all the horses failed to finish the race.");
 
         raceMoneyBonus();
+        printMoney();
         System.out.print("Enter record name to save the race: ");
         String recordName = new Scanner(System.in).nextLine();
         saveRaceRecord(recordName);
@@ -488,7 +487,7 @@ public class Race {
     }
 
     public static void raceMoneyBonus() {
-        System.out.println("You have received " + moneyPerRace + " money bonus");
-        money += moneyPerRace;
+        System.out.println("You have received " + moneyPerRace + " money bonus for conducting the race");
+        addMoney(moneyPerRace);
     }
 }
