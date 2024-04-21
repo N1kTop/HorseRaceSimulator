@@ -4,6 +4,10 @@ import java.util.Scanner;
 
 public class Menu {
 
+    public static void main(String[] args) {
+        menu();
+    }
+
 
     /**
      *
@@ -51,6 +55,7 @@ public class Menu {
                 statsMenu();
             }
         }
+        Race.saveRecordingNames();
         System.out.println("\nYou have exited the program");
     }
 
