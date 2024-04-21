@@ -186,7 +186,7 @@ public class Menu {
         int lanesNum = 0;
         int totalHorseNumber = Horse.getTotalHorseNumber();
         while (lanesNum < 1 || lanesNum > 20 || lanesNum > totalHorseNumber) {
-            if (lanesNum > totalHorseNumber) System.out.println("You do not have enough horses for that race\nYou can create more horses in the Menu");
+            if (lanesNum > totalHorseNumber) System.out.println("\nYou do not have enough horses for that race\nYou can create more horses in the Menu");
             lanesNum = inputInt("Enter number of lanes (between 1 and 20): ");
         }
         Race newRace = new Race(distance, lanesNum);

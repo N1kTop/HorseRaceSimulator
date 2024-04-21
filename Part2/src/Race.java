@@ -100,6 +100,7 @@ public class Race {
 
     public void printHorseLanes() {
         int i = 1;
+        System.out.println("Lanes:");
         for (Horse horse : horseLanes) {
             System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence());
         }
@@ -130,9 +131,9 @@ public class Race {
         }
         betAmount = 0;
         betLaneIndex = -1;
-        System.out.println("\nDo you want to gamble?");
-        String choice = new Scanner(System.in).nextLine();
-        if (choice.charAt(0) == 'y') gamble();
+        char choice = Menu.inputChar("\nDo you want to gamble?\n");
+        if (choice == 'y') gamble();
+        Menu.input("Press enter to start the race");
         startRace();
     }
 
@@ -145,6 +146,7 @@ public class Race {
             betAmount = Menu.inputInt("Enter bet amount (minimal bet is 5): ");
         }
         subtractMoney(betAmount);
+        System.out.println("You put a bet of " + money + " on " + horseLanes[betLaneIndex].getName());
     }
 
     /**
