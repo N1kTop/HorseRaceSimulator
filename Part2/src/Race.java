@@ -18,7 +18,7 @@ public class Race {
     private static char fenceSymbol = '=';
     private static int totalRaces = 0;
     private static int totalFinishes = 0;
-    private static ArrayList<String> recordFileNames = loadRecordingNames();
+    public static ArrayList<String> recordFileNames = loadRecordingNames();
 
 
     /**
@@ -421,9 +421,7 @@ public class Race {
         try (BufferedReader reader = new BufferedReader(new FileReader("recordings.txt"))) {
             ArrayList<String> loadedRecords = new ArrayList<>();
             String line;
-            System.out.println("asdasd");
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
                 loadedRecords.add(line);
             }
             return loadedRecords;
