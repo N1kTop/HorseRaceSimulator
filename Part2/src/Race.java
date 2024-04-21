@@ -11,15 +11,14 @@ import java.lang.Math;
  * @author Nikita Topolskis
  * @version 2.0
  */
-public class Race
-{
+public class Race {
     private int raceLength;
     private Horse[] horseLanes;
     private static char fallenSymbol = 'X';
     private static char fenceSymbol = '=';
     private static int totalRaces = 0;
     private static int totalFinishes = 0;
-    private static ArrayList<String> recordFileNames;
+    private static ArrayList<String> recordFileNames = loadRecordingNames();
 
 
     /**
@@ -28,8 +27,7 @@ public class Race
      *
      * @param distance the length of the racetrack (in metres/yards...)
      */
-    public Race(int distance, int lanesNum, Horse[] horses)
-    {
+    public Race(int distance, int lanesNum, Horse[] horses) {
         // initialise instance variables
         raceLength = distance;
         horseLanes = new Horse[lanesNum];
@@ -41,51 +39,62 @@ public class Race
 
     }
 
-    public Race(int distance, int lanesNum)
-    {
+    public Race(int distance, int lanesNum) {
         // initialise instance variables
         raceLength = distance;
         horseLanes = new Horse[lanesNum];
     }
 
-    public Race(int distance)
-    {
+    public Race(int distance) {
         // initialise instance variables
         raceLength = distance;
         horseLanes = new Horse[3];
     }
 
 
-    public void setRaceLength(int newLength) {raceLength = newLength;}
+    public void setRaceLength(int newLength) {
+        raceLength = newLength;
+    }
 
-    public int getRaceLength() {return raceLength;}
+    public int getRaceLength() {
+        return raceLength;
+    }
 
-    public static void setFallenSymbol(char newSymbol) {fallenSymbol = newSymbol;}
+    public static void setFallenSymbol(char newSymbol) {
+        fallenSymbol = newSymbol;
+    }
 
-    public static char getFallenSymbol() {return fallenSymbol;}
+    public static char getFallenSymbol() {
+        return fallenSymbol;
+    }
 
-    public static void setFenceSymbol(char newSymbol) {fenceSymbol = newSymbol;}
+    public static void setFenceSymbol(char newSymbol) {
+        fenceSymbol = newSymbol;
+    }
 
-    public static char getFenceSymbol() {return fenceSymbol;}
+    public static char getFenceSymbol() {
+        return fenceSymbol;
+    }
 
-    public static int getTotalRaces() {return totalRaces;}
+    public static int getTotalRaces() {
+        return totalRaces;
+    }
 
-    public static ArrayList<String> getRecordFileNames() {return recordFileNames;}
+    public static ArrayList<String> getRecordFileNames() {
+        return recordFileNames;
+    }
 
     /**
      * Adds a horse to the race in a given lane
      *
-     * @param theHorse the horse to be added to the race
+     * @param theHorse   the horse to be added to the race
      * @param laneNumber the lane that the horse will be added to
      */
-    public void addHorse(Horse theHorse, int laneNumber)
-    {
+    public void addHorse(Horse theHorse, int laneNumber) {
         laneNumber--;
         if (laneNumber >= 0 && laneNumber < horseLanes.length) {
             horseLanes[laneNumber] = theHorse;
-        }
-        else
-        {
+        } else {
             System.out.println("Cannot add horse to lane " + laneNumber + " because there is no such lane");
         }
     }
@@ -97,8 +106,7 @@ public class Race
      * race is finished
      * finally, winning message printed
      */
-    public void startRace()
-    {
+    public void startRace() {
         //check if every lane has a horse
         for (Horse horse : horseLanes) {
             if (horse == null) {
@@ -120,8 +128,7 @@ public class Race
             horse.clearCurrentRaceRecord();
         }
 
-        while (!finished)
-        {
+        while (!finished) {
             //move each horse
             for (Horse horse : horseLanes) {
                 moveHorse(horse);
@@ -143,10 +150,11 @@ public class Race
             }
 
             //wait for 100 milliseconds
-            try{
+            try {
                 TimeUnit.MILLISECONDS.sleep(100);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            catch(Exception e) {e.printStackTrace();}
         }
 
         //check winner
@@ -173,21 +181,17 @@ public class Race
      *
      * @param theHorse the horse to be moved
      */
-    private void moveHorse(Horse theHorse)
-    {
+    private void moveHorse(Horse theHorse) {
         //if the horse has fallen it cannot move,
         //so only run if it has not fallen
 
-        if  (!theHorse.hasFallen())
-        {
+        if (!theHorse.hasFallen()) {
             //the probability that the horse will move forward depends on the confidence;
-            if (Math.random() < theHorse.getConfidence())
-            {
+            if (Math.random() < theHorse.getConfidence()) {
                 theHorse.moveForward();
                 theHorse.incTotalDistance(); //increment total distance statistic of the horse
                 theHorse.addStepToCurrentRaceRecord('m'); //adds 'm' to record (representing movement)
-            }
-            else {
+            } else {
                 theHorse.addStepToCurrentRaceRecord('n'); //adds 'n' to record (representing no movement)
             }
 
@@ -196,8 +200,7 @@ public class Race
             //the probability that the horse will fall is very small (max is 0.1)
             //but will also depend exponentially on confidence
             //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < (0.1*theHorse.getConfidence()*theHorse.getConfidence()))
-            {
+            if (Math.random() < (0.1 * theHorse.getConfidence() * theHorse.getConfidence())) {
                 theHorse.fall();
                 theHorse.addStepToCurrentRaceRecord('f'); //adds 'f' to record (representing fall)
 
@@ -211,19 +214,17 @@ public class Race
      * @param theHorse The horse we are testing
      * @return true if the horse has won, false otherwise.
      */
-    private boolean raceWonBy(Horse theHorse)
-    {
+    private boolean raceWonBy(Horse theHorse) {
         return theHorse.getDistanceTravelled() >= raceLength;
     }
 
     /***
      * Print the race on the terminal
      */
-    private void printRace()
-    {
+    private void printRace() {
         System.out.print('\u000C');  //clear the terminal window
 
-        multiplePrint(fenceSymbol,raceLength+3); //top edge of track
+        multiplePrint(fenceSymbol, raceLength + 3); //top edge of track
         System.out.println();
 
         for (Horse horse : horseLanes) {
@@ -231,7 +232,7 @@ public class Race
             System.out.println();
         }
 
-        multiplePrint(fenceSymbol,raceLength+3); //bottom edge of track
+        multiplePrint(fenceSymbol, raceLength + 3); //bottom edge of track
         System.out.println();
     }
 
@@ -241,8 +242,7 @@ public class Race
      * |           X                      |
      * to show how far the horse has run
      */
-    private void printLane(Horse theHorse)
-    {
+    private void printLane(Horse theHorse) {
         //calculate how many spaces are needed before
         //and after the horse
         int spacesBefore = theHorse.getDistanceTravelled();
@@ -252,21 +252,18 @@ public class Race
         System.out.print('|');
 
         //print the spaces before the horse
-        multiplePrint(' ',spacesBefore);
+        multiplePrint(' ', spacesBefore);
 
         //if the horse has fallen then print dead
         //else print the horse's symbol
-        if(theHorse.hasFallen())
-        {
+        if (theHorse.hasFallen()) {
             System.out.print(fallenSymbol);
-        }
-        else
-        {
+        } else {
             System.out.print(theHorse.getSymbol());
         }
 
         //print the spaces after the horse
-        multiplePrint(' ',spacesAfter);
+        multiplePrint(' ', spacesAfter);
 
         //print the | for the end of the track
         System.out.print('|');
@@ -279,11 +276,9 @@ public class Race
      *
      * @param aChar the character to Print
      */
-    private void multiplePrint(char aChar, int times)
-    {
+    private void multiplePrint(char aChar, int times) {
         int i = 0;
-        while (i < times)
-        {
+        while (i < times) {
             System.out.print(aChar);
             i = i + 1;
         }
@@ -320,16 +315,14 @@ public class Race
             System.out.println(horse.getCurrentRaceRecord());
         }
 
-        while (!finished)
-        {
+        while (!finished) {
             //move each horse
             for (Horse horse : horseLanes) {
                 if (stepCount < horse.getCurrentRaceRecord().size()) {
                     c = horse.getCurrentRaceRecord().get(stepCount);
                     if (c == 'm') {
                         horse.moveForward();
-                    }
-                    else if (c == 'f') {
+                    } else if (c == 'f') {
                         horse.fall();
                     }
                 }
@@ -354,10 +347,11 @@ public class Race
             }
 
             //wait for 100 milliseconds
-            try{
+            try {
                 TimeUnit.MILLISECONDS.sleep(100);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-            catch(Exception e) {e.printStackTrace();}
         }
 
         //check winner
@@ -382,14 +376,16 @@ public class Race
                 writer.write("\n");
             }
             for (Horse horse : horseLanes) {
-                String s = horse.getCurrentRaceRecord().toString().replace(", ","").replace(", ","").replace("[","").replace("]","");
+                String s = horse.getCurrentRaceRecord().toString().replace(", ", "").replace(", ", "").replace("[", "").replace("]", "");
                 writer.write(s);
                 writer.write("\n");
             }
             recordFileNames.add(saveFileName);
             System.out.println("Race recording has been saved successfully\nYou can watch it in the statistics menu\n");
+        } catch (IOException e) {
+            System.out.println("Could not save teh recording");
         }
-        catch (IOException e) {System.out.println("Could not save teh recording");} ;
+        ;
     }
 
     public static Race loadRaceRecord(String saveFileName) {
@@ -406,8 +402,30 @@ public class Race
             }
 
             return recordedRace;
+        } catch (IOException e) {
+            System.out.println("Could not load the recording");
         }
-        catch (IOException e) {System.out.println("Could not load the recording");}
         return null;
+    }
+
+    public static void saveRecordingNames() {
+        try (FileWriter writer = new FileWriter("recordings.txt")) {
+            for (String fileName : recordFileNames) {
+                writer.write(fileName + "\n");
+            }
+        }
+        catch (IOException e) {throw new RuntimeException(e);}
+    }
+
+    public static ArrayList<String> loadRecordingNames() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("recordings.txt"))) {
+            ArrayList<String> loadedRecords = new ArrayList<>();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                loadedRecords.add(line);
+            }
+            return loadedRecords;
+        }
+        catch (IOException e) {throw new RuntimeException(e);}
     }
 }
