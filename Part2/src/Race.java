@@ -328,8 +328,10 @@ public class Race
                         horse.fall();
                     }
                 }
-
             }
+            //increment step count
+            stepCount++;
+
 
             //print the race positions
             printRace();
