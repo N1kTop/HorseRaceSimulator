@@ -150,7 +150,7 @@ public class Race {
             if (betAmount > money) System.out.println("You do not have enough money (" + money + "/" + betAmount + ")");
         }
         subtractMoney(betAmount);
-        System.out.println("You put a bet of " + money + " on " + horseLanes[betLaneIndex].getName());
+        System.out.println("You put a bet of " + betAmount + " on " + horseLanes[betLaneIndex].getName());
     }
 
     /**
