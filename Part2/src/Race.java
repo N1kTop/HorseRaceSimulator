@@ -5,7 +5,7 @@ import java.util.concurrent.TimeUnit;
 import java.lang.Math;
 
 /**
- * A three-horse race, each horse running in its own lane
+ * A horse race, each horse running in its own lane
  * for a given distance
  *
  * @author Nikita Topolskis
@@ -24,6 +24,7 @@ public class Race {
     private static int money = 10000;
     private final static int moneyPerRace = 50;
     private final static int minBet = 5;
+    private int weatherCondition = 1;
 
 
     /**
@@ -123,11 +124,17 @@ public class Race {
                 return;
             }
         }
+        weatherCondition = (int) (Math.random() * 2) + 1;
+        switch (weatherCondition) {
+            case 1 -> System.out.println("The weather is good\n");
+            case 2 -> System.out.println("It is raining, chances of falling are doubled");
+            case 3 -> System.out.println("The weather is disastrous, chances of falling are tripled");
+        }
         betAmount = 0;
         betLaneIndex = -1;
         char choice = Menu.inputChar("\nDo you want to gamble?\n");
         if (choice == 'y') gamble();
-        Menu.input("Press enter to start the race");
+        Menu.input("\nPress enter to start the race");
         startRace();
     }
 
@@ -255,7 +262,7 @@ public class Race {
             //the probability that the horse will fall is very small (max is 0.1)
             //but will also depend exponentially on confidence
             //so if you double the confidence, the probability that it will fall is *2
-            if (Math.random() < (0.1 * theHorse.getConfidence() * theHorse.getConfidence())) {
+            if (Math.random() < (0.05 * weatherCondition * theHorse.getConfidence() * theHorse.getConfidence())) {
                 theHorse.fall();
                 theHorse.addStepToCurrentRaceRecord('f'); //adds 'f' to record (representing fall)
 
