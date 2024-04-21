@@ -421,7 +421,9 @@ public class Race {
         try (BufferedReader reader = new BufferedReader(new FileReader("recordings.txt"))) {
             ArrayList<String> loadedRecords = new ArrayList<>();
             String line;
+            System.out.println("asdasd");
             while ((line = reader.readLine()) != null) {
+                System.out.println(line);
                 loadedRecords.add(line);
             }
             return loadedRecords;
