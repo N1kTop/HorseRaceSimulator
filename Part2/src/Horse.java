@@ -46,6 +46,14 @@ public class Horse
         breed = horseBreed;
     }
 
+    public Horse(char horseSymbol, String horseName, String horseBreed)
+    {
+        symbol = horseSymbol;
+        name = horseName;
+        confidence = 0.5;
+        breed = horseBreed;
+    }
+
     public Horse(char horseSymbol, String horseName, double horseConfidence)
     {
         symbol = horseSymbol;
@@ -233,5 +241,13 @@ public class Horse
         for (String accessoryChoice : accessoryChoices) {
             System.out.println(count++ + " " + accessoryChoice);
         }
+    }
+
+    public static Horse getTopHorse() {
+        Horse topHorse = allHorses.get(0);
+        for (Horse horse : allHorses) {
+            if (horse.totalWins > horse.totalWins) topHorse = horse;
+        }
+        return topHorse;
     }
 }

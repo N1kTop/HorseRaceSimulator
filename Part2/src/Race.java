@@ -18,7 +18,8 @@ public class Race
     private Horse[] horseLanes;
     private static char fallenSymbol = 'X';
     private static char fenceSymbol = '=';
-    private static int recordsNumber = 0;
+    private static int totalRaces = 0;
+    private static int totalFinishes = 0;
 
 
     /**
@@ -105,6 +106,9 @@ public class Race
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
 
+        //increment races count
+        totalRaces++;
+
         //reset all the horseLanes (all horses not fallen and back to 0) and increment total number of taken races.
         for (Horse horse : horseLanes) {
             horse.goBackToStart();
@@ -147,6 +151,7 @@ public class Race
             if (raceWonBy(horse)) {
                 printWinner(horse);
                 horse.incTotalWins();
+                totalFinishes++;
                 winnerExists = true;
             }
         }
@@ -288,13 +293,29 @@ public class Race
         System.out.println("\nThe Winner of the race is " + winnerHorse.getName() + "!\n");
     }
 
+    public static void printOverallStats() {
+        System.out.println("Total Races: " + totalRaces);
+        System.out.println("Total Finishes " + totalFinishes);
+        System.out.println("Current Number of Horses: " + Horse.getTotalHorseNumber());
+        Horse topHorse = Horse.getTopHorse();
+        System.out.println("Top Horse: " + topHorse.getName() + " " + topHorse.getSymbol() + " with " + topHorse.getTotalWins() + " wins");
+    }
+
     public void saveRaceRecord() {
-        try (FileWriter writer = new FileWriter("rac_record" + recordsNumber++ + ".txt")) {
+        try (FileWriter writer = new FileWriter("rac_record" + totalRaces + ".txt")) {
+            for (Horse horse : horseLanes) {
+                writer.write(horse.getSymbol());
+                writer.write(horse.getName());
+            }
             for (Horse horse : horseLanes) {
                 String s = horse.getCurrentRaceRecord().toString();
                 writer.write(s);
             }
         }
         catch (IOException e) {throw new RuntimeException(e);} ;
+    }
+
+    public void loadRaceRecord(Horse horse) {
+
     }
 }

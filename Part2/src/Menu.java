@@ -35,6 +35,7 @@ public class Menu {
 
                 (h)orses
                 (r)ace
+                (s)tatistics
                 (e)xit
                 Enter a letter to choose:
                 """;
@@ -45,6 +46,9 @@ public class Menu {
             }
             if (choice == 'r') {
                 raceMenu();
+            }
+            if (choice == 's') {
+                statsMenu();
             }
         }
         System.out.println("\nYou have exited the program");
@@ -157,5 +161,26 @@ public class Menu {
             newRace.addHorse(Horse.getHorse(horseIndex - 1), i);
         }
         newRace.startRace();
+    }
+
+    public static void statsMenu() {
+        Race.printOverallStats();
+        String message = """
+
+                (r)ace records
+                (e)xit
+                Enter a letter to choose:
+                """;
+        char choice;
+        while ((choice = inputChar(message)) != 'e') {
+            if (choice == 'r') {
+                recordsMenu();
+            }
+
+        }
+    }
+
+    public static void recordsMenu() {
+
     }
 }
