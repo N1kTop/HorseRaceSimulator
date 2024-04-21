@@ -164,10 +164,15 @@ public class Menu {
         Race newRace = new Race(distance, lanesNum);
 
         int horseIndex;
+        ArrayList<Integer> chosenIndexes = new ArrayList<>();
         for (int i = 1; i <= lanesNum; i++) {
             Horse.printHorses();
-            horseIndex = inputInt("Enter Horse Index for lane " + i + ": ");
+            horseIndex = 0;
+            while ((horseIndex < 1 || horseIndex > Horse.getTotalHorseNumber()) && !chosenIndexes.contains(horseIndex)) {
+                horseIndex = inputInt("Enter Horse Index for lane " + i + ": ");
+            }
             newRace.addHorse(Horse.getHorse(horseIndex - 1), i);
+            chosenIndexes.add(horseIndex);
         }
         newRace.raceSetup();
     }
