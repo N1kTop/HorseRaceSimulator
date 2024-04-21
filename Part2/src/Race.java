@@ -23,6 +23,7 @@ public class Race {
     private static ArrayList<String> recordFileNames = loadRecordingNames();
     private static int money = 10000;
     private final static int moneyPerRace = 50;
+    private final static int minBet = 5;
 
 
     /**
@@ -139,11 +140,14 @@ public class Race {
 
     public void gamble() {
         printHorseLanes();
+        printMoney();
         while (betLaneIndex < 0 || betLaneIndex >= horseLanes.length) {
             betLaneIndex = Menu.inputInt("\nEnter lane number to bet on: ") - 1;
         }
-        while (betAmount < 5 || betAmount > money) {
-            betAmount = Menu.inputInt("Enter bet amount (minimal bet is 5): ");
+        System.out.println("Minimum bet: " + minBet);
+        while (betAmount < minBet || betAmount > money) {
+            betAmount = Menu.inputInt("Enter bet amount: ");
+            if (betAmount > money) System.out.println("You do not have enough money (" + money + "/" + betAmount + ")");
         }
         subtractMoney(betAmount);
         System.out.println("You put a bet of " + money + " on " + horseLanes[betLaneIndex].getName());
@@ -220,7 +224,10 @@ public class Race {
                 }
             }
         }
-        if (!winnerExists) System.out.println("\n No Winner - all the horses failed to finish the race.");
+        if (!winnerExists) {
+            System.out.println("\n No Winner - all the horses failed to finish the race.");
+            System.out.println("\nYou have lost your bet of " + betAmount);
+        }
 
         raceMoneyBonus();
         printMoney();

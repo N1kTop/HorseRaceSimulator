@@ -227,7 +227,7 @@ public class Horse
 
     public static void printHorses() {
         int count = 1;
-        System.out.println("List of all horses:");
+        System.out.println("\nList of all horses:");
         for (Horse horse : allHorses) {
             System.out.println(count++ + " " + horse.name + " (" + horse.breed + ") " + horse.symbol + " - " + horse.confidence);
         }
