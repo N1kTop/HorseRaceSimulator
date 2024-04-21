@@ -294,6 +294,7 @@ public class Race
     }
 
     public static void printOverallStats() {
+        System.out.println("\n---Overall Stats---");
         System.out.println("Total Races: " + totalRaces);
         System.out.println("Total Finishes " + totalFinishes);
         System.out.println("Current Number of Horses: " + Horse.getTotalHorseNumber());
@@ -302,7 +303,7 @@ public class Race
     }
 
     public void saveRaceRecord() {
-        try (FileWriter writer = new FileWriter("rac_record" + totalRaces + ".txt")) {
+        try (FileWriter writer = new FileWriter("race_record" + totalRaces + ".txt")) {
             for (Horse horse : horseLanes) {
                 writer.write(horse.getSymbol());
                 writer.write(horse.getName());
@@ -311,6 +312,7 @@ public class Race
                 String s = horse.getCurrentRaceRecord().toString();
                 writer.write(s);
             }
+            writer.write("test");
         }
         catch (IOException e) {throw new RuntimeException(e);} ;
     }
