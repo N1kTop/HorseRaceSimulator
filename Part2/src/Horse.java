@@ -189,7 +189,7 @@ public class Horse
         int count = 1;
         System.out.println("List of all horses:");
         for (Horse horse : allHorses) {
-            System.out.println(count + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol());
+            System.out.println(count + " " + horse.name + " (" + horse.breed + ") " + horse.symbol + " - " + horse.confidence);
             count++;
         }
         System.out.println("");
