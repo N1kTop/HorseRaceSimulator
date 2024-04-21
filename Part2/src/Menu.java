@@ -36,10 +36,11 @@ public class Menu {
 
     public static void menu() {
         String message = """
-
-                (h)orses
+                
                 (r)ace
+                (h)orses
                 (s)tatistics
+                (b)uy accessories
                 (e)xit
                 Enter a letter to choose:
                 """;
@@ -53,6 +54,9 @@ public class Menu {
             }
             if (choice == 's') {
                 statsMenu();
+            }
+            if (choice == 'b') {
+                buyMenu();
             }
         }
         Race.saveRecordingNames();
@@ -165,7 +169,7 @@ public class Menu {
             horseIndex = inputInt("Enter Horse Index for lane " + i + ": ");
             newRace.addHorse(Horse.getHorse(horseIndex - 1), i);
         }
-        newRace.startRace();
+        newRace.raceSetup();
     }
 
     public static void statsMenu() {
@@ -192,5 +196,9 @@ public class Menu {
         String fileName = input("Enter recording name: ");
         Race recordedRace = Race.loadRaceRecord(fileName + ".txt");
         if (recordedRace != null) recordedRace.watchRecording();
+    }
+
+    public static void buyMenu() {
+        System.out.println("Money: " + Race.getMoney());
     }
 }

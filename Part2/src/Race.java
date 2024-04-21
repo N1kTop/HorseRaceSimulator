@@ -19,6 +19,8 @@ public class Race {
     private static int totalRaces = 0;
     private static int totalFinishes = 0;
     private static ArrayList<String> recordFileNames = loadRecordingNames();
+    private static int money = 10000;
+    private final static int moneyPerRace = 50;
 
 
     /**
@@ -88,6 +90,12 @@ public class Race {
         return recordFileNames.size();
     }
 
+    public static int getMoney() {return money;}
+
+    public static void addMoney(int moneyBonus) {money += moneyBonus;}
+
+    public static void subtractMoney(int moneyLoss) {money -= moneyLoss;}
+
     /**
      * Adds a horse to the race in a given lane
      *
@@ -103,6 +111,24 @@ public class Race {
         }
     }
 
+    public void raceSetup() {
+        //check if every lane has a horse
+        for (Horse horse : horseLanes) {
+            if (horse == null) {
+                System.out.println("Cannot start race, since not all lanes are filled");
+                return;
+            }
+        }
+        System.out.println("Do you want to gamble?");
+        String choice = new Scanner(System.in).nextLine();
+        if (choice.charAt(0) == 'y') gamble();
+        startRace();
+    }
+
+    public void gamble() {
+
+    }
+
     /**
      * Start the race
      * The horse are brought to the start and
@@ -111,13 +137,6 @@ public class Race {
      * finally, winning message printed
      */
     public void startRace() {
-        //check if every lane has a horse
-        for (Horse horse : horseLanes) {
-            if (horse == null) {
-                System.out.println("Cannot start race, since not all lanes are filled");
-                return;
-            }
-        }
 
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
@@ -173,6 +192,7 @@ public class Race {
         }
         if (!winnerExists) System.out.println("\n No Winner - all the horses failed to finish the race.");
 
+        raceMoneyBonus();
         System.out.print("Enter record name to save the race: ");
         String recordName = new Scanner(System.in).nextLine();
         saveRaceRecord(recordName);
@@ -431,5 +451,10 @@ public class Race {
             return loadedRecords;
         }
         catch (IOException e) {throw new RuntimeException(e);}
+    }
+
+    public static void raceMoneyBonus() {
+        System.out.println("You have received " + moneyPerRace + " money bonus");
+        money += moneyPerRace;
     }
 }
