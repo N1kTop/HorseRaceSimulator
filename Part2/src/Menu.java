@@ -36,7 +36,7 @@ public class Menu {
                 (h)orses
                 (r)ace
                 (e)xit
-                Enter letter to choose: """;
+                Enter letter to choose:\n""";
         char choice;
         while ((choice = inputChar(message)) != 'e') {
             if (choice == 'h') {
@@ -49,7 +49,13 @@ public class Menu {
         System.out.println("\nYou have exited the program");
     }
 
-
+    public static void listHorses() {
+        Horse.printHorses();
+        int horseChoice = -1;
+        while (horseChoice < 0 || horseChoice >= Horse.getAllHorses().size()) {
+            horseChoice = inputInt("Enter horse index: ");
+        }
+    }
 
     public static void createHorse() {
         String name = input("Enter name: ");
@@ -71,14 +77,17 @@ public class Menu {
         Horse.printHorses();
         String message = """
 
-                Chose horse number or
+                (l)ist horses
                 (c)reate horse
                 (e)xit
-                Enter character to choose: """;
-        String choice;
-        while ((choice = input(message)).toLowerCase().charAt(0) != 'e') {
-            if (choice.toLowerCase().charAt(0) == 'c') {
+                Enter character to choose:\n""";
+        char choice;
+        while ((choice = inputChar(message)) != 'e') {
+            if (choice == 'c') {
                 createHorse();
+            }
+            else if (choice == 'l') {
+                listHorses();
             }
         }
     }
