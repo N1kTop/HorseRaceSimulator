@@ -61,6 +61,7 @@ public class Menu {
         chosenHorse.printHorseInfo();
 
         String message = """
+                
                 You can change horses information or view statistics
                 (n)ame
                 (s)ymbol
@@ -78,7 +79,7 @@ public class Menu {
                 case 'c' -> {
                     int colorIndex = -1;
                     Horse.printColorChoices();
-                    while (colorIndex < 0 || colorIndex > Horse.getColorChoicesLength()) {
+                    while (colorIndex < 0 || colorIndex >= Horse.getColorChoicesLength()) {
                         colorIndex = inputInt("Enter color number: ") - 1;
                     }
                     chosenHorse.setCoatColor(Horse.getColorChoice(colorIndex));
@@ -86,7 +87,7 @@ public class Menu {
                 case 'a' -> {
                     int accessoryIndex = -1;
                     Horse.printAccessoryChoices();
-                    while (accessoryIndex < 0 || accessoryIndex > Horse.getAccessoryChoicesLength()) {
+                    while (accessoryIndex < 0 || accessoryIndex >= Horse.getAccessoryChoicesLength()) {
                         accessoryIndex = inputInt("Enter accessory number: ") - 1;
                     }
                     chosenHorse.setAccessory(Horse.getAccessoryChoice(accessoryIndex));
@@ -107,7 +108,7 @@ public class Menu {
         int breedIndex = -1;
 
         Horse.printBreedChoices();
-        while (breedIndex < 0 || breedIndex > Horse.getBreedChoicesLength()) {
+        while (breedIndex < 0 || breedIndex >= Horse.getBreedChoicesLength()) {
             breedIndex = inputInt("Enter breed number: ") - 1;
         }
 
