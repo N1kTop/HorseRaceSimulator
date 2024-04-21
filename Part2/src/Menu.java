@@ -51,6 +51,8 @@ public class Menu {
     }
 
     public static void listHorses() {
+        Horse.printHorses();
+
         int horseChoice = -1;
         while (horseChoice < 0 || horseChoice >= Horse.getAllHorses().size()) {
             horseChoice = inputInt("Enter horse index: ") - 1;
@@ -116,7 +118,6 @@ public class Menu {
     }
 
     public static void horsesMenu() {
-        Horse.printHorses();
         String message = """
 
                 (l)ist horses
