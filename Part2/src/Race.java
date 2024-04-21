@@ -109,6 +109,7 @@ public class Race
         for (Horse horse : horseLanes) {
             horse.goBackToStart();
             horse.incTotalRaces();
+            horse.clearRaceRecord();
         }
 
         while (!finished)

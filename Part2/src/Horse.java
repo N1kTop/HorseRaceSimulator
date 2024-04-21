@@ -157,6 +157,8 @@ public class Horse
 
     public void addStepToRecord(char step) {currentRaceRecord.add(step);}
 
+    public void clearRaceRecord() {currentRaceRecord = new ArrayList<>();}
+
     public void printHorseInfo() {
         System.out.println("\n---Horse Info---");
         System.out.println("Name: " + name);
