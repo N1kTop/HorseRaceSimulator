@@ -312,6 +312,7 @@ public class Race
         //reset all the horseLanes (all horses not fallen and back to 0) and increment total number of taken races.
         for (Horse horse : horseLanes) {
             horse.goBackToStart();
+            System.out.println(horse.getCurrentRaceRecord());
         }
 
         while (!finished)
@@ -373,9 +374,8 @@ public class Race
             writer.write(raceLength + "\n");
 
             for (Horse horse : horseLanes) {
-                writer.write(horse.getName());
-                writer.write("\n");
                 writer.write(horse.getSymbol());
+                writer.write(horse.getName());
                 writer.write("\n");
             }
             for (Horse horse : horseLanes) {
