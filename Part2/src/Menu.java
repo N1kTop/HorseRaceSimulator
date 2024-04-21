@@ -183,11 +183,9 @@ public class Menu {
     public static void recordsMenu() {
         int totalRaces = Race.getTotalRaces();
         if (totalRaces == 0) return;
-        int raceIndex = 0;
-        while (raceIndex < 1 || raceIndex > totalRaces) {
-            raceIndex = inputInt("Enter race index (from 1 to " + totalRaces + "): ");
-        }
-        Race recordedRace = Race.loadRaceRecord("race_record" + raceIndex + ".txt");
-        recordedRace.watchRecording();
+        System.out.println("Race Recordings:\n" + Race.getRecordFileNames());
+        String fileName = input("Enter recording name: ");
+        Race recordedRace = Race.loadRaceRecord(fileName + ".txt");
+        if (recordedRace != null) recordedRace.watchRecording();
     }
 }

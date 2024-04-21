@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
 
@@ -18,6 +19,7 @@ public class Race
     private static char fenceSymbol = '=';
     private static int totalRaces = 0;
     private static int totalFinishes = 0;
+    private static ArrayList<String> recordFileNames;
 
 
     /**
@@ -67,6 +69,8 @@ public class Race
     public static char getFenceSymbol() {return fenceSymbol;}
 
     public static int getTotalRaces() {return totalRaces;}
+
+    public static ArrayList<String> getRecordFileNames() {return recordFileNames;}
 
     /**
      * Adds a horse to the race in a given lane
@@ -157,7 +161,9 @@ public class Race
         }
         if (!winnerExists) System.out.println("\n No Winner - all the horses failed to finish the race.");
 
-        saveRaceRecord();
+        System.out.print("Enter record name to save the race: ");
+        String recordName = new Scanner(System.in).nextLine();
+        saveRaceRecord(recordName);
     }
 
     /**
@@ -363,12 +369,10 @@ public class Race
             }
         }
         if (!winnerExists) System.out.println("\n No Winner - all the horses failed to finish the race.");
-
-        saveRaceRecord();
     }
 
-    public void saveRaceRecord() {
-        try (FileWriter writer = new FileWriter("race_record" + totalRaces + ".txt")) {
+    public void saveRaceRecord(String saveFileName) {
+        try (FileWriter writer = new FileWriter(saveFileName + ".txt")) {
             writer.write(horseLanes.length + "\n");
             writer.write(raceLength + "\n");
 
@@ -382,6 +386,7 @@ public class Race
                 writer.write(s);
                 writer.write("\n");
             }
+            System.out.println("Race recording has been saved successfully\nYou can watch it in the statistics menu\n");
         }
         catch (IOException e) {throw new RuntimeException(e);} ;
     }
@@ -401,7 +406,7 @@ public class Race
 
             return recordedRace;
         }
-        catch (IOException e) {throw new RuntimeException(e);}
-
+        catch (IOException e) {System.out.println("Could not load the recording");}
+        return null;
     }
 }
