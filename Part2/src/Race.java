@@ -99,13 +99,6 @@ public class Race {
 
     public static void subtractMoney(int moneyLoss) {money -= moneyLoss;}
 
-    public void printHorseLanes() {
-        int i = 1;
-        System.out.println("Lanes:");
-        for (Horse horse : horseLanes) {
-            System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence());
-        }
-    }
 
     /**
      * Adds a horse to the race in a given lane
@@ -354,6 +347,33 @@ public class Race {
     private void printWinner(Horse winnerHorse) {
         winnerHorse.win();
         System.out.println("\nThe Winner of the race is " + winnerHorse.getName() + "!\n");
+    }
+
+    public void printHorseLanes() {
+        double totalWinRate = 0.0;
+        boolean unpredictable = false;
+        for (Horse horse : horseLanes) {
+            if (horse.getTotalRaces() == 0) unpredictable = true;
+            totalWinRate += horse.getWinRate();
+        }
+        if (totalWinRate == 0.0) {unpredictable = true;}
+        int i = 1;
+        System.out.println("Lanes:");
+        if (unpredictable) {
+            String prediction = null;
+            for (Horse horse : horseLanes) {
+                if (horse.getTotalRaces() == 0) prediction = "Unknown";
+                else if (horse.getWinRate() == 0) prediction = "Low";
+                else if (horse.getWinRate() / totalWinRate > 0.5) prediction = "High";
+                else prediction = "Medium";
+                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence() + "   [Predicted Win Chance: " + prediction + "]");
+            }
+        }
+        else {
+            for (Horse horse : horseLanes) {
+                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence() + "   [Predicted Win Chance: " + (horse.getWinRate() / totalWinRate) + "]");
+            }
+        }
     }
 
     public static void printMoney() {
