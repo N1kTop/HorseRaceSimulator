@@ -130,7 +130,7 @@ public class Race {
         }
         betAmount = 0;
         betLaneIndex = -1;
-        System.out.println("Do you want to gamble?");
+        System.out.println("\nDo you want to gamble?");
         String choice = new Scanner(System.in).nextLine();
         if (choice.charAt(0) == 'y') gamble();
         startRace();
@@ -139,7 +139,7 @@ public class Race {
     public void gamble() {
         printHorseLanes();
         while (betLaneIndex < 0 || betLaneIndex >= horseLanes.length) {
-            betLaneIndex = Menu.inputInt("Enter lane number to be on: ") - 1;
+            betLaneIndex = Menu.inputInt("\nEnter lane number to bet on: ") - 1;
         }
         while (betAmount < 5 || betAmount > money) {
             betAmount = Menu.inputInt("Enter bet amount (minimal bet is 5): ");
@@ -213,7 +213,7 @@ public class Race {
                         addMoney(winningAmount);
                     }
                     else {
-                        System.out.println("You have lost your bet");
+                        System.out.println("You have lost your bet of " + betAmount);
                     }
                 }
             }
@@ -222,7 +222,7 @@ public class Race {
 
         raceMoneyBonus();
         printMoney();
-        System.out.print("Enter record name to save the race: ");
+        System.out.print("\nEnter record name to save the race: ");
         String recordName = new Scanner(System.in).nextLine();
         saveRaceRecord(recordName);
     }
