@@ -312,7 +312,6 @@ public class Race
                 String s = horse.getCurrentRaceRecord().toString();
                 writer.write(s);
             }
-            writer.write("test");
         }
         catch (IOException e) {throw new RuntimeException(e);} ;
     }
