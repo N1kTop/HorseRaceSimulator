@@ -51,7 +51,6 @@ public class Menu {
     }
 
     public static void listHorses() {
-        Horse.printHorses();
         int horseChoice = -1;
         while (horseChoice < 0 || horseChoice >= Horse.getAllHorses().size()) {
             horseChoice = inputInt("Enter horse index: ") - 1;
@@ -60,11 +59,14 @@ public class Menu {
         chosenHorse.printHorseInfo();
 
         String message = """
+                You can change horses information or view statistics
                 (n)ame
                 (s)ymbol
                 (c)oat
                 (a)ccessory
+                (v)iew statistics
                 (e)xit
+                Enter a letter to choose:
                 """;
         char choice;
         while ((choice = inputChar(message)) != 'e') {
@@ -87,7 +89,11 @@ public class Menu {
                     }
                     chosenHorse.setAccessory(Horse.getAccessoryChoice(accessoryIndex));
                 }
+                case 'v' -> {
+                    chosenHorse.printHorseStats();
+                }
             }
+            chosenHorse.printHorseInfo();
         }
 
     }
