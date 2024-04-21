@@ -169,7 +169,7 @@ public class Horse
         System.out.println("");
     }
 
-    public void printBreedChoices() {
+    public static void printBreedChoices() {
         int count = 0;
         for (String breedChoice : breedChoices) {
             System.out.println(count + " " + breedChoice);

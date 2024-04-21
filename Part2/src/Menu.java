@@ -36,7 +36,7 @@ public class Menu {
                 (h)orses
                 (r)ace
                 (e)xit
-                Enter letter to choose:\n""";
+                Enter a letter to choose:\n""";
         char choice;
         while ((choice = inputChar(message)) != 'e') {
             if (choice == 'h') {
@@ -63,8 +63,9 @@ public class Menu {
 
         int breedIndex = -1;
 
+        Horse.printBreedChoices();
         while (breedIndex < 0 || breedIndex > Horse.breedChoices.length) {
-            breedIndex = inputInt("Enter breed number") - 1;
+            breedIndex = inputInt("Enter breed number: ") - 1;
         }
 
         Horse newHorse = new Horse(symbol, name, 0.5, Horse.breedChoices[breedIndex]);
@@ -80,7 +81,7 @@ public class Menu {
                 (l)ist horses
                 (c)reate horse
                 (e)xit
-                Enter character to choose:\n""";
+                Enter a letter to choose:\n""";
         char choice;
         while ((choice = inputChar(message)) != 'e') {
             if (choice == 'c') {
