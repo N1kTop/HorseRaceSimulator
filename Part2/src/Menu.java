@@ -96,7 +96,7 @@ public class Menu {
                     chosenHorse.printHorseStats();
                 }
             }
-            chosenHorse.printHorseInfo();
+            if (choice != 'v') chosenHorse.printHorseInfo();
         }
 
     }
@@ -138,6 +138,23 @@ public class Menu {
     }
 
     public static void raceMenu() {
-        System.out.println("Race");
+        int distance = 0;
+        while (distance < 5 || distance > 200) {
+            distance = inputInt("Enter race distance (between 5 and 200): ");
+        }
+        int lanesNum = 0;
+        int totalHorseNumber = Horse.getTotalHorseNumber();
+        while (lanesNum < 1 || lanesNum > 20 || lanesNum > totalHorseNumber) {
+            if (lanesNum > totalHorseNumber) System.out.println("You do not have enough horses for that race\nYou can create more horses in the Menu");
+            lanesNum = inputInt("Enter race distance (between 1 and 20): ");
+        }
+        Race newRace = new Race(distance, lanesNum);
+
+        int horseIndex;
+        for (int i = 0; i < lanesNum; i++) {
+            Horse.printHorses();
+            horseIndex = inputInt("Enter Horse Index for lane " + i + ": ");
+            newRace.addHorse(Horse.getHorse(horseIndex), i + 1);
+        }
     }
 }

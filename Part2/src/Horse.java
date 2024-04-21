@@ -195,6 +195,8 @@ public class Horse
         System.out.println("");
     }
 
+    public static int getTotalHorseNumber() {return allHorses.size();}
+
     public static String getBreedChoice(int breedIndex) {return breedChoices[breedIndex];}
 
     public static String getColorChoice(int colorIndex) {return colorChoices[colorIndex];}

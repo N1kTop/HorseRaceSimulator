@@ -24,11 +24,11 @@ public class Race
      *
      * @param distance the length of the racetrack (in metres/yards...)
      */
-    public Race(int distance, int lanes_num, Horse[] horses)
+    public Race(int distance, int lanesNum, Horse[] horses)
     {
         // initialise instance variables
         raceLength = distance;
-        horseLanes = new Horse[lanes_num];
+        horseLanes = new Horse[lanesNum];
 
         // put horses into horseLanes
         for (int i = 0; i < horses.length && i < horseLanes.length; i++) {
@@ -37,11 +37,11 @@ public class Race
 
     }
 
-    public Race(int distance, int lanes_num)
+    public Race(int distance, int lanesNum)
     {
         // initialise instance variables
         raceLength = distance;
-        horseLanes = new Horse[lanes_num];
+        horseLanes = new Horse[lanesNum];
     }
 
     public Race(int distance)
