@@ -108,6 +108,7 @@ public class Horse
     public void goBackToStart()
     {
         distance = 0;
+        fallen = false;
     }
 
     public boolean hasFallen()
