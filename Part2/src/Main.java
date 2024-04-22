@@ -2,7 +2,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        Menu.menu();
+        Menu.main(null);
         //Horse horse1 = new Horse('♘', "Anya", 0.3);
         //Horse horse2 = new Horse('♞', "Oliver", 0.5);
         //Horse horse3 = new Horse('♕', "#32424", 0.8);

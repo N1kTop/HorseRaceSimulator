@@ -1,5 +1,7 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -14,9 +16,14 @@ public class Menu {
      * @param message will be printed before scanning for input
      * @return first character of the input in lower case
      */
-    public static char inputChar(String message) {
+    public static char inputCharLowerCase(String message) {
         System.out.print(message);
         return new Scanner(System.in).nextLine().toLowerCase().charAt(0);
+    }
+
+    public static char inputChar(String message) {
+        System.out.print(message);
+        return new Scanner(System.in).nextLine().charAt(0);
     }
 
     /**
@@ -31,33 +38,36 @@ public class Menu {
 
     public static int inputInt(String message) {
         System.out.print(message);
-        return new Scanner(System.in).nextInt();
+        try {
+            return new Scanner(System.in).nextInt();
+        }
+        catch (InputMismatchException e) {
+            System.out.println("Invalid input\n");
+            return -1;
+        }
     }
 
     public static void menu() {
         String message = """
                 
                 ---Main Menu---
-                (r)ace
-                (h)orses
-                (s)tatistics
-                (b)uy accessories
-                (e)xit
-                Enter a letter to choose:
+                (1) Race
+                (2) Horses Stable
+                (3) Statistics
+                (4) Shop
+                (5) Settings
+                (0) Exit
+                Enter a number to choose:
                 """;
         char choice;
-        while ((choice = inputChar(message)) != 'e') {
-            if (choice == 'h') {
-                horsesMenu();
-            }
-            if (choice == 'r') {
-                raceMenu();
-            }
-            if (choice == 's') {
-                statsMenu();
-            }
-            if (choice == 'b') {
-                buyMenu();
+        while ((choice = inputCharLowerCase(message)) != '0') {
+            switch (choice) {
+
+                case '1' -> raceMenu();
+                case '2' -> horsesMenu();
+                case '3' -> statsMenu();
+                case '4' -> shopMenu();
+                case '5' -> settingsMenu();
             }
         }
         Race.saveRecordingNames();
@@ -77,21 +87,21 @@ public class Menu {
         String message = """
                 
                 You can change horses information or view statistics
-                (n)ame
-                (s)ymbol
-                (c)oat
-                (a)ccessory
-                (v)iew statistics
-                (r)emove horse
-                (e)xit
-                Enter a letter to choose:
+                (1) Name
+                (2) Symbol
+                (3) Coat
+                (4) Accessory
+                (5) View statistics
+                (6) Remove horse
+                (0) Exit
+                Enter a number to choose:
                 """;
         char choice;
-        while ((choice = inputChar(message)) != 'e') {
+        while ((choice = inputCharLowerCase(message)) != '0') {
             switch (choice) {
-                case 'n' -> chosenHorse.setName(input("Enter new name: "));
-                case 's' -> chosenHorse.setSymbol(inputChar("Enter new symbol: "));
-                case 'c' -> {
+                case '1' -> chosenHorse.setName(input("Enter new name: "));
+                case '2' -> chosenHorse.setSymbol(inputChar("Enter new symbol: "));
+                case '3' -> {
                     int colorIndex = -1;
                     Horse.printColorChoices();
                     while (colorIndex < 0 || colorIndex >= Horse.getColorChoicesLength()) {
@@ -99,7 +109,7 @@ public class Menu {
                     }
                     chosenHorse.setCoatColor(Horse.getColorChoice(colorIndex));
                 }
-                case 'a' -> {
+                case '4' -> {
                     int accessoryIndex = -1;
                     Horse.printAccessoryChoices();
                     while (accessoryIndex < 0 || accessoryIndex >= Horse.getAccessoryChoicesLength()) {
@@ -107,11 +117,11 @@ public class Menu {
                     }
                     chosenHorse.setAccessory(Horse.getAccessoryChoice(accessoryIndex));
                 }
-                case 'v' -> {
+                case '5' -> {
                     chosenHorse.printHorseStats();
                     return;
                 }
-                case 'r' -> {
+                case '6' -> {
                     if (Horse.getTotalHorseNumber() < 3) {
                         System.out.println("You cannot remove anymore horses right now");
                         return;
@@ -162,18 +172,18 @@ public class Menu {
         String message = """
                 
                 ---Horses Menu---
-                (l)ist horses
-                (b)uy horse
-                (e)xit
-                Enter a letter to choose:
+                (1) Modify Horses
+                (2) Buy New Horse
+                (0) Exit
+                Enter a number to choose:
                 """;
         char choice;
-        while ((choice = inputChar(message)) != 'e') {
-            if (choice == 'b') {
-                buyHorse();
-            }
-            else if (choice == 'l') {
+        while ((choice = inputCharLowerCase(message)) != '0') {
+            if (choice == '1') {
                 listHorses();
+            }
+            else if (choice == '2') {
+                buyHorse();
             }
         }
     }
@@ -196,7 +206,7 @@ public class Menu {
         for (int i = 1; i <= lanesNum; i++) {
             Horse.printHorses();
             horseIndex = 0;
-            while ((horseIndex < 1 || horseIndex > Horse.getTotalHorseNumber()) && !chosenIndexes.contains(horseIndex)) {
+            while ((horseIndex < 1 || horseIndex > Horse.getTotalHorseNumber()) || chosenIndexes.contains(horseIndex)) {
                 horseIndex = inputInt("Enter Horse Index for lane " + i + ": ");
             }
             newRace.addHorse(Horse.getHorse(horseIndex - 1), i);
@@ -205,17 +215,46 @@ public class Menu {
         newRace.raceSetup();
     }
 
+    public static void settingsMenu() {
+        String weatherONorOFF = "OFF";
+        if (Race.isWeatherChanging()) weatherONorOFF = "ON";
+        String message = "" +
+                "---Settings---\n" +
+                "(1) Edit Fence Symbol (" + Race.getFenceSymbol() +  ")\n" +
+                "(2) Edit Fall Symbol (" + Race.getFallenSymbol() + ")\n" +
+                "(3) Weather Conditions (" + weatherONorOFF + ")\n" +
+                "(0) Exit\n" +
+                "Enter a number to choose:\n";
+        char choice;
+        while ((choice = inputCharLowerCase(message)) != '0') {
+            switch (choice) {
+                case '1' -> {
+                    Race.setFenceSymbol(inputChar("Enter new symbol: "));
+                    return;
+                }
+                case '2' -> {
+                    Race.setFallenSymbol(inputChar("Enter new symbol: "));
+                    return;
+                }
+                case '3' -> {
+                    Race.switchWeather();
+                    return;
+                }
+            }
+        }
+    }
+
     public static void statsMenu() {
         Race.printOverallStats();
         String message = """
 
-                (r)ace records
-                (e)xit
-                Enter a letter to choose:
+                (1) Race Records
+                (0) Exit
+                Enter a number to choose:
                 """;
         char choice;
-        while ((choice = inputChar(message)) != 'e') {
-            if (choice == 'r') {
+        while ((choice = inputCharLowerCase(message)) != '0') {
+            if (choice == '1') {
                 recordsMenu();
             }
 
@@ -223,15 +262,65 @@ public class Menu {
     }
 
     public static void recordsMenu() {
-        if (Race.getNumberOfRecords() == 0) return;
+        if (Race.getNumberOfRecords() == 0) {
+            System.out.println("You have no recordings yet");
+            return;
+        }
 
         System.out.println("Race Recordings:\n" + Race.getRecordFileNames());
         String fileName = input("Enter recording name: ");
         Race recordedRace = Race.loadRaceRecord(fileName + ".txt");
-        if (recordedRace != null) recordedRace.watchRecording();
+        if (recordedRace == null) {
+            System.out.println("Could not load the recording");
+            return;
+        }
+
+        recordedRace.watchRecording();
+        char choice;
+        String message = "\n---Recording " + fileName + "---\n" + """
+                (1) Watch
+                (2) Rename
+                (3) Delete
+                (0) Exit
+                Enter a number to choose:
+                """;
+        while ((choice = inputCharLowerCase(message)) != '0') {
+            if (choice == '1') {
+                recordedRace = Race.loadRaceRecord(fileName + ".txt");
+                recordedRace.watchRecording();
+            }
+            else if (choice == '2') {
+                File file = new File(fileName + ".txt");
+                String newName = input("Enter new name for the recording: ");
+                File file2 = new File(newName + ".txt");
+
+                if (file2.exists()) {
+                    System.out.println("File with that name already exists");
+                    continue;
+                }
+                if (file.renameTo(file2)) {
+                    System.out.println("File was renamed to " + newName);
+                    Race.deleteRecord(fileName);
+                    Race.addRecord(newName);
+                }
+                else {
+                    System.out.println("Failed to rename the file");
+                }
+            }
+            else if (choice == '3') {
+                File file = new File(fileName + ".txt");
+                if (file.delete()) {
+                    System.out.println("Deleted the file: " + fileName);
+                    Race.deleteRecord(fileName);
+                    break;
+                } else {
+                    System.out.println("Failed to delete the file.");
+                }
+            }
+        }
     }
 
-    public static void buyMenu() {
+    public static void shopMenu() {
         System.out.println("Money: " + Race.getMoney());
     }
 }

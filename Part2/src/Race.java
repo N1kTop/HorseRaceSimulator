@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
 
@@ -25,6 +24,7 @@ public class Race {
     private final static int moneyPerRace = 50;
     private final static int minBet = 5;
     private int weatherCondition = 1;
+    private static boolean weatherChanging = true;
 
 
     /**
@@ -90,6 +90,14 @@ public class Race {
         return recordFileNames;
     }
 
+    public static void deleteRecord(String fileName) {
+        recordFileNames.remove(fileName);
+    }
+
+    public static void addRecord(String fileName) {
+        recordFileNames.add(fileName);
+    }
+
     public static int getNumberOfRecords() {
         return recordFileNames.size();
     }
@@ -99,6 +107,13 @@ public class Race {
     public static void addMoney(int moneyBonus) {money += moneyBonus;}
 
     public static void subtractMoney(int moneyLoss) {money -= moneyLoss;}
+
+    public static boolean isWeatherChanging() {return weatherChanging;}
+
+    public static void switchWeather() {
+        if (weatherChanging) weatherChanging = false;
+        else weatherChanging = true;
+    }
 
 
     /**
@@ -124,16 +139,18 @@ public class Race {
                 return;
             }
         }
-        weatherCondition = (int) (Math.random() * 2) + 1;
+        if (weatherChanging) {
+            weatherCondition = (int) (Math.random() * 2) + 1;
+        }
         switch (weatherCondition) {
-            case 1 -> System.out.println("The weather is good\n");
-            case 2 -> System.out.println("It is raining, chances of falling are doubled");
-            case 3 -> System.out.println("The weather is disastrous, chances of falling are tripled");
+            case 1 -> System.out.println("\nThe weather is good");
+            case 2 -> System.out.println("\nIt is raining, chances of falling are doubled");
+            case 3 -> System.out.println("\nThe weather is disastrous, chances of falling are tripled");
         }
         betAmount = 0;
         betLaneIndex = -1;
         if (horseLanes.length > 1) {
-            char choice = Menu.inputChar("\nDo you want to gamble?\n");
+            char choice = Menu.inputCharLowerCase("\nDo you want to gamble?\n");
             if (choice == 'y') gamble();
         }
         Menu.input("\nPress enter to start the race");
@@ -142,6 +159,7 @@ public class Race {
 
     public void gamble() {
         printHorseLanes();
+        System.out.println("Distance: " + raceLength);
         printMoney();
         while (betLaneIndex < 0 || betLaneIndex >= horseLanes.length) {
             betLaneIndex = Menu.inputInt("\nEnter lane number to bet on: ") - 1;
@@ -233,8 +251,7 @@ public class Race {
 
         raceMoneyBonus();
         printMoney();
-        System.out.print("\nEnter record name to save the race: ");
-        String recordName = new Scanner(System.in).nextLine();
+        String recordName = Menu.input("\nEnter record name to save the race: ");
         saveRaceRecord(recordName);
     }
 
@@ -398,6 +415,13 @@ public class Race {
         System.out.println("Top Horse: " + topHorse.getName() + " " + topHorse.getSymbol() + " with " + topHorse.getTotalWins() + " wins");
     }
 
+    public void printDistances() {
+        System.out.println("Distances travelled:");
+        for (Horse horse : horseLanes) {
+            System.out.println(horse.getName() + ": " + horse.getDistanceTravelled());
+        }
+    }
+
     public void watchRecording() {
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
@@ -458,6 +482,7 @@ public class Race {
             }
         }
         if (!winnerExists) System.out.println("\n No Winner - all the horses failed to finish the race.");
+        printDistances();
     }
 
     public void saveRaceRecord(String saveFileName) {
@@ -475,7 +500,7 @@ public class Race {
                 writer.write(s);
                 writer.write("\n");
             }
-            recordFileNames.add(saveFileName);
+            addRecord(saveFileName);
             System.out.println("Race recording has been saved successfully\nYou can watch it in the statistics menu\n");
         } catch (IOException e) {
             System.out.println("Could not save teh recording");
