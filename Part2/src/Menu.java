@@ -218,7 +218,7 @@ public class Menu {
     public static void settingsMenu() {
         String weatherONorOFF = "OFF";
         if (Race.isWeatherChanging()) weatherONorOFF = "ON";
-        String message = "" +
+        String message = "\n" +
                 "---Settings---\n" +
                 "(1) Edit Fence Symbol (" + Race.getFenceSymbol() +  ")\n" +
                 "(2) Edit Fall Symbol (" + Race.getFallenSymbol() + ")\n" +
