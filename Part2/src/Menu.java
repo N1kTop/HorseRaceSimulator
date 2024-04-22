@@ -6,12 +6,18 @@ import java.util.Scanner;
 
 public class Menu {
 
+    /**
+     * main method, runs the menu() method
+     *
+     * @param args
+     */
     public static void main(String[] args) {
         menu();
     }
 
 
     /**
+     * allows user to input a single character which will be turned into lowercase
      *
      * @param message will be printed before scanning for input
      * @return first character of the input in lower case
@@ -21,12 +27,19 @@ public class Menu {
         return new Scanner(System.in).nextLine().toLowerCase().charAt(0);
     }
 
+    /**
+     * allows user to input a single charcter
+     *
+     * @param message will be printed before scanning for input
+     * @return first character of the input
+     */
     public static char inputChar(String message) {
         System.out.print(message);
         return new Scanner(System.in).nextLine().charAt(0);
     }
 
     /**
+     * allows for user input
      *
      * @param message will be printed before scanning for input
      * @return the entered string
@@ -36,6 +49,12 @@ public class Menu {
         return new Scanner(System.in).nextLine();
     }
 
+    /**
+     * allows user to input a number
+     *
+     * @param message will be printed before scanning for input
+     * @return entered number as an integer or -1 if input format is wrong
+     */
     public static int inputInt(String message) {
         System.out.print(message);
         try {
@@ -47,6 +66,11 @@ public class Menu {
         }
     }
 
+    /**
+     * main menu of the program
+     * allows choice from 5 different options, use numbers to choose
+     * runs other menu methods when needed, stops after entering 0
+     */
     public static void menu() {
         String message = """
                 
@@ -74,6 +98,9 @@ public class Menu {
         System.out.println("\nYou have exited the program");
     }
 
+    /**
+     *
+     */
     public static void listHorses() {
         Horse.printHorses();
 
@@ -137,6 +164,9 @@ public class Menu {
 
     }
 
+    /**
+     *
+     */
     public static void buyHorse() {
         int cost = Horse.getHorseCost();
         Race.printMoney();
@@ -151,6 +181,9 @@ public class Menu {
         createHorse();
     }
 
+    /**
+     *
+     */
     public static void createHorse() {
         String name = input("Enter name: ");
         char symbol = inputChar("Enter symbol: ");
@@ -168,6 +201,9 @@ public class Menu {
         System.out.println("New horse added to the list: " + name + " (" + newHorse.getBreed() + ") " + symbol);
     }
 
+    /**
+     *
+     */
     public static void horsesMenu() {
         String message = """
                 
@@ -188,6 +224,9 @@ public class Menu {
         }
     }
 
+    /**
+     *
+     */
     public static void raceMenu() {
         int distance = 0;
         while (distance < 5 || distance > 200) {
@@ -215,6 +254,9 @@ public class Menu {
         newRace.raceSetup();
     }
 
+    /**
+     *
+     */
     public static void settingsMenu() {
         String weatherONorOFF = "OFF";
         if (Race.isWeatherChanging()) weatherONorOFF = "ON";
@@ -244,6 +286,9 @@ public class Menu {
         }
     }
 
+    /**
+     *
+     */
     public static void statsMenu() {
         Race.printOverallStats();
         String message = """
@@ -261,6 +306,9 @@ public class Menu {
         }
     }
 
+    /**
+     *
+     */
     public static void recordsMenu() {
         if (Race.getNumberOfRecords() == 0) {
             System.out.println("You have no recordings yet");
@@ -320,7 +368,15 @@ public class Menu {
         }
     }
 
+    /**
+     *
+     */
     public static void shopMenu() {
+        if (Horse.getNumberOfOwnedAccessories() == Horse.getNumberOfShopItems()) {
+            System.out.println("There is no more items to buy");
+            return;
+        }
+
         Horse.printShop();
         Race.printMoney();
 

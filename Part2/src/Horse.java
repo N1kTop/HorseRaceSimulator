@@ -83,6 +83,10 @@ public class Horse
 
 
     //Other methods of class Horse
+
+    /**
+     *
+     */
     public void fall()
     {
         if (fallen) return;
@@ -91,6 +95,9 @@ public class Horse
         fallen = true;
     }
 
+    /**
+     *
+     */
     public void win()
     {
         if (confidence < 0.9) confidence += 0.1;
@@ -98,37 +105,63 @@ public class Horse
         totalWins++;
     }
 
+    /**
+     *
+     * @return
+     */
     public double getConfidence()
     {
         return confidence;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getDistanceTravelled()
     {
         return distance;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     *
+     * @return
+     */
     public char getSymbol()
     {
         return symbol;
     }
 
+    /**
+     *
+     */
     public void goBackToStart()
     {
         distance = 0;
         fallen = false;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean hasFallen()
     {
         return fallen;
     }
 
+    /**
+     *
+     */
     public void moveForward()
     {
         distance++;
@@ -202,6 +235,9 @@ public class Horse
         catch (IOException e) {throw new RuntimeException(e);}
     }
 
+    /**
+     *
+     */
     public void printHorseInfo() {
         System.out.println("\n---Horse Info---");
         System.out.println("Name: " + name);
@@ -212,6 +248,9 @@ public class Horse
         System.out.println("Accessory: " + accessory);
     }
 
+    /**
+     *
+     */
     public void printHorseStats() {
         System.out.println("\n---Horse Statistic---");
         System.out.println("Total Distance: " + totalDistance);
@@ -245,6 +284,9 @@ public class Horse
         allHorses.remove(horseIndex);
     }
 
+    /**
+     *
+     */
     public static void printHorses() {
         int count = 1;
         System.out.println("\nList of all horses:");
@@ -268,6 +310,10 @@ public class Horse
 
     public static boolean accessoryOwned(int accessoryIndex) {return ownedAccessories[accessoryIndex];}
 
+    /**
+     *
+     * @param accessoryIndex
+     */
     public static void buyAccessory(int accessoryIndex) {
         int price = shopPrices[accessoryIndex];
         if (Race.getMoney() >= price) {
@@ -292,6 +338,9 @@ public class Horse
         return count;
     }
 
+    /**
+     *
+     */
     public static void printBreedChoices() {
         int count = 1;
         for (String breedChoice : breedChoices) {
@@ -299,12 +348,19 @@ public class Horse
         }
     }
 
+    /**
+     *
+     */
     public static void printColorChoices() {
         int count = 1;
         for (String colorChoice : colorChoices) {
             System.out.println(count++ + " " + colorChoice);
         }
     }
+
+    /**
+     *
+     */
     public static void printAccessoryChoices() {
         int count = 1;
         for (String item : shopAccessories) {
@@ -313,6 +369,9 @@ public class Horse
         }
     }
 
+    /**
+     *
+     */
     public static void printShop() {
         System.out.println("\n---Shop---");
         for (int i = 1; i < shopAccessories.length && i < shopPrices.length; i++) {
@@ -320,6 +379,10 @@ public class Horse
         }
     }
 
+    /**
+     *
+     * @return
+     */
     public static boolean[] initializeItems() {
         boolean[] initialItems = new boolean[shopAccessories.length];
         initialItems[0] = true;
@@ -329,6 +392,10 @@ public class Horse
         return initialItems;
     }
 
+    /**
+     *
+     * @return
+     */
     public static Horse getTopHorse() {
         Horse topHorse = allHorses.get(0);
         for (Horse horse : allHorses) {
