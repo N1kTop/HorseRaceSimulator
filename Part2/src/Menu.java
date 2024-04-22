@@ -112,10 +112,10 @@ public class Menu {
                 case '4' -> {
                     int accessoryIndex = -1;
                     Horse.printAccessoryChoices();
-                    while (accessoryIndex < 0 || accessoryIndex >= Horse.getAccessoryChoicesLength()) {
+                    while (accessoryIndex < 0 || accessoryIndex >= Horse.getNumberOfShopItems() || !Horse.accessoryOwned(accessoryIndex)) {
                         accessoryIndex = inputInt("Enter accessory number: ") - 1;
                     }
-                    chosenHorse.setAccessory(Horse.getAccessoryChoice(accessoryIndex));
+                    chosenHorse.setAccessory(Horse.getAccessory(accessoryIndex));
                 }
                 case '5' -> {
                     chosenHorse.printHorseStats();
@@ -287,7 +287,7 @@ public class Menu {
         while ((choice = inputCharLowerCase(message)) != '0') {
             if (choice == '1') {
                 recordedRace = Race.loadRaceRecord(fileName + ".txt");
-                recordedRace.watchRecording();
+                if (recordedRace != null) recordedRace.watchRecording();
             }
             else if (choice == '2') {
                 File file = new File(fileName + ".txt");
@@ -321,6 +321,21 @@ public class Menu {
     }
 
     public static void shopMenu() {
-        System.out.println("Money: " + Race.getMoney());
+        Horse.printShop();
+        Race.printMoney();
+
+        int choice;
+        while ((choice = inputInt("\nEnter index of the item to buy or 0 to exit: ")) != 0) {
+            if (choice > 0 && choice < Horse.getNumberOfShopItems()) {
+                if (Horse.accessoryOwned(choice)) {
+                    System.out.println("You already own that accessory");
+                }
+                else {
+                    Horse.buyAccessory(choice);
+                    Horse.printShop();
+                    Race.printMoney();
+                }
+            }
+        }
     }
 }

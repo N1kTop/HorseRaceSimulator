@@ -1,3 +1,7 @@
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -36,8 +40,10 @@ public class Horse
     private static ArrayList<Horse> allHorses = new ArrayList<>(Arrays.asList(defaultHorses));
     private final static String[] breedChoices = {"Arabian", "Friesian", "Mustang Shire", "Thoroughbred", "Appaloosa", "American Quarter", "Clydesdale", "Breton", "Cob", "American Paint", "Rahvan"};
     private final static String[] colorChoices = {"Brown", "Red", "Orange", "Yellow", "Green", "Lime", "Aqua", "Turquoise", "Blue", "Purple", "Pink", "Black", "Grey", "White", "Coffee"};
-    private final static String[] accessoryChoices = {"None", "Lucky Charm", "Amulet of Speed", "Viking Helmet", "Advanced Saddle", "Chain Armor"};
-    private final static HashMap<String, Integer> accessoryShop = new HashMap<>();
+
+    private final static String[] shopAccessories = {"None", "Lucky Charm", "Amulet of Speed", "Viking Helmet", "Advanced Saddle", "Chain Armor", "Top Hat", "Champion Crown"};
+    private final static int[] shopPrices = {0, 100, 200, 400, 600, 800, 1000, 1200};
+    private static boolean[] ownedAccessories = initializeItems();
 
 
     //Constructor of class Horse
@@ -182,6 +188,20 @@ public class Horse
         }
     }
 
+    public static HashMap<String, Integer> loadShopAccessoryItems() {
+        try (BufferedReader reader = new BufferedReader(new FileReader("AccessoryShop.txt"))) {
+            HashMap<String, Integer> accessories = new HashMap<>();
+            String line;
+            String[] splitLine;
+            while ((line = reader.readLine()) != null) {
+                splitLine = line.split(":");
+                accessories.put(splitLine[0], Integer.parseInt(splitLine[1]));
+            }
+            return accessories;
+        }
+        catch (IOException e) {throw new RuntimeException(e);}
+    }
+
     public void printHorseInfo() {
         System.out.println("\n---Horse Info---");
         System.out.println("Name: " + name);
@@ -240,13 +260,37 @@ public class Horse
 
     public static String getColorChoice(int colorIndex) {return colorChoices[colorIndex];}
 
-    public static String getAccessoryChoice(int accessoryIndex) {return accessoryChoices[accessoryIndex];}
+    public static String getAccessory(int accessoryIndex) {return shopAccessories[accessoryIndex];}
+
+    public static int getAccessoryPrice(int index) {return shopPrices[index];}
+
+    public static int getNumberOfShopItems() {return shopAccessories.length;}
+
+    public static boolean accessoryOwned(int accessoryIndex) {return ownedAccessories[accessoryIndex];}
+
+    public static void buyAccessory(int accessoryIndex) {
+        int price = shopPrices[accessoryIndex];
+        if (Race.getMoney() >= price) {
+            ownedAccessories[accessoryIndex] = true;
+            Race.subtractMoney(price);
+            System.out.println("\nYou have bought: " + shopAccessories[accessoryIndex]);
+        }
+        else {
+            System.out.println("\nNot enough money (" + Race.getMoney() + "/" + shopPrices[accessoryIndex] + ")");
+        }
+    }
 
     public static int getBreedChoicesLength() {return breedChoices.length;}
 
     public static int getColorChoicesLength() {return colorChoices.length;}
 
-    public static int getAccessoryChoicesLength() {return accessoryChoices.length;}
+    public static int getNumberOfOwnedAccessories() {
+        int count = 0;
+        for (boolean owned : ownedAccessories) {
+            if (owned) count++;
+        }
+        return count;
+    }
 
     public static void printBreedChoices() {
         int count = 1;
@@ -263,9 +307,26 @@ public class Horse
     }
     public static void printAccessoryChoices() {
         int count = 1;
-        for (String accessoryChoice : accessoryChoices) {
-            System.out.println(count++ + " " + accessoryChoice);
+        for (String item : shopAccessories) {
+            if (ownedAccessories[count-1]) System.out.println(count + " " + item);
+            count++;
         }
+    }
+
+    public static void printShop() {
+        System.out.println("\n---Shop---");
+        for (int i = 1; i < shopAccessories.length && i < shopPrices.length; i++) {
+            if (!ownedAccessories[i]) System.out.println(i + " " + shopAccessories[i] + ": " + shopPrices[i]);
+        }
+    }
+
+    public static boolean[] initializeItems() {
+        boolean[] initialItems = new boolean[shopAccessories.length];
+        initialItems[0] = true;
+        for (int i = 1; i < initialItems.length; i++) {
+            initialItems[i] = false;
+        }
+        return initialItems;
     }
 
     public static Horse getTopHorse() {
