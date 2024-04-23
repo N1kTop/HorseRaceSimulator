@@ -110,6 +110,9 @@ public class Race {
 
     public static boolean isWeatherChanging() {return weatherChanging;}
 
+    /**
+     *
+     */
     public static void switchWeather() {
         if (weatherChanging) weatherChanging = false;
         else weatherChanging = true;
@@ -131,6 +134,9 @@ public class Race {
         }
     }
 
+    /**
+     *
+     */
     public void raceSetup() {
         //check if every lane has a horse
         for (Horse horse : horseLanes) {
@@ -157,6 +163,9 @@ public class Race {
         startRace();
     }
 
+    /**
+     *
+     */
     public void gamble() {
         printHorseLanes();
         System.out.println("Distance: " + raceLength);
@@ -228,6 +237,10 @@ public class Race {
         boolean winnerExists = false;
         for (Horse horse : horseLanes) {
             if (raceWonBy(horse)) {
+                if (winnerExists) {
+                    printAlmostWinner(horse);
+                    continue;
+                }
                 printWinner(horse);
                 horse.addStepToCurrentRaceRecord('w');
                 totalFinishes++;
@@ -251,8 +264,11 @@ public class Race {
 
         raceMoneyBonus();
         printMoney();
-        String recordName = Menu.input("\nEnter record name to save the race: ");
-        saveRaceRecord(recordName);
+        char askToSave = Menu.inputChar("\nDo you want to save the recording of this race?\n");
+        if (askToSave == 'y') {
+            String recordName = Menu.input("\nEnter record name to save the race: ");
+            saveRaceRecord(recordName);
+        }
     }
 
     /**
@@ -375,6 +391,13 @@ public class Race {
         System.out.println("\nThe Winner of the race is " + winnerHorse.getName() + "!\n");
     }
 
+    private void printAlmostWinner(Horse horse) {
+        System.out.println("\n" + horse.getName() + " was close to winning, but finished finished less than a second late\n");
+    }
+
+    /**
+     *
+     */
     public void printHorseLanes() {
         double totalWinRate = 0.0;
         boolean unpredictable = false;
@@ -406,6 +429,9 @@ public class Race {
         System.out.println("Money: " + money);
     }
 
+    /**
+     *
+     */
     public static void printOverallStats() {
         System.out.println("\n---Overall Stats---");
         System.out.println("Total Races: " + totalRaces);
@@ -415,6 +441,9 @@ public class Race {
         System.out.println("Top Horse: " + topHorse.getName() + " " + topHorse.getSymbol() + " with " + topHorse.getTotalWins() + " wins");
     }
 
+    /**
+     *
+     */
     public void printDistances() {
         System.out.println("Distances travelled:");
         for (Horse horse : horseLanes) {
@@ -422,6 +451,9 @@ public class Race {
         }
     }
 
+    /**
+     *
+     */
     public void watchRecording() {
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
@@ -485,6 +517,10 @@ public class Race {
         printDistances();
     }
 
+    /**
+     *
+     * @param saveFileName
+     */
     public void saveRaceRecord(String saveFileName) {
         try (FileWriter writer = new FileWriter(saveFileName + ".txt")) {
             writer.write(horseLanes.length + "\n");
@@ -508,6 +544,11 @@ public class Race {
         ;
     }
 
+    /**
+     *
+     * @param saveFileName
+     * @return
+     */
     public static Race loadRaceRecord(String saveFileName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(saveFileName))) {
             int lanesNum = Integer.parseInt(reader.readLine());
@@ -528,6 +569,9 @@ public class Race {
         return null;
     }
 
+    /**
+     *
+     */
     public static void saveRecordingNames() {
         try (FileWriter writer = new FileWriter("recordings.txt")) {
             for (String fileName : recordFileNames) {
@@ -537,6 +581,10 @@ public class Race {
         catch (IOException e) {throw new RuntimeException(e);}
     }
 
+    /**
+     *
+     * @return
+     */
     public static ArrayList<String> loadRecordingNames() {
         try (BufferedReader reader = new BufferedReader(new FileReader("recordings.txt"))) {
             ArrayList<String> loadedRecords = new ArrayList<>();
@@ -549,6 +597,9 @@ public class Race {
         catch (IOException e) {throw new RuntimeException(e);}
     }
 
+    /**
+     * adds money bonus for conducting a race
+     */
     public static void raceMoneyBonus() {
         System.out.println("You have received " + moneyPerRace + " money bonus for conducting the race");
         addMoney(moneyPerRace);

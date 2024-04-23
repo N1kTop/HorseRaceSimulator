@@ -36,6 +36,10 @@ public class Horse
 
 
     //Other methods of class Horse
+
+    /**
+     *
+     */
     public void fall()
     {
         if (fallen) return;
@@ -44,6 +48,9 @@ public class Horse
         fallen = true;
     }
 
+    /**
+     *
+     */
     public void win()
     {
         if (confidence < 0.9) confidence += 0.1;
@@ -80,10 +87,7 @@ public class Horse
         return fallen;
     }
 
-    public void moveForward()
-    {
-        distance++;
-    }
+    public void moveForward() {distance++;}
 
     public void setConfidence(double newConfidence)
     {

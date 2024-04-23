@@ -339,7 +339,7 @@ public class Horse
     }
 
     /**
-     *
+     * prints breed choices to select from numbered from 1
      */
     public static void printBreedChoices() {
         int count = 1;
@@ -349,7 +349,7 @@ public class Horse
     }
 
     /**
-     *
+     * prints coat colour's choices to select from numbered from 1
      */
     public static void printColorChoices() {
         int count = 1;
@@ -359,7 +359,7 @@ public class Horse
     }
 
     /**
-     *
+     * prints owned accessory choices to select from
      */
     public static void printAccessoryChoices() {
         int count = 1;
@@ -370,7 +370,8 @@ public class Horse
     }
 
     /**
-     *
+     * prints all available items in the shop with corresponding prices
+     * already acquired items are skipped when listing
      */
     public static void printShop() {
         System.out.println("\n---Shop---");
@@ -380,7 +381,7 @@ public class Horse
     }
 
     /**
-     *
+     * returns boolean array representing initially unlocked accessories
      * @return
      */
     public static boolean[] initializeItems() {
