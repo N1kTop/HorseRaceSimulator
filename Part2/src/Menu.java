@@ -190,7 +190,7 @@ public class Menu {
         buttonsPanel.setLayout(new GridLayout(3, 1, 5, 5));
 
         JButton modifyButton = new JButton("Modify Horses");
-        modifyButton.addActionListener(e -> {GUIraceMenu();});
+        modifyButton.addActionListener(e -> {GUIhorsesList();});
 
         JLabel moneyLabel = new JLabel("Money: " + Race.getMoney());
         moneyLabel.setPreferredSize(new Dimension(300, 60));
@@ -221,6 +221,45 @@ public class Menu {
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
+    }
+
+    public static void GUIhorsesList() {
+        JFrame frame = new JFrame("Horses");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 600);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel welcomeText = new JLabel("Choose horse to modify:");
+        welcomeText.setPreferredSize(new Dimension(300, 60));
+        welcomeText.setHorizontalAlignment(JTextField.CENTER);
+        welcomeText.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(welcomeText, BorderLayout.NORTH);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(3, 2, 5, 5));
+
+        for (int i = 0; i < Horse.getTotalHorseNumber(); i++) {
+            Horse horse = Horse.getHorse(i);
+            JButton horseButton = new JButton(horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidence() + ")");
+            horseButton.addActionListener(e -> {GUImodifyHorse(horse);});
+            buttonsPanel.add(horseButton);
+        }
+
+        panel.add(buttonsPanel, BorderLayout.CENTER);
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(e -> {System.exit(0);});
+        panel.add(exitButton, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public static void GUImodifyHorse(Horse theHorse) {
+
     }
 
     public static void GUIcreateHorse() {
