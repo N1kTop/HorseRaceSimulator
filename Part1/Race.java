@@ -35,33 +35,6 @@ public class Race
         lane3Horse = horse3;
     }
 
-    public Race(int distance, Horse horse1, Horse horse2)
-    {
-        // initialise instance variables
-        raceLength = distance;
-        lane1Horse = horse1;
-        lane2Horse = horse2;
-        lane3Horse = null;
-    }
-
-    public Race(int distance, Horse horse1)
-    {
-        // initialise instance variables
-        raceLength = distance;
-        lane1Horse = horse1;
-        lane2Horse = null;
-        lane3Horse = null;
-    }
-
-    public Race(int distance)
-    {
-        // initialise instance variables
-        raceLength = distance;
-        lane1Horse = null;
-        lane2Horse = null;
-        lane3Horse = null;
-    }
-
 
     //Accessor methods:
     public void setRaceLength(int newLength) {raceLength = newLength;}
@@ -143,7 +116,7 @@ public class Race
             }
             catch(Exception e){e.printStackTrace();}
         }
-        //check winner
+        //check winner [IMPROVE: no multiple winners]
         if (raceWonBy(lane1Horse)) printWinner(lane1Horse);
         else if (raceWonBy(lane2Horse)) printWinner(lane2Horse);
         else if (raceWonBy(lane3Horse)) printWinner(lane3Horse);

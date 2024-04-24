@@ -1,4 +1,7 @@
+import javax.swing.*;
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.InputMismatchException;
@@ -11,8 +14,8 @@ public class Menu {
      *
      * @param args
      */
-    public static void main(String[] args) {
-        menu();
+    public static void main(String[] args) throws IOException {
+        GUImenu();
     }
 
 
@@ -64,6 +67,160 @@ public class Menu {
             System.out.println("Invalid input\n");
             return -1;
         }
+    }
+
+    public static void GUImenu() throws IOException {
+        JFrame frame = new JFrame("Horse Racing Simulator");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel welcomeText = new JLabel("Welcome to Horse Racing!");
+        welcomeText.setPreferredSize(new Dimension(300, 60));
+        welcomeText.setHorizontalAlignment(JTextField.CENTER);
+        welcomeText.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(welcomeText, BorderLayout.NORTH);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(5, 4, 5, 5));
+
+        JButton raceButton = new JButton("Race");
+        raceButton.addActionListener(e -> {GUIraceMenu();});
+
+        JButton horseButton = new JButton("Horses Stable");
+        horseButton.addActionListener(e -> {GUIhorsesMenu();});
+
+        JButton statsButton = new JButton("Statistics");
+        statsButton.addActionListener(e -> {GUIstatsMenu();});
+
+        JButton shopButton = new JButton("Shop");
+        shopButton.addActionListener(e -> {GUIshopMenu();});
+
+        JButton settingsButton = new JButton("Settings");
+        settingsButton.addActionListener(e -> {GUIsettingsMenu();});
+
+        JButton exitButton = new JButton("Exit");
+        exitButton.addActionListener(e -> {System.exit(0);});
+
+        buttonsPanel.add(raceButton);
+        buttonsPanel.add(horseButton);
+        buttonsPanel.add(statsButton);
+        buttonsPanel.add(shopButton);
+        buttonsPanel.add(settingsButton);
+        buttonsPanel.add(exitButton);
+
+
+        panel.add(buttonsPanel, BorderLayout.CENTER);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public static void GUIraceMenu() {
+
+    }
+
+    public static void GUIhorsesMenu() {
+
+    }
+
+    public static void GUIstatsMenu() {
+        JFrame frame = new JFrame("Statistics");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel statsMenuTitle = new JLabel("Overall Statistics:");
+        statsMenuTitle.setPreferredSize(new Dimension(300, 60));
+        statsMenuTitle.setHorizontalAlignment(JTextField.CENTER);
+        statsMenuTitle.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(statsMenuTitle, BorderLayout.NORTH);
+
+        Horse topHorse = Horse.getTopHorse();
+        JTextArea stats = new JTextArea("Overall Statistics:\nTotal Races: " + Race.getTotalRaces() + "\nTotal Finishes: " + Race.getTotalFinishes() + "\nCurrent Number of Horses: " + Horse.getTotalHorseNumber() + "\nTop Horse: " + topHorse.getName() + " " + topHorse.getSymbol() + " with " + topHorse.getTotalWins() + " wins\n");
+        stats.setPreferredSize(new Dimension(300, 120));
+        stats.setFont(new Font("Ariel", Font.PLAIN, 16));
+        panel.add(stats, BorderLayout.CENTER);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(5, 4, 5, 5));
+
+
+        JButton recordsButton = new JButton("Race Records");
+        recordsButton.addActionListener(e -> {recordsMenu();});
+
+        JButton exitButton = new JButton("Back");
+        exitButton.addActionListener(e -> {System.exit(0);});
+
+        buttonsPanel.add(recordsButton);
+        buttonsPanel.add(exitButton);
+
+
+        panel.add(buttonsPanel, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public static void GUIshopMenu() {
+
+    }
+
+    public static void GUIrecordsMenu() {
+
+    }
+
+    public static void GUIsettingsMenu() {
+        JFrame frame = new JFrame("Settings");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel welcomeText = new JLabel("Settings:");
+        welcomeText.setPreferredSize(new Dimension(300, 60));
+        welcomeText.setHorizontalAlignment(JTextField.CENTER);
+        welcomeText.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(welcomeText, BorderLayout.NORTH);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(5, 4, 5, 5));
+
+        JButton editFenceSymbolButton = new JButton("Edit Fence Symbol (" + Race.getFenceSymbol() + ")");
+        editFenceSymbolButton.addActionListener(e -> {});
+
+        JButton editFallenSymbolButton = new JButton("Edit Fall Symbol (" + Race.getFallenSymbol() + ")");
+        editFallenSymbolButton.addActionListener(e -> {});
+
+        String weatherONorOFF = "OFF";
+        if (Race.isWeatherChanging()) weatherONorOFF = "ON";
+        JButton weatherConditionsButton = new JButton("Weather Condition (" +weatherONorOFF + ")");
+        weatherConditionsButton.addActionListener(e -> {});
+
+        JButton exitButton = new JButton("Back");
+        exitButton.addActionListener(e -> {System.exit(0);});
+
+        buttonsPanel.add(editFenceSymbolButton);
+        buttonsPanel.add(editFallenSymbolButton);
+        buttonsPanel.add(weatherConditionsButton);
+        buttonsPanel.add(exitButton);
+
+
+        panel.add(buttonsPanel, BorderLayout.CENTER);
+
+        JTextField field = new JTextField();
+        panel.add(field, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
     }
 
     /**

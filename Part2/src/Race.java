@@ -86,6 +86,8 @@ public class Race {
         return totalRaces;
     }
 
+    public static int getTotalFinishes() {return totalFinishes;}
+
     public static ArrayList<String> getRecordFileNames() {
         return recordFileNames;
     }

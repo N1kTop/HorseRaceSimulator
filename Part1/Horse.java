@@ -18,6 +18,9 @@ public class Horse
     //Constructor of class Horse
     /**
      * Constructor for objects of class Horse
+     * @param horseSymbol
+     * @param horseName
+     * @param horseConfidence
      */
     public Horse(char horseSymbol, String horseName, double horseConfidence)
     {
@@ -26,6 +29,11 @@ public class Horse
         confidence = horseConfidence;
     }
 
+    /**
+     * Constructor for Horse without argument confidence, confidence is set to default 0.5
+     * @param horseSymbol
+     * @param horseName
+     */
     public Horse(char horseSymbol, String horseName)
     {
         symbol = horseSymbol;
@@ -38,7 +46,8 @@ public class Horse
     //Other methods of class Horse
 
     /**
-     *
+     * if the horse is not fallen, reduce its confidence by 0.1 and set it to fallen state
+     * if confidence is smaller than 0.1, it becomes 0.0 (lowest limit)
      */
     public void fall()
     {
@@ -49,7 +58,8 @@ public class Horse
     }
 
     /**
-     *
+     * increases confidence of teh horse
+     * if confidence is higher than 0.9, it becomes 1.0 (upper limit)
      */
     public void win()
     {
@@ -57,6 +67,7 @@ public class Horse
         else confidence = 1.0;
     }
 
+    // accessor methods:
     public double getConfidence()
     {
         return confidence;
