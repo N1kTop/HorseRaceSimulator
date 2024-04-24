@@ -23,6 +23,8 @@ public class Race {
     private static int money = 10000;
     private final static int moneyPerRace = 50;
     private final static int minBet = 5;
+    private final static int minDistance = 5;
+    private final static int maxDistance = 200;
     private int weatherCondition = 1;
     private static boolean weatherChanging = true;
 
@@ -111,6 +113,9 @@ public class Race {
     public static void subtractMoney(int moneyLoss) {money -= moneyLoss;}
 
     public static boolean isWeatherChanging() {return weatherChanging;}
+
+    public static int getMinDistance() {return minDistance;}
+    public static int getMaxDistance() {return maxDistance;}
 
     /**
      *
