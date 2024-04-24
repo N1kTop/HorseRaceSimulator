@@ -23,8 +23,7 @@ public class Menu {
      * @return first character of the input in lower case
      */
     public static char inputCharLowerCase(String message) {
-        System.out.print(message);
-        return new Scanner(System.in).nextLine().toLowerCase().charAt(0);
+        return Character.toLowerCase(inputChar(message));
     }
 
     /**
@@ -35,7 +34,9 @@ public class Menu {
      */
     public static char inputChar(String message) {
         System.out.print(message);
-        return new Scanner(System.in).nextLine().charAt(0);
+        String userInput = new Scanner(System.in).nextLine();
+        if (userInput.equals("")) return ' ';
+        return userInput.charAt(0);
     }
 
     /**
