@@ -1,3 +1,4 @@
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.lang.Math;
 
@@ -140,11 +141,56 @@ public class Race
             }
             catch(Exception e){e.printStackTrace();}
         }
-        //check winner [IMPROVE: no multiple winners]
-        if (raceWonBy(lane1Horse)) printWinner(lane1Horse);
-        else if (raceWonBy(lane2Horse)) printWinner(lane2Horse);
-        else if (raceWonBy(lane3Horse)) printWinner(lane3Horse);
-        else System.out.println("\n No Winner - all the horses failed to finish the race.");
+
+        finaliseResult();
+    }
+
+    /**
+     * checks for who won the race and runs printWinner() method to display the winning horse
+     * if all the horses have fallen - no winner
+     * if multiple horses finish at the same time - winner is decided by random
+     */
+    private void finaliseResult() {
+        //initialise winning horse
+        Horse winningHorse = null;
+
+        //check if horse1 finished the race
+        if (raceWonBy(lane1Horse)) {
+            winningHorse = lane1Horse; //set horse1 as the winner
+        }
+
+        //check if horse2 finished teh race
+        if (raceWonBy(lane2Horse)) {
+            if (winningHorse != null) { //check if there already is a winning horse
+                Random random = new Random();
+                if (random.nextInt(2) == 1) { //flip a coin to decide which horse wins
+                    winningHorse = lane2Horse;
+                }
+            }
+            //set horse2 as the winner
+            else winningHorse = lane2Horse;
+        }
+
+        //check if horse3 finished teh race
+        if (raceWonBy(lane3Horse)) {
+            if (winningHorse != null) { //check if there already is a winning horse
+                Random random = new Random();
+                if (random.nextInt(2) == 1) { //flip a coin to decide which horse wins
+                    winningHorse = lane3Horse;
+                }
+            }
+            //set horse3 as the winner
+            else winningHorse = lane3Horse;
+        }
+
+        //check if winner exists
+        if (winningHorse == null) {
+            System.out.println("\nNo Winner - all the horses failed to finish the race."); //all the horses have lost
+            return;
+        }
+
+        //prints the winner
+        printWinner(winningHorse);
     }
 
     /**
