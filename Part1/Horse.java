@@ -100,14 +100,4 @@ public class Horse
 
     public void moveForward() {distance++;}
 
-    public void setConfidence(double newConfidence)
-    {
-        confidence = newConfidence;
-    }
-
-    public void setSymbol(char newSymbol)
-    {
-        symbol = newSymbol;
-    }
-
 }

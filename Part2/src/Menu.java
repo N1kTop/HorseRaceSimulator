@@ -15,8 +15,8 @@ public class Menu {
      * @param args
      */
     public static void main(String[] args) throws IOException {
-        if (inputChar("Enter 1 for textual version\nEnter anything else for GUI version\n") == '1') menu();
-        else GUImenu();
+        //if (inputChar("Enter 1 for textual version\nEnter anything else for GUI version\n") == '1') menu();
+        /*else*/ GUImenu();
     }
 
 
@@ -154,7 +154,11 @@ public class Menu {
         exitButton.addActionListener(e -> {frame.dispose();});
 
         JButton nextButton = new JButton("Next");
-        nextButton.addActionListener(e -> {frame.dispose();});
+        nextButton.addActionListener(e -> {
+            frame.dispose();
+            Race race = new Race(raceLengthSlider.getValue());
+            // IMPROVE: finish race here
+        });
 
         sliderPanel.add(exitButton);
         sliderPanel.add(nextButton);
@@ -168,7 +172,105 @@ public class Menu {
     }
 
     public static void GUIhorsesMenu() {
+        JFrame frame = new JFrame("Horses");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
 
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel welcomeText = new JLabel("Horses Menu:");
+        welcomeText.setPreferredSize(new Dimension(300, 60));
+        welcomeText.setHorizontalAlignment(JTextField.CENTER);
+        welcomeText.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(welcomeText, BorderLayout.NORTH);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(3, 1, 5, 5));
+
+        JButton modifyButton = new JButton("Modify Horses");
+        modifyButton.addActionListener(e -> {GUIraceMenu();});
+
+        JLabel moneyLabel = new JLabel("Money: " + Race.getMoney());
+        moneyLabel.setPreferredSize(new Dimension(300, 60));
+        moneyLabel.setHorizontalAlignment(JTextField.CENTER);
+
+        JButton buyButton = new JButton("Buy Horse (" + Horse.getHorseCost() + ")");
+        buyButton.addActionListener(e -> {
+            if (Race.getMoney() >= Horse.getHorseCost()) {
+                Race.subtractMoney(Horse.getHorseCost());
+                Horse.multiplyHorseCost();
+                buyButton.setText("Buy Horse (" + Horse.getHorseCost() + ")");
+                moneyLabel.setText("Money: " + Race.getMoney());
+                GUIcreateHorse();
+            }
+        });
+
+        JButton exitButton = new JButton("Back");
+        exitButton.addActionListener(e -> {frame.dispose();});
+
+        buttonsPanel.add(modifyButton);
+        buttonsPanel.add(buyButton);
+        buttonsPanel.add(exitButton);
+
+
+        panel.add(buttonsPanel, BorderLayout.CENTER);
+
+        panel.add(moneyLabel, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public static void GUIcreateHorse() {
+        JFrame frame = new JFrame("New Horse");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JPanel fieldPanel = new JPanel();
+
+        JLabel nameText = new JLabel("Name:");
+        fieldPanel.add(nameText);
+
+        JTextField nameField = new JTextField();
+        fieldPanel.add(nameField);
+
+        JLabel symbolText = new JLabel("Symbol:");
+        fieldPanel.add(symbolText);
+
+        JTextField symbolField = new JTextField();
+        fieldPanel.add(symbolField);
+
+        panel.add(fieldPanel, BorderLayout.NORTH);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(3, 1, 5, 5));
+
+        for (int i = 0; i < Horse.getBreedChoicesLength(); i++) {
+            JRadioButton breedChoice = new JRadioButton(Horse.getBreedChoice(i));
+            buttonsPanel.add(breedChoice); //IMPROVE: finish radio buttons
+        }
+
+        panel.add(buttonsPanel, BorderLayout.CENTER);
+
+        JButton confirmButton = new JButton("Create");
+        confirmButton.addActionListener(e -> {
+            char symbol;
+            if (symbolField.getText().equals("")) symbol = 'Q';
+            else symbol = symbolField.getText().charAt(0);
+            Horse.addHorse(new Horse(symbol, nameField.getText(), "Breed"));
+            frame.dispose();
+        });
+
+        panel.add(confirmButton, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
     }
 
     public static void GUIstatsMenu() {
