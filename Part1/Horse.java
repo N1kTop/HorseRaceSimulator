@@ -88,15 +88,16 @@ public class Horse
         return symbol;
     }
 
+    /**
+     * sets the horse to not fallen state with 0 distance travelled
+     */
     public void goBackToStart()
     {
+        fallen = false;
         distance = 0;
     }
 
-    public boolean hasFallen()
-    {
-        return fallen;
-    }
+    public boolean hasFallen() {return fallen;}
 
     public void moveForward() {distance++;}
 
