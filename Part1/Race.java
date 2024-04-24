@@ -4,7 +4,9 @@ import java.lang.Math;
 
 /**
  * A three-horse race, each horse running in its own lane
- * for a given distance
+ * for a given distance.
+ * Race object can be initialised with different race lengths.
+ * At the end of the race the winner is displayed.
  *
  * @author Nikita Topolskis
  * @version 2.0
