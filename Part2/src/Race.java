@@ -10,7 +10,7 @@ import java.lang.Math;
  * for a given distance
  *
  * @author Nikita Topolskis
- * @version 2.0
+ * @version 3.0
  */
 public class Race {
     private int raceLength;
@@ -313,7 +313,7 @@ public class Race {
         JSlider betTargetSlider = new JSlider(1, getLanesNum(), 1);
         betTargetSlider.addChangeListener(e -> {
             Horse horse = horseLanes[betTargetSlider.getValue()];
-            betTargetLabel.setText("Bet on: " + horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidence() + ")");
+            betTargetLabel.setText("Bet on: " + horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidenceFormatted() + ")");
         });
         bettingPanel.add(betTargetSlider);
 
@@ -560,12 +560,12 @@ public class Race {
                 else if (horse.getWinRate() == 0) prediction = "Low";
                 else if (horse.getWinRate() / totalWinRate > 0.5) prediction = "High";
                 else prediction = "Medium";
-                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence() + "   [Predicted Win Chance: " + prediction + "]");
+                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidenceFormatted() + "   [Predicted Win Chance: " + prediction + "]");
             }
         }
         else {
             for (Horse horse : horseLanes) {
-                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence() + "   [Predicted Win Chance: " + (horse.getWinRate() / totalWinRate) + "]");
+                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidenceFormatted() + "   [Predicted Win Chance: " + (horse.getWinRate() / totalWinRate) + "]");
             }
         }
     }

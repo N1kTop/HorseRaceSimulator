@@ -239,7 +239,7 @@ public class Menu {
 
         for (int i = 0; i < horseNum; i++) {
             Horse horse = Horse.getHorse(i);
-            horseButtons[i] = new JToggleButton(horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidence() + ")");
+            horseButtons[i] = new JToggleButton(horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidenceFormatted() + ")");
             horseButtons[i].addActionListener(e -> {
                 int totalSelected = 0;
                 for (int j = 0; j < horseNum; j++) {
@@ -366,7 +366,7 @@ public class Menu {
 
         for (int i = 0; i < Horse.getTotalHorseNumber(); i++) {
             Horse horse = Horse.getHorse(i);
-            JButton horseButton = new JButton(horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidence() + ")");
+            JButton horseButton = new JButton(horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidenceFormatted() + ")");
             horseButton.addActionListener(e -> {
                 GUImodifyHorse(horse);
                 frame.dispose();
@@ -422,7 +422,7 @@ public class Menu {
         confidenceLabel.setHorizontalAlignment(JTextField.CENTER);
         panel.add(confidenceLabel);
 
-        JLabel confidenceValue = new JLabel("" + theHorse.getConfidence());
+        JLabel confidenceValue = new JLabel("" + theHorse.getConfidenceFormatted());
         confidenceValue.setHorizontalAlignment(JTextField.CENTER);
         panel.add(confidenceValue);
 

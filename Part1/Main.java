@@ -20,6 +20,10 @@ public class Main {
         Horse horse2 = new Horse('♞', "Oliver", 0.5);
         Horse horse3 = new Horse('♔', "King", 0.6);
         while ((distance = inputInt("Enter Race Length (0 to exit): ")) > 0) {
+            if (distance > 200) {
+                System.out.println("Too large distance");
+                continue;
+            }
             race = new Race(distance);
             race.addHorse(horse1, 1);
             race.addHorse(horse2, 2);

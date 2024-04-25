@@ -8,10 +8,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 /**
- * Write a description of class Horse here.
+ * Horse class, stores information about the horse,
+ * such as name, symbol to display during the race, confidence factor and customisation choices.
+ * All created horses are stored in an ArrayList.
  *
  * @author Nikita Topolskis
- * @version v2
+ * @version v3.0
  */
 public class Horse
 {
@@ -32,7 +34,7 @@ public class Horse
     private int totalFalls = 0;
     private int totalDistance = 0;
     private int totalTime = 0;
-    private ArrayList<Integer> finishingTimes = new ArrayList<>();
+    private ArrayList<Integer> finishingTimes = new ArrayList<>(); //IMPROVE: finish this
 
     private static int horseCost = 250;
     private final static int horseCostMultiplier = 2;
@@ -48,7 +50,15 @@ public class Horse
 
     //Constructor of class Horse
     /**
-     * Constructor for objects of class Horse
+     * Constructor for objects of class Horse.
+     * Can be initialised with or without a set confidence and breed.
+     * If confidence not specified, it is set to default 0.5.
+     * If breed not specified, the default option is chosen (Arabian).
+     *
+     * @param horseSymbol symbol that represents the horse during a race
+     * @param horseName name of the horse
+     * @param horseConfidence confidence factor influence horse speed and falling chances
+     * @param horseBreed breed of the horse (can not be changed later)
      */
     public Horse(char horseSymbol, String horseName, double horseConfidence, String horseBreed)
     {
@@ -57,7 +67,6 @@ public class Horse
         confidence = horseConfidence;
         breed = horseBreed;
     }
-
     public Horse(char horseSymbol, String horseName, String horseBreed)
     {
         symbol = horseSymbol;
@@ -65,19 +74,19 @@ public class Horse
         confidence = 0.5;
         breed = horseBreed;
     }
-
     public Horse(char horseSymbol, String horseName, double horseConfidence)
     {
         symbol = horseSymbol;
         name = horseName;
         confidence = horseConfidence;
+        breed = breedChoices[0];
     }
-
     public Horse(char horseSymbol, String horseName)
     {
         symbol = horseSymbol;
         name = horseName;
         confidence = 0.5;
+        breed = breedChoices[0];
     }
 
 
@@ -85,7 +94,8 @@ public class Horse
     //Other methods of class Horse
 
     /**
-     *
+     * if the horse is not fallen, reduce its confidence by 0.1 and set it to fallen state
+     * if confidence is smaller than 0.1, it becomes 0.0 (lowest limit)
      */
     public void fall()
     {
@@ -96,7 +106,8 @@ public class Horse
     }
 
     /**
-     *
+     * increases confidence of the horse
+     * if confidence is higher than 0.9, it becomes 1.0 (upper limit)
      */
     public void win()
     {
@@ -106,62 +117,42 @@ public class Horse
     }
 
     /**
-     *
-     * @return
+     * sets the horse to not fallen state with 0 distance travelled
      */
+    public void goBackToStart()
+    {
+        fallen = false;
+        distance = 0;
+    }
+
+
     public double getConfidence()
     {
         return confidence;
     }
 
-    /**
-     *
-     * @return
-     */
+    public String getConfidenceFormatted() {return String.format( "%.1f", confidence);}
+
     public int getDistanceTravelled()
     {
         return distance;
     }
 
-    /**
-     *
-     * @return
-     */
     public String getName()
     {
         return name;
     }
 
-    /**
-     *
-     * @return
-     */
     public char getSymbol()
     {
         return symbol;
     }
 
-    /**
-     *
-     */
-    public void goBackToStart()
-    {
-        distance = 0;
-        fallen = false;
-    }
-
-    /**
-     *
-     * @return
-     */
     public boolean hasFallen()
     {
         return fallen;
     }
 
-    /**
-     *
-     */
     public void moveForward()
     {
         distance++;
@@ -395,7 +386,7 @@ public class Horse
 
     /**
      *
-     * @return
+     * @return the horse with the most wins
      */
     public static Horse getTopHorse() {
         Horse topHorse = allHorses.get(0);

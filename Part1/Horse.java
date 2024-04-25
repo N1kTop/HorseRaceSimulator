@@ -64,13 +64,22 @@ public class Horse
     }
 
     /**
-     * increases confidence of teh horse
+     * increases confidence of the horse
      * if confidence is higher than 0.9, it becomes 1.0 (upper limit)
      */
     public void win()
     {
         if (confidence < 0.9) confidence += 0.1;
         else confidence = 1.0;
+    }
+
+    /**
+     * sets the horse to not fallen state with 0 distance travelled
+     */
+    public void goBackToStart()
+    {
+        fallen = false;
+        distance = 0;
     }
 
     // accessor methods:
@@ -94,15 +103,6 @@ public class Horse
     public char getSymbol()
     {
         return symbol;
-    }
-
-    /**
-     * sets the horse to not fallen state with 0 distance travelled
-     */
-    public void goBackToStart()
-    {
-        fallen = false;
-        distance = 0;
     }
 
     public boolean hasFallen() {return fallen;}
