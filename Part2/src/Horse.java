@@ -370,7 +370,7 @@ public class Horse
      *
      * @return boolean array representing initially unlocked accessories
      */
-    public static boolean[] initializeItems() {
+    private static boolean[] initializeItems() {
         boolean[] initialItems = new boolean[shopAccessories.length];
         initialItems[0] = true;
         for (int i = 1; i < initialItems.length; i++) {

@@ -180,7 +180,7 @@ public class Race {
      * Provides gambling options
      * Asks for gambling amount and a horse to bet on
      */
-    public void gamble() {
+    private void gamble() {
         //print details:
         printHorseLanes();
         System.out.println("Distance: " + raceLength);
@@ -208,7 +208,7 @@ public class Race {
      * race is finished
      * finally, winning message printed
      */
-    public void startRace() {
+    private void startRace() {
 
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
@@ -345,7 +345,7 @@ public class Race {
         frame.setVisible(true);
     }
 
-    public void startRaceGUI() {
+    private void startRaceGUI() {
 
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
@@ -563,7 +563,7 @@ public class Race {
     /**
      * prints horses with their winning chances before the user would gamble
      */
-    public void printHorseLanes() {
+    private void printHorseLanes() {
         double totalWinRate = 0.0;
         boolean unpredictable = false;
         for (Horse horse : horseLanes) {
@@ -612,7 +612,7 @@ public class Race {
      * prints how much each horse has travelled during the race
      * used in watchRecording() method
      */
-    public void printDistances() {
+    private void printDistances() {
         System.out.println("Distances travelled:");
         for (Horse horse : horseLanes) {
             System.out.println(horse.getName() + ": " + horse.getDistanceTravelled());
@@ -694,7 +694,7 @@ public class Race {
      *
      * @param saveFileName name of the file
      */
-    public void saveRaceRecord(String saveFileName) {
+    private void saveRaceRecord(String saveFileName) {
         try (FileWriter writer = new FileWriter(saveFileName + ".txt")) {
             writer.write(horseLanes.length + "\n");
             writer.write(raceLength + "\n");
@@ -771,7 +771,7 @@ public class Race {
      *
      * @return ArrayList with every recording name
      */
-    public static ArrayList<String> loadRecordingNames() {
+    private static ArrayList<String> loadRecordingNames() {
         try (BufferedReader reader = new BufferedReader(new FileReader("recordings.txt"))) {
             ArrayList<String> loadedRecords = new ArrayList<>();
             String line;
@@ -786,7 +786,7 @@ public class Race {
     /**
      * adds money bonus for conducting a race
      */
-    public static void raceMoneyBonus() {
+    private static void raceMoneyBonus() {
         System.out.println("You have received " + moneyPerRace + " money bonus for conducting the race");
         addMoney(moneyPerRace);
     }
