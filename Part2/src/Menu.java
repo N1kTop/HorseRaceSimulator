@@ -274,10 +274,10 @@ public class Menu {
             }
             int laneCount = 0;
             for (int i = 0; i < horseNum; i++) {
-                if (horseButtons[i].isSelected()) race.addHorse(Horse.getHorse(i), laneCount++);
+                if (horseButtons[i].isSelected()) race.addHorse(Horse.getHorse(i), laneCount++); //IMPROVE: error here
             }
             frame.dispose();
-            Race.startRaceGUI(race);
+            race.gambleGUI();
         });
          buttonPanel.add(startButton);
 

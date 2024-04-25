@@ -79,6 +79,8 @@ public class Horse
         return confidence;
     }
 
+    public String getConfidenceFormatted() {return String.format( "%.1f", confidence);}
+
     public int getDistanceTravelled()
     {
         return distance;

@@ -1,3 +1,5 @@
+import javax.swing.*;
+import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -280,8 +282,138 @@ public class Race {
         }
     }
 
-    public static void startRaceGUI(Race race) {
+    public void gambleGUI() {
+        JFrame frame = new JFrame("Gambling?");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
 
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel welcomeText = new JLabel("Gambling (optional):");
+        welcomeText.setPreferredSize(new Dimension(300, 60));
+        welcomeText.setHorizontalAlignment(JTextField.CENTER);
+        welcomeText.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(welcomeText, BorderLayout.NORTH);
+
+        JPanel bettingPanel = new JPanel();
+        bettingPanel.setLayout(new GridLayout(2, 2, 5, 5));
+
+        JLabel betAmountLabel = new JLabel("Bet Amount: 0");
+        bettingPanel.add(betAmountLabel);
+
+        JSlider betAmountSlider = new JSlider(0, money, 0);
+        betAmountSlider.addChangeListener(e -> {betAmountLabel.setText("Bet Amount: " + betAmountSlider.getValue());});
+        bettingPanel.add(betAmountSlider);
+
+        JLabel betTargetLabel = new JLabel("Bet on:");
+        bettingPanel.add(betTargetLabel);
+
+        JSlider betTargetSlider = new JSlider(1, getLanesNum(), 1);
+        betTargetSlider.addChangeListener(e -> {
+            Horse horse = horseLanes[betTargetSlider.getValue()];
+            betTargetLabel.setText("Bet on: " + horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidence() + ")");
+        });
+        bettingPanel.add(betTargetSlider);
+
+        JButton nextButton = new JButton("Continue");
+        nextButton.addActionListener(e -> {
+            betAmount = betAmountSlider.getValue();
+            betLaneIndex = betTargetSlider.getValue();
+            frame.dispose();
+            startRaceGUI();
+        });
+
+
+        panel.add(bettingPanel, BorderLayout.CENTER);
+
+        panel.add(nextButton, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public void startRaceGUI() {
+
+        //declare a local variable to tell us when the race is finished
+        boolean finished = false;
+
+        //increment races count
+        totalRaces++;
+
+        //reset all the horseLanes (all horses not fallen and back to 0) and increment total number of taken races.
+        for (Horse horse : horseLanes) {
+            horse.goBackToStart();
+            horse.incTotalRaces();
+            horse.clearCurrentRaceRecord();
+        }
+
+        while (!finished) {
+            //move each horse
+            for (Horse horse : horseLanes) {
+                moveHorse(horse);
+            }
+
+            //print the race positions
+            //GUI printRace();
+
+
+            //if all the horses have fallen, the race is finished
+            finished = true;
+            for (int i = 0; finished && i < horseLanes.length; i++) {
+                if (!horseLanes[i].hasFallen()) finished = false;
+            }
+
+            //if any of the horses has won, the race is finished
+            for (Horse horse : horseLanes) {
+                if (raceWonBy(horse)) finished = true;
+            }
+
+            //wait for 100 milliseconds
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        //check winner
+        boolean winnerExists = false;
+        for (Horse horse : horseLanes) {
+            if (raceWonBy(horse)) {
+                if (winnerExists) {
+                    //GUI printAlmostWinner(horse);
+                    continue;
+                }
+                //GUI printWinner(horse);
+                horse.addStepToCurrentRaceRecord('w');
+                totalFinishes++;
+                winnerExists = true;
+                if (betAmount > 0) {
+                    if (horseLanes[betLaneIndex].equals(horse)) {
+                        int winningAmount = betAmount * horseLanes.length;
+                        //GUI System.out.println("Your bet was successful\nYou have won " + winningAmount);
+                        addMoney(winningAmount);
+                    }
+                    else {
+                        //GUI System.out.println("You have lost your bet of " + betAmount);
+                    }
+                }
+            }
+        }
+        if (!winnerExists) {
+            //GUI System.out.println("\n No Winner - all the horses failed to finish the race.");
+            if (betAmount > 0) {} //GUI System.out.println("\nYou have lost your bet of " + betAmount);
+        }
+
+        raceMoneyBonus();
+        printMoney();
+        char askToSave = Menu.inputChar("\nDo you want to save the recording of this race?\n");
+        if (askToSave == 'y') {
+            String recordName = Menu.input("\nEnter record name to save the race: ");
+            saveRaceRecord(recordName);
+        }
     }
 
     /**
