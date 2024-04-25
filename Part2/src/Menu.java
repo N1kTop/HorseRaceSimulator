@@ -9,6 +9,9 @@ import java.util.Scanner;
 
 public class Menu {
 
+
+    private final static Color[] GUIcolors = {Color.ORANGE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.GREEN, Color.CYAN, Color.BLUE, Color.BLUE, Color.MAGENTA, Color.PINK, Color.BLACK, Color.GRAY, Color.WHITE, Color.LIGHT_GRAY};
+
     /**
      * main method, runs the menu() method
      *
@@ -244,14 +247,17 @@ public class Menu {
         for (int i = 0; i < Horse.getTotalHorseNumber(); i++) {
             Horse horse = Horse.getHorse(i);
             JButton horseButton = new JButton(horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidence() + ")");
-            horseButton.addActionListener(e -> {GUImodifyHorse(horse);});
+            horseButton.addActionListener(e -> {
+                GUImodifyHorse(horse);
+                frame.dispose();
+            });
             buttonsPanel.add(horseButton);
         }
 
         panel.add(buttonsPanel, BorderLayout.CENTER);
 
-        JButton exitButton = new JButton("Exit");
-        exitButton.addActionListener(e -> {System.exit(0);});
+        JButton exitButton = new JButton("Back");
+        exitButton.addActionListener(e -> {frame.dispose();});
         panel.add(exitButton, BorderLayout.SOUTH);
 
         frame.getContentPane().add(panel);
@@ -259,27 +265,242 @@ public class Menu {
     }
 
     public static void GUImodifyHorse(Horse theHorse) {
+        JFrame frame = new JFrame("Horse");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
 
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(7, 2, 5, 5));
+
+        JLabel nameLabel = new JLabel("Name:");
+        nameLabel.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(nameLabel);
+
+        JTextField nameField = new JTextField(theHorse.getName());
+        panel.add(nameField);
+
+        JLabel symbolLabel = new JLabel("Symbol:");
+        symbolLabel.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(symbolLabel);
+
+        JTextField symbolField = new JTextField("" + theHorse.getSymbol());
+        panel.add(symbolField);
+
+        JLabel breedLabel = new JLabel("Breed:");
+        breedLabel.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(breedLabel);
+
+        JLabel breedString = new JLabel("" + theHorse.getBreed());
+        breedString.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(breedString);
+
+        JLabel confidenceLabel = new JLabel("Confidence:");
+        confidenceLabel.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(confidenceLabel);
+
+        JLabel confidenceValue = new JLabel("" + theHorse.getConfidence());
+        confidenceValue.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(confidenceValue);
+
+        JLabel coatColorLabel = new JLabel("Coat Color:");
+        coatColorLabel.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(coatColorLabel);
+
+        JButton coatColorButton = new JButton(theHorse.getCoatColor());
+        coatColorButton.addActionListener(e -> {
+            GUIchooseCoatColor(theHorse);
+            frame.dispose();
+        });
+        panel.add(coatColorButton);
+
+        JLabel accessoryLabel = new JLabel("Accessory:");
+        accessoryLabel.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(accessoryLabel);
+
+        JButton accessoryButton = new JButton(theHorse.getAccessory());
+        accessoryButton.addActionListener(e -> {
+            GUIchooseAccessory(theHorse);
+            frame.dispose();
+        });
+        panel.add(accessoryButton);
+
+        JButton statsButton = new JButton("View Statistics");
+        statsButton.addActionListener(e -> {GUIhorseStats(theHorse);});
+        panel.add(statsButton);
+
+        JButton removeButton = new JButton("Remove Horse");
+        removeButton.addActionListener(e -> {
+            if (Horse.getTotalHorseNumber() < 3) return; //IMPROVE: pop-up
+            Horse.removeHorse(theHorse);
+            Horse.divideHorseCost();
+        });
+
+        JButton exitButton = new JButton("Confirm");
+        exitButton.addActionListener(e -> {
+            theHorse.setName(nameField.getText());
+            char symbol;
+            if (symbolField.getText().equals("")) symbol = 'Q';
+            else symbol = symbolField.getText().charAt(0);
+            theHorse.setSymbol(symbol);
+            frame.dispose();
+            GUIhorsesList();
+        });
+
+        panel.add(exitButton);
+
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public static void GUIchooseCoatColor(Horse theHorse) {
+        JFrame frame = new JFrame("Coat Colors");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(6, 1, 5, 5));
+
+
+
+        for (int i = 0; i < Horse.getColorChoicesLength(); i++) {
+            JButton colorChoice = new JButton(Horse.getColorChoice(i));
+            int finalI = i;
+            colorChoice.addActionListener(e -> {
+                theHorse.setCoatColor(Horse.getColorChoice(finalI));
+                frame.dispose();
+                GUImodifyHorse(theHorse);
+            });
+            colorChoice.setForeground(GUIcolors[finalI]);
+            panel.add(colorChoice);
+        }
+
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public static void GUIchooseAccessory(Horse theHorse) {
+        JFrame frame = new JFrame("Accessories");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(6, 1, 5, 5));
+
+
+
+        for (int i = 0; i < Horse.getNumberOfShopItems(); i++) {
+            if (!Horse.accessoryOwned(i)) continue;
+
+            JButton accessoryChoice = new JButton(Horse.getAccessory(i));
+            int finalI = i;
+            accessoryChoice.addActionListener(e -> {
+                theHorse.setAccessory(Horse.getAccessory(finalI));
+                frame.dispose();
+                GUImodifyHorse(theHorse);
+            });
+            panel.add(accessoryChoice);
+        }
+
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public static void GUIhorseStats(Horse theHorse) {
+        JFrame frame = new JFrame("Horse Statistics:");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(300, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+
+        JPanel textPanel = new JPanel();
+        textPanel.setLayout(new GridLayout(7, 1, 5, 5));
+
+        JLabel horseStats = new JLabel(theHorse.getName() + " Statistics:");
+        horseStats.setHorizontalAlignment(JTextField.CENTER);
+        textPanel.add(horseStats);
+
+        JLabel distance = new JLabel("Total Distance: " + theHorse.getTotalDistance());
+        distance.setHorizontalAlignment(JTextField.CENTER);
+        textPanel.add(distance);
+
+        JLabel averageSpeed = new JLabel("Average Speed: " + theHorse.getAverageSpeed());
+        averageSpeed.setHorizontalAlignment(JTextField.CENTER);
+        textPanel.add(averageSpeed);
+
+        JLabel wins = new JLabel("Wins: " + theHorse.getTotalWins());
+        wins.setHorizontalAlignment(JTextField.CENTER);
+        textPanel.add(wins);
+
+        JLabel races = new JLabel("Races: " + theHorse.getTotalRaces());
+        races.setHorizontalAlignment(JTextField.CENTER);
+        textPanel.add(races);
+
+        JLabel winRate = new JLabel("Win Rate: " + theHorse.getWinRate());
+        winRate.setHorizontalAlignment(JTextField.CENTER);
+        textPanel.add(winRate);
+
+        JPanel finishingTimesPanel = new JPanel();
+        finishingTimesPanel.setLayout(new GridLayout(7, 1, 5, 5));
+
+        JLabel finishingTimesTitle = new JLabel("Finishing Times:");
+        finishingTimesTitle.setHorizontalAlignment(JTextField.CENTER);
+        finishingTimesPanel.add(finishingTimesTitle);
+        for (int time : theHorse.getFinishingTimes()) {
+            JLabel finishingTime = new JLabel(Integer.toString(time));
+            finishingTime.setHorizontalAlignment(JTextField.CENTER);
+            finishingTimesPanel.add(finishingTime);
+        }
+
+        panel.add(textPanel, BorderLayout.NORTH);
+
+        panel.add(finishingTimesPanel, BorderLayout.CENTER);
+
+        JButton exitButton = new JButton("Back");
+        exitButton.addActionListener(e -> {frame.dispose();});
+        panel.add(exitButton, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
     }
 
     public static void GUIcreateHorse() {
         JFrame frame = new JFrame("New Horse");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
+        frame.setSize(400, 400);
         frame.setResizable(false);
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
         JPanel fieldPanel = new JPanel();
+        fieldPanel.setLayout(new GridLayout(3, 2, 5, 5));
+
+        JLabel newHorseText1 = new JLabel("Create");
+        newHorseText1.setHorizontalAlignment(JTextField.RIGHT);
+        fieldPanel.add(newHorseText1);
+
+        JLabel newHorseText2 = new JLabel("New Horse:");
+        newHorseText2.setHorizontalAlignment(JTextField.LEFT);
+        fieldPanel.add(newHorseText2);
 
         JLabel nameText = new JLabel("Name:");
+        nameText.setHorizontalAlignment(JTextField.CENTER);
         fieldPanel.add(nameText);
 
         JTextField nameField = new JTextField();
         fieldPanel.add(nameField);
 
         JLabel symbolText = new JLabel("Symbol:");
+        symbolText.setHorizontalAlignment(JTextField.CENTER);
         fieldPanel.add(symbolText);
 
         JTextField symbolField = new JTextField();
@@ -288,11 +509,20 @@ public class Menu {
         panel.add(fieldPanel, BorderLayout.NORTH);
 
         JPanel buttonsPanel = new JPanel();
-        buttonsPanel.setLayout(new GridLayout(3, 1, 5, 5));
+        buttonsPanel.setLayout(new GridLayout(4, 3, 1, 1));
 
+        JRadioButton[] breedButtons = new JRadioButton[Horse.getBreedChoicesLength()];
         for (int i = 0; i < Horse.getBreedChoicesLength(); i++) {
-            JRadioButton breedChoice = new JRadioButton(Horse.getBreedChoice(i));
-            buttonsPanel.add(breedChoice); //IMPROVE: finish radio buttons
+            breedButtons[i] = new JRadioButton(Horse.getBreedChoice(i));
+            int len = Horse.getBreedChoicesLength();
+            int finalI = i;
+            breedButtons[i].addActionListener(r -> {
+                for(int j = 0; j < len; j++) {
+                    if (j == finalI) continue;
+                    breedButtons[j].setSelected(false);
+                }
+            });
+            buttonsPanel.add(breedButtons[i]);
         }
 
         panel.add(buttonsPanel, BorderLayout.CENTER);
@@ -302,7 +532,11 @@ public class Menu {
             char symbol;
             if (symbolField.getText().equals("")) symbol = 'Q';
             else symbol = symbolField.getText().charAt(0);
-            Horse.addHorse(new Horse(symbol, nameField.getText(), "Breed"));
+            String breed = "Arabian";
+            for (JRadioButton breedChocie : breedButtons) {
+                if (breedChocie.isSelected()) breed = breedChocie.getText();
+            }
+            Horse.addHorse(new Horse(symbol, nameField.getText(), breed));
             frame.dispose();
         });
 
@@ -470,7 +704,7 @@ public class Menu {
     public static void GUIchangeFenceSymbol() {
         JFrame frame = new JFrame("Fence Symbol");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 300);
+        frame.setSize(300, 200);
         frame.setResizable(false);
 
         JPanel panel = new JPanel();
@@ -482,7 +716,8 @@ public class Menu {
         welcomeText.setFont(new Font("Ariel", Font.PLAIN, 14));
         panel.add(welcomeText, BorderLayout.NORTH);
 
-        JTextField field = new JTextField(Race.getFenceSymbol());
+        JTextField field = new JTextField("" + Race.getFenceSymbol());
+        field.setHorizontalAlignment(JTextField.CENTER);
         panel.add(field, BorderLayout.CENTER);
 
         JButton confirmButton = new JButton("Confirm");
@@ -504,7 +739,7 @@ public class Menu {
     public static void GUIchangeFallenSymbol() {
         JFrame frame = new JFrame("Fallen Symbol");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(300, 300);
+        frame.setSize(300, 200);
         frame.setResizable(false);
 
         JPanel panel = new JPanel();
@@ -516,7 +751,8 @@ public class Menu {
         welcomeText.setFont(new Font("Ariel", Font.PLAIN, 14));
         panel.add(welcomeText, BorderLayout.NORTH);
 
-        JTextField field = new JTextField(Race.getFenceSymbol());
+        JTextField field = new JTextField("" + Race.getFenceSymbol());
+        field.setHorizontalAlignment(JTextField.CENTER);
         panel.add(field, BorderLayout.CENTER);
 
         JButton confirmButton = new JButton("Confirm");

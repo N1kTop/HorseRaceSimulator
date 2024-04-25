@@ -1,3 +1,4 @@
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -31,7 +32,7 @@ public class Horse
     private int totalFalls = 0;
     private int totalDistance = 0;
     private int totalTime = 0;
-    private ArrayList<Integer> finishingTimes;
+    private ArrayList<Integer> finishingTimes = new ArrayList<>();
 
     private static int horseCost = 250;
     private final static int horseCostMultiplier = 2;
@@ -40,7 +41,6 @@ public class Horse
     private static ArrayList<Horse> allHorses = new ArrayList<>(Arrays.asList(defaultHorses));
     private final static String[] breedChoices = {"Arabian", "Friesian", "Mustang Shire", "Thoroughbred", "Appaloosa", "American Quarter", "Clydesdale", "Breton", "Cob", "American Paint", "Rahvan"};
     private final static String[] colorChoices = {"Brown", "Red", "Orange", "Yellow", "Green", "Lime", "Aqua", "Turquoise", "Blue", "Purple", "Pink", "Black", "Grey", "White", "Coffee"};
-
     private final static String[] shopAccessories = {"None", "Lucky Charm", "Amulet of Speed", "Viking Helmet", "Advanced Saddle", "Chain Armor", "Top Hat", "Champion Crown"};
     private final static int[] shopPrices = {0, 100, 200, 400, 600, 800, 1000, 1200};
     private static boolean[] ownedAccessories = initializeItems();
@@ -183,7 +183,7 @@ public class Horse
     public String getCoatColor() {return coatColor;}
     public String getAccessory() {return accessory;}
     public void setCoatColor(String newColor) {coatColor = newColor;}
-    public void setAccessory(String newAcc) {coatColor = accessory = newAcc;}
+    public void setAccessory(String newAcc) {accessory = newAcc;}
 
     public void incTotalDistance() {totalDistance++;}
     public void incTotalTime() {totalTime++;}
@@ -280,9 +280,9 @@ public class Horse
         allHorses.add(newHorse);
     }
 
-    public static void removeHorse(int horseIndex) {
-        allHorses.remove(horseIndex);
-    }
+    public static void removeHorse(int horseIndex) {allHorses.remove(horseIndex);}
+
+    public static void removeHorse(Horse theHorse) {allHorses.remove(theHorse);}
 
     /**
      *
