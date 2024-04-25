@@ -73,7 +73,32 @@ public class Menu {
         }
     }
 
-    public static void GUImenu() throws IOException {
+    public static void GUIpopUp(String message) {
+        JFrame frame = new JFrame("Message");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 200);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(2, 1, 5, 5));
+
+        JLabel messageLabel = new JLabel(message);
+        messageLabel.setPreferredSize(new Dimension(300, 60));
+        messageLabel.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(messageLabel);
+
+        JButton okButton = new JButton("Ok");
+        okButton.setHorizontalAlignment(JTextField.CENTER);
+        okButton.addActionListener(e -> {frame.dispose();});
+
+        panel.add(okButton);
+
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public static void GUImenu() {
         JFrame frame = new JFrame("Horse Racing Simulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -92,19 +117,34 @@ public class Menu {
         buttonsPanel.setLayout(new GridLayout(3, 2, 5, 5));
 
         JButton raceButton = new JButton("Race");
-        raceButton.addActionListener(e -> {GUIraceMenu();});
+        raceButton.addActionListener(e -> {
+            GUIraceMenu();
+            frame.dispose();
+        });
 
         JButton horseButton = new JButton("Horses Stable");
-        horseButton.addActionListener(e -> {GUIhorsesMenu();});
+        horseButton.addActionListener(e -> {
+            GUIhorsesMenu();
+            frame.dispose();
+        });
 
         JButton statsButton = new JButton("Statistics");
-        statsButton.addActionListener(e -> {GUIstatsMenu();});
+        statsButton.addActionListener(e -> {
+            GUIstatsMenu();
+            frame.dispose();
+        });
 
         JButton shopButton = new JButton("Shop");
-        shopButton.addActionListener(e -> {GUIshopMenu();});
+        shopButton.addActionListener(e -> {
+            GUIshopMenu();
+            frame.dispose();
+        });
 
         JButton settingsButton = new JButton("Settings");
-        settingsButton.addActionListener(e -> {GUIsettingsMenu();});
+        settingsButton.addActionListener(e -> {
+            GUIsettingsMenu();
+            frame.dispose();
+        });
 
         JButton exitButton = new JButton("Exit");
         exitButton.addActionListener(e -> {System.exit(0);});
@@ -154,13 +194,17 @@ public class Menu {
 
 
         JButton exitButton = new JButton("Back");
-        exitButton.addActionListener(e -> {frame.dispose();});
+        exitButton.addActionListener(e -> {
+            frame.dispose();
+            GUImenu();
+        });
 
         JButton nextButton = new JButton("Next");
         nextButton.addActionListener(e -> {
             frame.dispose();
             Race race = new Race(raceLengthSlider.getValue());
-            // IMPROVE: finish race here
+            frame.dispose();
+            GUIhorsePick(race);
         });
 
         sliderPanel.add(exitButton);
@@ -169,6 +213,75 @@ public class Menu {
 
 
         panel.add(sliderPanel, BorderLayout.CENTER);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public static void GUIhorsePick(Race race) {
+        JFrame frame = new JFrame("Pick Horses");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel pickLabel = new JLabel("Pick Horses (0/" + race.getLanesNum() + ")");
+        pickLabel.setPreferredSize(new Dimension(300, 60));
+        pickLabel.setHorizontalAlignment(JTextField.CENTER);
+        pickLabel.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(pickLabel, BorderLayout.NORTH);
+
+        JPanel horsePanel = new JPanel();
+        int horseNum = Horse.getTotalHorseNumber();
+        JToggleButton[] horseButtons = new JToggleButton[horseNum];
+
+        for (int i = 0; i < horseNum; i++) {
+            Horse horse = Horse.getHorse(i);
+            horseButtons[i] = new JToggleButton(horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidence() + ")");
+            horseButtons[i].addActionListener(e -> {
+                int totalSelected = 0;
+                for (int j = 0; j < horseNum; j++) {
+                    if (horseButtons[j].isSelected()) totalSelected++;
+                }
+                pickLabel.setText("Pick Horses (" + totalSelected + "/" + race.getLanesNum() + ")");
+            });
+            horsePanel.add(horseButtons[i]);
+        }
+
+        panel.add(horsePanel, BorderLayout.CENTER);
+
+
+        JPanel buttonPanel = new JPanel();
+
+        JButton exitButton = new JButton("Back");
+        exitButton.addActionListener(e -> {
+            frame.dispose();
+            GUIraceMenu();
+        });
+        buttonPanel.add(exitButton);
+
+        JButton startButton = new JButton("Start");
+        startButton.addActionListener(e -> {
+            int totalSelected = 0;
+            for (int i = 0; i < horseNum; i++) {
+                if (horseButtons[i].isSelected()) totalSelected++;
+            }
+            if (totalSelected != race.getLanesNum()) {
+                GUIpopUp("You have to select " + race.getLanesNum() + " horses");
+                return;
+            }
+            int laneCount = 0;
+            for (int i = 0; i < horseNum; i++) {
+                if (horseButtons[i].isSelected()) race.addHorse(Horse.getHorse(i), laneCount++);
+            }
+            frame.dispose();
+            Race.startRaceGUI(race);
+        });
+         buttonPanel.add(startButton);
+
+        panel.add(buttonPanel, BorderLayout.SOUTH);
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
@@ -192,8 +305,11 @@ public class Menu {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(3, 1, 5, 5));
 
-        JButton modifyButton = new JButton("Modify Horses");
-        modifyButton.addActionListener(e -> {GUIhorsesList();});
+        JButton modifyButton = new JButton("Modify Horses (" + Horse.getTotalHorseNumber() + ")");
+        modifyButton.addActionListener(e -> {
+            GUIhorsesList();
+            frame.dispose();
+        });
 
         JLabel moneyLabel = new JLabel("Money: " + Race.getMoney());
         moneyLabel.setPreferredSize(new Dimension(300, 60));
@@ -207,11 +323,15 @@ public class Menu {
                 buyButton.setText("Buy Horse (" + Horse.getHorseCost() + ")");
                 moneyLabel.setText("Money: " + Race.getMoney());
                 GUIcreateHorse();
+                frame.dispose();
             }
         });
 
         JButton exitButton = new JButton("Back");
-        exitButton.addActionListener(e -> {frame.dispose();});
+        exitButton.addActionListener(e -> {
+            frame.dispose();
+            GUImenu();
+        });
 
         buttonsPanel.add(modifyButton);
         buttonsPanel.add(buyButton);
@@ -257,7 +377,10 @@ public class Menu {
         panel.add(buttonsPanel, BorderLayout.CENTER);
 
         JButton exitButton = new JButton("Back");
-        exitButton.addActionListener(e -> {frame.dispose();});
+        exitButton.addActionListener(e -> {
+            frame.dispose();
+            GUIhorsesMenu();
+        });
         panel.add(exitButton, BorderLayout.SOUTH);
 
         frame.getContentPane().add(panel);
@@ -271,7 +394,7 @@ public class Menu {
         frame.setResizable(false);
 
         JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(7, 2, 5, 5));
+        panel.setLayout(new GridLayout(8, 2, 5, 5));
 
         JLabel nameLabel = new JLabel("Name:");
         nameLabel.setHorizontalAlignment(JTextField.CENTER);
@@ -331,10 +454,16 @@ public class Menu {
 
         JButton removeButton = new JButton("Remove Horse");
         removeButton.addActionListener(e -> {
-            if (Horse.getTotalHorseNumber() < 3) return; //IMPROVE: pop-up
+            if (Horse.getTotalHorseNumber() <= 3) {
+                GUIpopUp("You can not remove any more horses right now");
+                return;
+            }
             Horse.removeHorse(theHorse);
             Horse.divideHorseCost();
+            frame.dispose();
+            GUIhorsesList();
         });
+        panel.add(removeButton);
 
         JButton exitButton = new JButton("Confirm");
         exitButton.addActionListener(e -> {
@@ -347,7 +476,7 @@ public class Menu {
             GUIhorsesList();
         });
 
-        panel.add(exitButton);
+        panel.add(exitButton); //IMPROVE: make this look nice
 
 
         frame.getContentPane().add(panel);
@@ -533,11 +662,12 @@ public class Menu {
             if (symbolField.getText().equals("")) symbol = 'Q';
             else symbol = symbolField.getText().charAt(0);
             String breed = "Arabian";
-            for (JRadioButton breedChocie : breedButtons) {
-                if (breedChocie.isSelected()) breed = breedChocie.getText();
+            for (JRadioButton breedChoice : breedButtons) {
+                if (breedChoice.isSelected()) breed = breedChoice.getText();
             }
             Horse.addHorse(new Horse(symbol, nameField.getText(), breed));
             frame.dispose();
+            GUIhorsesMenu();
         });
 
         panel.add(confirmButton, BorderLayout.SOUTH);
@@ -575,7 +705,10 @@ public class Menu {
         recordsButton.addActionListener(e -> {recordsMenu();});
 
         JButton exitButton = new JButton("Back");
-        exitButton.addActionListener(e -> {frame.dispose();});
+        exitButton.addActionListener(e -> {
+            frame.dispose();
+            GUImenu();
+        });
 
         buttonsPanel.add(recordsButton);
         buttonsPanel.add(exitButton);
@@ -624,7 +757,10 @@ public class Menu {
 
 
         JButton exitButton = new JButton("Back");
-        exitButton.addActionListener(e -> {frame.dispose();});
+        exitButton.addActionListener(e -> {
+            frame.dispose();
+            GUImenu();
+        });
 
         buttonsPanel.add(exitButton);
 
@@ -687,7 +823,10 @@ public class Menu {
         });
 
         JButton exitButton = new JButton("Back");
-        exitButton.addActionListener(e -> {frame.dispose();});
+        exitButton.addActionListener(e -> {
+            frame.dispose();
+            GUImenu();
+        });
 
         buttonsPanel.add(editFenceSymbolButton);
         buttonsPanel.add(editFallenSymbolButton);

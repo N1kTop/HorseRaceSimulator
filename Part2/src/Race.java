@@ -68,6 +68,8 @@ public class Race {
         return raceLength;
     }
 
+    public int getLanesNum() {return horseLanes.length;}
+
     public static void setFallenSymbol(char newSymbol) {
         fallenSymbol = newSymbol;
     }
@@ -276,6 +278,10 @@ public class Race {
             String recordName = Menu.input("\nEnter record name to save the race: ");
             saveRaceRecord(recordName);
         }
+    }
+
+    public static void startRaceGUI(Race race) {
+
     }
 
     /**
