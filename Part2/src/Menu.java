@@ -2,10 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.InputMismatchException;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu {
 
@@ -484,7 +481,7 @@ public class Menu {
             GUIhorsesList();
         });
 
-        panel.add(exitButton); //IMPROVE: make this look nice
+        panel.add(exitButton);
 
 
         frame.getContentPane().add(panel);
@@ -591,8 +588,10 @@ public class Menu {
         JLabel finishingTimesTitle = new JLabel("Finishing Times:");
         finishingTimesTitle.setHorizontalAlignment(JTextField.CENTER);
         finishingTimesPanel.add(finishingTimesTitle);
-        for (int time : theHorse.getFinishingTimes()) {
-            JLabel finishingTime = new JLabel(Integer.toString(time));
+
+        HashMap<Integer, Integer> finishingTimes = theHorse.getFinishingTimes();
+        for (int time : finishingTimes.keySet()) {
+            JLabel finishingTime = new JLabel(time + " seconds for race length of " + finishingTimes.get(time));
             finishingTime.setHorizontalAlignment(JTextField.CENTER);
             finishingTimesPanel.add(finishingTime);
         }

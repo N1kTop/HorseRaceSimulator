@@ -34,7 +34,7 @@ public class Horse
     private int totalFalls = 0;
     private int totalDistance = 0;
     private int totalTime = 0;
-    private ArrayList<Integer> finishingTimes = new ArrayList<>(); //IMPROVE: finish this
+    private HashMap<Integer, Integer> finishingTimes = new HashMap<>();
     private static int horseCost = 250;
     private final static int horseCostMultiplier = 2; //after buying a horse, horse price multiplies by this factor
 
@@ -192,8 +192,8 @@ public class Horse
         return (double) totalWins / (double) totalRaces;
     }
 
-    public ArrayList<Integer> getFinishingTimes() {return finishingTimes;}
-    public void addFinishingTime(int newTime) {finishingTimes.add(newTime);}
+    public HashMap<Integer, Integer> getFinishingTimes() {return finishingTimes;}
+    public void addFinishingTime(int newTime, int distance) {finishingTimes.put(newTime, distance);}
 
     //Race records:
     public ArrayList<Character> getCurrentRaceRecord() {return currentRaceRecord;}
@@ -237,7 +237,10 @@ public class Horse
         System.out.println("Races: " + getTotalRaces());
         System.out.println("Falls: " + getTotalFalls());
         System.out.println("Win Rate: " + getWinRate());
-        System.out.println("\nFinishing Times:\n" + finishingTimes);
+        System.out.println("\nFinishing Times:");
+        for (int time : finishingTimes.keySet()) {
+            System.out.println("- " + time + " seconds for a race length of " + finishingTimes.get(time));
+        }
     }
 
     public static int getHorseCost() {return horseCost;}

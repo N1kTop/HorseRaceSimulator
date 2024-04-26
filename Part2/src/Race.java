@@ -467,7 +467,7 @@ public class Race {
                 winningHorse = horse;
                 //increment winners win count:
                 winningHorse.win();
-                winningHorse.addFinishingTime(stepCount);
+                winningHorse.addFinishingTime(stepCount, raceLength);
                 horse.addStepToCurrentRaceRecord('w');
                 totalFinishes++;
                 winnerExists = true;
@@ -811,7 +811,7 @@ public class Race {
      */
     private void printWinner(Horse winnerHorse) {
         winnerHorse.win();
-        winnerHorse.addFinishingTime(stepCount);
+        winnerHorse.addFinishingTime(stepCount, raceLength);
         System.out.println("\nThe Winner of the race is " + winnerHorse.getName() + "!\n");
     }
 
