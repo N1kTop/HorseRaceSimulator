@@ -272,9 +272,11 @@ public class Menu {
                 GUIpopUp("You have to select " + race.getLanesNum() + " horses");
                 return;
             }
-            int laneCount = 0;
+            int laneCount = 1;
             for (int i = 0; i < horseNum; i++) {
-                if (horseButtons[i].isSelected()) race.addHorse(Horse.getHorse(i), laneCount++); //IMPROVE: error here
+                if (horseButtons[i].isSelected()) {
+                    race.addHorse(Horse.getHorse(i), laneCount++);
+                }
             }
             frame.dispose();
             race.gambleGUI();
@@ -285,6 +287,7 @@ public class Menu {
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
+
     }
 
     public static void GUIhorsesMenu() {
