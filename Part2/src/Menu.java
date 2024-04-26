@@ -7,10 +7,11 @@ import java.util.*;
 public class Menu {
 
 
+    //colors for the coat options for horses:
     private final static Color[] GUIcolors = {Color.ORANGE, Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.GREEN, Color.CYAN, Color.BLUE, Color.BLUE, Color.MAGENTA, Color.PINK, Color.BLACK, Color.GRAY, Color.WHITE, Color.LIGHT_GRAY};
 
     /**
-     * main method, runs the menu() method
+     * main method, runs the menu() or GUImenu() methods
      *
      * @param args
      */
@@ -31,7 +32,7 @@ public class Menu {
     }
 
     /**
-     * allows user to input a single charcter
+     * allows user to input a single character
      *
      * @param message will be printed before scanning for input
      * @return first character of the input
@@ -71,7 +72,13 @@ public class Menu {
         }
     }
 
+    /**
+     * A pop-up window that appears with a message.
+     *
+     * @param message text that will be displayed.
+     */
     public static void GUIpopUp(String message) {
+        //initialise JFrame
         JFrame frame = new JFrame("Message");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 200);
@@ -80,11 +87,13 @@ public class Menu {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(2, 1, 5, 5));
 
+        //message Label
         JLabel messageLabel = new JLabel(message);
         messageLabel.setPreferredSize(new Dimension(300, 60));
         messageLabel.setHorizontalAlignment(JTextField.CENTER);
         panel.add(messageLabel);
 
+        //ok Button
         JButton okButton = new JButton("Ok");
         okButton.setHorizontalAlignment(JTextField.CENTER);
         okButton.addActionListener(e -> {frame.dispose();});
@@ -96,7 +105,14 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI version of menu() method.
+     * Serves as main menu of the program.
+     * Provides 6 options: Race, Horses, Statistics, Shop, Setting and Exit
+     *
+     */
     public static void GUImenu() {
+        //initialise JFrame
         JFrame frame = new JFrame("Horse Racing Simulator");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -105,12 +121,14 @@ public class Menu {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
+        //welcome text
         JLabel welcomeText = new JLabel("Welcome to Horse Racing!");
         welcomeText.setPreferredSize(new Dimension(300, 60));
         welcomeText.setHorizontalAlignment(JTextField.CENTER);
         welcomeText.setFont(new Font("Ariel", Font.PLAIN, 18));
         panel.add(welcomeText, BorderLayout.NORTH);
 
+        //Buttons:
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(3, 2, 5, 5));
 
@@ -164,7 +182,13 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI version of raceMenu() method
+     * allow to change race parameters such as length and number of lanes
+     *
+     */
     public static void GUIraceMenu() {
+        //initialise JFrame
         JFrame frame = new JFrame("Race Setup");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -194,6 +218,7 @@ public class Menu {
         sliderPanel.add(lanesNumberSlider);
 
 
+        //back to main menu button
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {
             frame.dispose();
@@ -212,13 +237,18 @@ public class Menu {
         sliderPanel.add(nextButton);
 
 
-
         panel.add(sliderPanel, BorderLayout.CENTER);
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
     }
 
+    /**
+     * GUI method that allows to pick horses for the race
+     * Only allows to pick the exact number of horses equal to amount of lanes chosen earlier
+     *
+     * @param race Race object
+     */
     public static void GUIhorsePick(Race race) {
         JFrame frame = new JFrame("Pick Horses");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -228,6 +258,7 @@ public class Menu {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
+        //label (shows how many horses picked out of required amount)
         JLabel pickLabel = new JLabel("Pick Horses (0/" + race.getLanesNum() + ")");
         pickLabel.setPreferredSize(new Dimension(300, 60));
         pickLabel.setHorizontalAlignment(JTextField.CENTER);
@@ -238,6 +269,7 @@ public class Menu {
         int horseNum = Horse.getTotalHorseNumber();
         JToggleButton[] horseButtons = new JToggleButton[horseNum];
 
+        //JToggleButtons used to choose horses
         for (int i = 0; i < horseNum; i++) {
             Horse horse = Horse.getHorse(i);
             horseButtons[i] = new JToggleButton(horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidenceFormatted() + ")");
@@ -256,6 +288,7 @@ public class Menu {
 
         JPanel buttonPanel = new JPanel();
 
+        //back to raceMenu
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {
             frame.dispose();
@@ -263,13 +296,14 @@ public class Menu {
         });
         buttonPanel.add(exitButton);
 
+        //start race
         JButton startButton = new JButton("Start");
         startButton.addActionListener(e -> {
             int totalSelected = 0;
             for (int i = 0; i < horseNum; i++) {
-                if (horseButtons[i].isSelected()) totalSelected++;
+                if (horseButtons[i].isSelected()) totalSelected++; //check selected horses
             }
-            if (totalSelected != race.getLanesNum()) {
+            if (totalSelected != race.getLanesNum()) { //check if wrong amount of horses selected
                 GUIpopUp("You have to select " + race.getLanesNum() + " horses");
                 return;
             }
@@ -280,8 +314,8 @@ public class Menu {
                 }
             }
             frame.dispose();
-            if (race.getLanesNum() == 1) race.startRaceGUI();
-            else race.gambleGUI();
+            if (race.getLanesNum() == 1) race.startRaceGUI(); //if only one horse - start race
+            else race.gambleGUI(); //if more than one horse - gambling allowed
         });
          buttonPanel.add(startButton);
 
@@ -292,6 +326,11 @@ public class Menu {
 
     }
 
+    /**
+     * GUI version of horsesMenu() method.
+     * Allows to choose between modifying existing horses and creating a new horse.
+     *
+     */
     public static void GUIhorsesMenu() {
         JFrame frame = new JFrame("Horses");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -310,16 +349,19 @@ public class Menu {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(3, 1, 5, 5));
 
+        //modify horses
         JButton modifyButton = new JButton("Modify Horses (" + Horse.getTotalHorseNumber() + ")");
         modifyButton.addActionListener(e -> {
             GUIhorsesList();
             frame.dispose();
         });
 
+        //shows money
         JLabel moneyLabel = new JLabel("Money: " + Race.getMoney());
         moneyLabel.setPreferredSize(new Dimension(300, 60));
         moneyLabel.setHorizontalAlignment(JTextField.CENTER);
 
+        //create new horse
         JButton buyButton = new JButton("Buy Horse (" + Horse.getHorseCost() + ")");
         buyButton.addActionListener(e -> {
             if (Race.getMoney() >= Horse.getHorseCost()) {
@@ -332,6 +374,7 @@ public class Menu {
             }
         });
 
+        //back to main menu
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {
             frame.dispose();
@@ -351,6 +394,11 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI version of horsesList() method
+     * provides a list of horses to choose from for horse customisations
+     *
+     */
     public static void GUIhorsesList() {
         JFrame frame = new JFrame("Horses");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -366,6 +414,7 @@ public class Menu {
         welcomeText.setFont(new Font("Ariel", Font.PLAIN, 18));
         panel.add(welcomeText, BorderLayout.NORTH);
 
+        //horse buttons (stored in array of buttons)
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(3, 2, 5, 5));
 
@@ -381,6 +430,7 @@ public class Menu {
 
         panel.add(buttonsPanel, BorderLayout.CENTER);
 
+        //back to horses menu
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {
             frame.dispose();
@@ -392,6 +442,13 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI version of modifyHorse() method.
+     * Provides 4 customisation options (name, symbol, coat color, accessory);
+     * 2 unchangeable parameters (confidence and breed); ability to view statistics and remove horse.
+     *
+     * @param theHorse horse to be modified
+     */
     public static void GUImodifyHorse(Horse theHorse) {
         JFrame frame = new JFrame("Horse");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -488,6 +545,11 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI method to choose a coat color
+     *
+     * @param theHorse to change coat color for
+     */
     public static void GUIchooseCoatColor(Horse theHorse) {
         JFrame frame = new JFrame("Coat Colors");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -497,8 +559,7 @@ public class Menu {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(6, 1, 5, 5));
 
-
-
+        //display color choices
         for (int i = 0; i < Horse.getColorChoicesLength(); i++) {
             JButton colorChoice = new JButton(Horse.getColorChoice(i));
             int finalI = i;
@@ -507,15 +568,20 @@ public class Menu {
                 frame.dispose();
                 GUImodifyHorse(theHorse);
             });
-            colorChoice.setForeground(GUIcolors[finalI]);
+            colorChoice.setForeground(GUIcolors[finalI]); //uses GUIcolros array to get matching colors
             panel.add(colorChoice);
         }
-
 
         frame.getContentPane().add(panel);
         frame.setVisible(true);
     }
 
+    /**
+     * GUI method to choose accessory
+     * Allows choice from all bought accessories
+     *
+     * @param theHorse to change accessory for
+     */
     public static void GUIchooseAccessory(Horse theHorse) {
         JFrame frame = new JFrame("Accessories");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -525,8 +591,7 @@ public class Menu {
         JPanel panel = new JPanel();
         panel.setLayout(new GridLayout(6, 1, 5, 5));
 
-
-
+        //display accessory choices
         for (int i = 0; i < Horse.getNumberOfShopItems(); i++) {
             if (!Horse.accessoryOwned(i)) continue;
 
@@ -540,11 +605,16 @@ public class Menu {
             panel.add(accessoryChoice);
         }
 
-
         frame.getContentPane().add(panel);
         frame.setVisible(true);
     }
 
+    /**
+     * GUI method to show statistics of a horse
+     * Shows different metrics and all finishing times of a horse.
+     *
+     * @param theHorse horse whose statistics are going to be shown
+     */
     public static void GUIhorseStats(Horse theHorse) {
         JFrame frame = new JFrame("Horse Statistics:");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
