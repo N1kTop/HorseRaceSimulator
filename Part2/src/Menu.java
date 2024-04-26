@@ -670,6 +670,7 @@ public class Menu {
 
         panel.add(finishingTimesPanel, BorderLayout.CENTER);
 
+        //closes stats menu
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {frame.dispose();});
         panel.add(exitButton, BorderLayout.SOUTH);
@@ -678,6 +679,13 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI version of createHorse() method
+     * Asks for name, symbol and breed and creates the horse.
+     * If symbol or breed not specified, sets default 'Q' or "Arabian".
+     * Coat color is initially set to "Brown" by default.
+     * Accessory initially set to "None" by default.
+     */
     public static void GUIcreateHorse() {
         JFrame frame = new JFrame("New Horse");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -717,6 +725,7 @@ public class Menu {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(4, 3, 1, 1));
 
+        //JRadioButtons used to choose breed, only one can be selected at a time
         JRadioButton[] breedButtons = new JRadioButton[Horse.getBreedChoicesLength()];
         for (int i = 0; i < Horse.getBreedChoicesLength(); i++) {
             breedButtons[i] = new JRadioButton(Horse.getBreedChoice(i));
@@ -733,6 +742,7 @@ public class Menu {
 
         panel.add(buttonsPanel, BorderLayout.CENTER);
 
+        //confirm button
         JButton confirmButton = new JButton("Create");
         confirmButton.addActionListener(e -> {
             char symbol;
@@ -753,6 +763,11 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI version of statsMenu() method
+     * Provides overall statistics of all races.
+     * Also provides option to see recordings through GUIrecordsMenu().
+     */
     public static void GUIstatsMenu() {
         JFrame frame = new JFrame("Statistics");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -768,6 +783,7 @@ public class Menu {
         statsMenuTitle.setFont(new Font("Ariel", Font.PLAIN, 18));
         panel.add(statsMenuTitle, BorderLayout.NORTH);
 
+        //show best horse
         Horse topHorse = Horse.getTopHorse();
         JTextArea stats = new JTextArea("\nTotal Races: " + Race.getTotalRaces() + "\nTotal Finishes: " + Race.getTotalFinishes() + "\nCurrent Number of Horses: " + Horse.getTotalHorseNumber() + "\nTop Horse: " + topHorse.getName() + " " + topHorse.getSymbol() + " with " + topHorse.getTotalWins() + " wins\n");
         stats.setPreferredSize(new Dimension(300, 120));
@@ -784,6 +800,7 @@ public class Menu {
             frame.dispose();
         });
 
+        //back to main menu
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {
             frame.dispose();
@@ -800,6 +817,11 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI version of shopMenu() method
+     * Provides option to buy accessories.
+     * Shows amount of money owned and all potential items to buy.
+     */
     public static void GUIshopMenu() {
         JFrame frame = new JFrame("Shop");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -819,6 +841,7 @@ public class Menu {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(4, 2, 5, 5));
 
+        //make a button for each accessory
         String buttonLabel;
         for (int i = 1; i < Horse.getNumberOfShopItems(); i++) {
             if (Horse.accessoryOwned(i)) buttonLabel = Horse.getAccessory(i) + " (owned)";
@@ -835,7 +858,7 @@ public class Menu {
             buttonsPanel.add(itemButton);
         }
 
-
+        //back to main menu
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {
             frame.dispose();
@@ -847,6 +870,7 @@ public class Menu {
 
         panel.add(buttonsPanel, BorderLayout.CENTER);
 
+        //show money
         JLabel moneyLabel = new JLabel("Money: " + Race.getMoney());
         moneyLabel.setPreferredSize(new Dimension(300, 50));
         moneyLabel.setHorizontalAlignment(JTextField.CENTER);
@@ -858,6 +882,11 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI version of recordsMenu() method
+     * allows to choose a recording to watch.
+     * List of recording names is taken from Race.getRecordFileNames()
+     */
     public static void GUIrecordsMenu() {
         JFrame frame = new JFrame("Records");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -876,6 +905,7 @@ public class Menu {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(3, 2, 5, 5));
 
+        //create button for each record
         for (String recordName : Race.getRecordFileNames()) {
             JButton recordButton = new JButton(recordName);
             recordButton.addActionListener(e -> {
@@ -886,6 +916,7 @@ public class Menu {
             buttonsPanel.add(recordButton);
         }
 
+        //back to stats menu
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {
             frame.dispose();
@@ -900,6 +931,11 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI version of settingsMenu() method
+     * Allows to change fence symbol and fallen symbol
+     * as well as change randomness of weather conditions (effect falling chances) during races,
+     */
     public static void GUIsettingsMenu() {
         JFrame frame = new JFrame("Settings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -918,19 +954,21 @@ public class Menu {
         JPanel buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(4, 1, 5, 5));
 
+        //edit fence button
         JButton editFenceSymbolButton = new JButton("Edit Fence Symbol (" + Race.getFenceSymbol() + ")");
         editFenceSymbolButton.addActionListener(e -> {
             GUIchangeFenceSymbol();
             frame.dispose();
         });
 
+        //edit fall symbol button
         JButton editFallenSymbolButton = new JButton("Edit Fall Symbol (" + Race.getFallenSymbol() + ")");
         editFallenSymbolButton.addActionListener(e -> {
             GUIchangeFallenSymbol();
             frame.dispose();
         });
 
-
+        //change weather conditions option button
         String weatherONorOFF = "OFF";
         if (Race.isWeatherChanging()) weatherONorOFF = "ON";
         JButton weatherConditionsButton = new JButton("Weather Conditions (" + weatherONorOFF + ")");
@@ -940,6 +978,7 @@ public class Menu {
             else weatherConditionsButton.setText("Weather Conditions (OFF)");
         });
 
+        //back to main menu
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {
             frame.dispose();
@@ -958,6 +997,10 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI method that changes fence symbol to whatever the user types
+     * Only the first character of user input will be considered
+     */
     public static void GUIchangeFenceSymbol() {
         JFrame frame = new JFrame("Fence Symbol");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -973,6 +1016,7 @@ public class Menu {
         welcomeText.setFont(new Font("Ariel", Font.PLAIN, 14));
         panel.add(welcomeText, BorderLayout.NORTH);
 
+        //text field appears with current symbol
         JTextField field = new JTextField("" + Race.getFenceSymbol());
         field.setHorizontalAlignment(JTextField.CENTER);
         panel.add(field, BorderLayout.CENTER);
@@ -980,7 +1024,7 @@ public class Menu {
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(e -> {
 
-            if (!field.getText().equals("")) {
+            if (!field.getText().equals("")) { //check if empty input
                 Race.setFenceSymbol(field.getText().charAt(0));
                 frame.dispose();
                 GUIsettingsMenu();
@@ -993,6 +1037,10 @@ public class Menu {
         frame.setVisible(true);
     }
 
+    /**
+     * GUI method that changes fall symbol to whatever the user types
+     * Only the first character of user input will be considered
+     */
     public static void GUIchangeFallenSymbol() {
         JFrame frame = new JFrame("Fallen Symbol");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -1008,6 +1056,7 @@ public class Menu {
         welcomeText.setFont(new Font("Ariel", Font.PLAIN, 14));
         panel.add(welcomeText, BorderLayout.NORTH);
 
+        //text field appears with current symbol
         JTextField field = new JTextField("" + Race.getFenceSymbol());
         field.setHorizontalAlignment(JTextField.CENTER);
         panel.add(field, BorderLayout.CENTER);
@@ -1015,7 +1064,7 @@ public class Menu {
         JButton confirmButton = new JButton("Confirm");
         confirmButton.addActionListener(e -> {
 
-            if (!field.getText().equals("")) {
+            if (!field.getText().equals("")) { //check if empty input
                 Race.setFallenSymbol(field.getText().charAt(0));
                 frame.dispose();
                 GUIsettingsMenu();
@@ -1056,12 +1105,12 @@ public class Menu {
                 case '5' -> settingsMenu();
             }
         }
-        Race.saveRecordingNames();
+        Race.saveRecordingNames(); //save names of all taken recordings
         System.out.println("\nYou have exited the program");
     }
 
     /**
-     *
+     * provides list of horses to modify
      */
     public static void listHorses() {
         Horse.printHorses();
