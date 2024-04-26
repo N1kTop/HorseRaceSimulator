@@ -1,3 +1,7 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -8,7 +12,7 @@ import java.lang.Math;
  * for a given distance
  *
  * @author Nikita Topolskis
- * @version 2.0
+ * @version 3.0
  */
 public class Race {
     private int raceLength;
@@ -23,8 +27,12 @@ public class Race {
     private static int money = 10000;
     private final static int moneyPerRace = 50;
     private final static int minBet = 5;
+    private final static int minDistance = 5;
+    private final static int maxDistance = 200;
     private int weatherCondition = 1;
     private static boolean weatherChanging = true;
+    private boolean raceEnd = false;
+    private int stepCount = 0; //used for to count number of steps of the race (time taken)
 
 
     /**
@@ -44,27 +52,19 @@ public class Race {
         }
 
     }
-
     public Race(int distance, int lanesNum) {
         // initialise instance variables
         raceLength = distance;
         horseLanes = new Horse[lanesNum];
     }
-
     public Race(int distance) {
         // initialise instance variables
         raceLength = distance;
         horseLanes = new Horse[3];
     }
 
-
-    public void setRaceLength(int newLength) {
-        raceLength = newLength;
-    }
-
-    public int getRaceLength() {
-        return raceLength;
-    }
+    //Accessor methods:
+    public int getLanesNum() {return horseLanes.length;}
 
     public static void setFallenSymbol(char newSymbol) {
         fallenSymbol = newSymbol;
@@ -86,6 +86,9 @@ public class Race {
         return totalRaces;
     }
 
+    public static int getTotalFinishes() {return totalFinishes;}
+
+    //get names of all saved recordings:
     public static ArrayList<String> getRecordFileNames() {
         return recordFileNames;
     }
@@ -108,10 +111,17 @@ public class Race {
 
     public static void subtractMoney(int moneyLoss) {money -= moneyLoss;}
 
+    //boolean setting for weather effects during races:
     public static boolean isWeatherChanging() {return weatherChanging;}
 
+    //minimum distance for the race:
+    public static int getMinDistance() {return minDistance;}
+
+    //maximum distance for the race:
+    public static int getMaxDistance() {return maxDistance;}
+
     /**
-     *
+     * toggles weather setting between true and false
      */
     public static void switchWeather() {
         if (weatherChanging) weatherChanging = false;
@@ -135,6 +145,10 @@ public class Race {
     }
 
     /**
+     * sets up all the race settings:
+     * checks if chosen horses are valid
+     * checks for weather conditions
+     * asks if user wants to gamble
      *
      */
     public void raceSetup() {
@@ -145,14 +159,19 @@ public class Race {
                 return;
             }
         }
+
         if (weatherChanging) {
-            weatherCondition = (int) (Math.random() * 2) + 1;
+            weatherCondition = (int) (Math.random() * 2) + 1; //randomly choose weather condition
         }
         switch (weatherCondition) {
-            case 1 -> System.out.println("\nThe weather is good");
-            case 2 -> System.out.println("\nIt is raining, chances of falling are doubled");
-            case 3 -> System.out.println("\nThe weather is disastrous, chances of falling are tripled");
+            case 1 -> System.out.println("\nThe weather is good"); //1 = clear
+            case 2 -> System.out.println("\nIt is raining, chances of falling are doubled"); //2 = rain
+            case 3 -> System.out.println("\nThe weather is disastrous, chances of falling are tripled"); //3 = storm
         }
+
+        stepCount = 0;
+
+        //gambling:
         betAmount = 0;
         betLaneIndex = -1;
         if (horseLanes.length > 1) {
@@ -164,20 +183,26 @@ public class Race {
     }
 
     /**
-     *
+     * Provides gambling options
+     * Asks for gambling amount and a horse to bet on
      */
-    public void gamble() {
+    private void gamble() {
+        //print details:
         printHorseLanes();
         System.out.println("Distance: " + raceLength);
         printMoney();
+
+        //ask for horse to bet on:
         while (betLaneIndex < 0 || betLaneIndex >= horseLanes.length) {
             betLaneIndex = Menu.inputInt("\nEnter lane number to bet on: ") - 1;
         }
+        //ask for amount to bet:
         System.out.println("Minimum bet: " + minBet);
         while (betAmount < minBet || betAmount > money) {
             betAmount = Menu.inputInt("Enter bet amount: ");
             if (betAmount > money) System.out.println("You do not have enough money (" + money + "/" + betAmount + ")");
         }
+
         subtractMoney(betAmount);
         System.out.println("You put a bet of " + betAmount + " on " + horseLanes[betLaneIndex].getName());
     }
@@ -209,6 +234,7 @@ public class Race {
             for (Horse horse : horseLanes) {
                 moveHorse(horse);
             }
+            stepCount++;
 
             //print the race positions
             printRace();
@@ -237,16 +263,16 @@ public class Race {
         boolean winnerExists = false;
         for (Horse horse : horseLanes) {
             if (raceWonBy(horse)) {
-                if (winnerExists) {
-                    printAlmostWinner(horse);
+                if (winnerExists) { //if multiple horses finish simultaneously
+                    printAlmostWinner(horse); //prints message that the second horse was very close
                     continue;
                 }
                 printWinner(horse);
-                horse.addStepToCurrentRaceRecord('w');
-                totalFinishes++;
+                horse.addStepToCurrentRaceRecord('w'); //records end of race (w represents win)
+                totalFinishes++; //increment total finishes statistic
                 winnerExists = true;
-                if (betAmount > 0) {
-                    if (horseLanes[betLaneIndex].equals(horse)) {
+                if (betAmount > 0) { //if user had gambled
+                    if (horseLanes[betLaneIndex].equals(horse)) { //check if bet was successful or not
                         int winningAmount = betAmount * horseLanes.length;
                         System.out.println("Your bet was successful\nYou have won " + winningAmount);
                         addMoney(winningAmount);
@@ -257,19 +283,376 @@ public class Race {
                 }
             }
         }
-        if (!winnerExists) {
+        if (!winnerExists) { //if no winner
             System.out.println("\n No Winner - all the horses failed to finish the race.");
             if (betAmount > 0) System.out.println("\nYou have lost your bet of " + betAmount);
         }
 
+        //add money bonus for conducting the race and print details:
         raceMoneyBonus();
         printMoney();
+
+        //save recording:
         char askToSave = Menu.inputChar("\nDo you want to save the recording of this race?\n");
         if (askToSave == 'y') {
             String recordName = Menu.input("\nEnter record name to save the race: ");
             saveRaceRecord(recordName);
         }
     }
+
+    public void gambleGUI() {
+        JFrame frame = new JFrame("Gambling?");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel welcomeText = new JLabel("Gambling (optional):");
+        welcomeText.setPreferredSize(new Dimension(300, 60));
+        welcomeText.setHorizontalAlignment(JTextField.CENTER);
+        welcomeText.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(welcomeText, BorderLayout.NORTH);
+
+        JPanel bettingPanel = new JPanel();
+        bettingPanel.setLayout(new GridLayout(2, 2, 5, 5));
+
+        JLabel betAmountLabel = new JLabel("Bet Amount: 0");
+        bettingPanel.add(betAmountLabel);
+
+        JSlider betAmountSlider = new JSlider(0, money, 0);
+        betAmountSlider.addChangeListener(e -> {betAmountLabel.setText("Bet Amount: " + betAmountSlider.getValue());});
+        bettingPanel.add(betAmountSlider);
+
+        JLabel betTargetLabel = new JLabel("Bet on:");
+        bettingPanel.add(betTargetLabel);
+
+        JSlider betTargetSlider = new JSlider(1, getLanesNum(), 1);
+        betTargetSlider.addChangeListener(e -> {
+            Horse horse = horseLanes[betTargetSlider.getValue() - 1];
+            betTargetLabel.setText("Bet on: " + horse.getName() + " " + horse.getSymbol() + " (" + horse.getConfidenceFormatted() + ")");
+        });
+        bettingPanel.add(betTargetSlider);
+
+        JButton nextButton = new JButton("Continue");
+        nextButton.addActionListener(e -> {
+            betAmount = betAmountSlider.getValue();
+            betLaneIndex = betTargetSlider.getValue() - 1;
+            frame.dispose();
+            startRaceGUI();
+        });
+
+
+        panel.add(bettingPanel, BorderLayout.CENTER);
+
+        panel.add(nextButton, BorderLayout.SOUTH);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public void startRaceGUI() {
+        JFrame frame = new JFrame("Race");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(raceLength * 25, 600 + getLanesNum() * 25);
+        frame.setResizable(false);
+        Font raceFont = new Font("Ariel", Font.PLAIN, 20);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(getLanesNum() + 4, 1, 5, 0));
+
+        String multipleFence = "";
+        for (int i = 0; i < raceLength; i++) multipleFence += fenceSymbol;
+
+        JLabel fenceLabel1 = new JLabel(multipleFence);
+        fenceLabel1.setFont(raceFont);
+        panel.add(fenceLabel1);
+
+        JLabel[] laneLabels = new JLabel[getLanesNum()];
+        String laneString;
+
+        for (int i = 0; i < getLanesNum(); i++) {
+            laneString = getLaneAsString(horseLanes[i]);
+            laneLabels[i] = new JLabel(laneString);
+            laneLabels[i].setFont(raceFont);
+            panel.add(laneLabels[i]);
+        }
+
+        JLabel fenceLabel2 = new JLabel(multipleFence);
+        fenceLabel2.setFont(raceFont);
+        panel.add(fenceLabel2);
+
+        JLabel winnerLabel = new JLabel("");
+        winnerLabel.setFont(raceFont);
+        panel.add(winnerLabel);
+
+        JButton nextButton = new JButton("Continue");
+        nextButton.addActionListener(e -> {
+            saveRaceGUI();
+            frame.dispose();
+        });
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+
+
+        //declare a local variable to tell us when the race is finished
+        boolean finished = false;
+        raceEnd = false;
+        stepCount = 0;
+
+        //increment races count
+        totalRaces++;
+
+        //reset all the horseLanes (all horses not fallen and back to 0) and increment total number of taken races.
+        for (Horse horse : horseLanes) {
+            horse.goBackToStart();
+            horse.incTotalRaces();
+            horse.clearCurrentRaceRecord();
+        }
+
+        Timer timer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //no action if race ended
+                if (raceEnd) return;
+
+                //move each horse
+                for (Horse horse : horseLanes) {
+                    moveHorse(horse);
+                    stepCount++;
+                }
+
+                //update lanes
+                for (int i = 0; i < getLanesNum(); i++) {
+                    String laneString;
+                    laneString = getLaneAsString(horseLanes[i]);
+                    laneLabels[i].setText(laneString);
+                }
+
+                //if all the horses have fallen, the race is finished
+                boolean finished = true;
+                for (int i = 0; finished && i < horseLanes.length; i++) {
+                    if (!horseLanes[i].hasFallen()) finished = false;
+                }
+
+                //if any of the horses has won, the race is finished
+                for (Horse horse : horseLanes) {
+                    if (raceWonBy(horse)) finished = true;
+                }
+
+                if (finished && !raceEnd) {
+                    Horse winningHorse = finaliseResultsGUI();
+                    if (winningHorse == null) winnerLabel.setText("No Winner - all the horses failed to finish the race");
+                    else winnerLabel.setText("The Winner is: " + winningHorse.getName());
+                    panel.add(nextButton);
+                    raceEnd = true;
+                }
+
+            }
+        });
+        timer.start();
+    }
+
+    private Horse finaliseResultsGUI() {
+        Horse winningHorse = null;
+        //check winner
+        boolean winnerExists = false;
+        for (Horse horse : horseLanes) {
+            if (raceWonBy(horse)) {
+                if (winnerExists) {
+                    continue;
+                }
+                winningHorse = horse;
+                //increment winners win count:
+                winningHorse.win();
+                winningHorse.addFinishingTime(stepCount);
+                horse.addStepToCurrentRaceRecord('w');
+                totalFinishes++;
+                winnerExists = true;
+                if (betAmount > 0) {
+                    if (horseLanes[betLaneIndex].equals(horse)) {
+                        int winningAmount = betAmount * horseLanes.length;
+                        Menu.GUIpopUp("Your bet was successful\nYou have won " + winningAmount);
+                        addMoney(winningAmount);
+                    }
+                    else {
+                        Menu.GUIpopUp("You have lost your bet of " + betAmount);
+                    }
+                }
+            }
+        }
+        if (!winnerExists && betAmount > 0) Menu.GUIpopUp("\nYou have lost your bet of " + betAmount);
+
+        raceMoneyBonus();
+
+        return winningHorse;
+    }
+
+    private void saveRaceGUI() {
+
+        JFrame frame = new JFrame("Save Race");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(3, 2));
+
+        JLabel saveRaveLabel1 = new JLabel("Save Race");
+        saveRaveLabel1.setPreferredSize(new Dimension(300, 60));
+        saveRaveLabel1.setHorizontalAlignment(JTextField.RIGHT);
+        saveRaveLabel1.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(saveRaveLabel1);
+
+        JLabel saveRaveLabel2 = new JLabel(" Recoding:");
+        saveRaveLabel2.setPreferredSize(new Dimension(300, 60));
+        saveRaveLabel2.setHorizontalAlignment(JTextField.LEFT);
+        saveRaveLabel2.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(saveRaveLabel2);
+
+        JLabel recordingNameLabel = new JLabel("Enter Recording Name:");
+        recordingNameLabel.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(recordingNameLabel);
+
+        JTextField recordingNameField = new JTextField();
+        recordingNameField.setPreferredSize(new Dimension(20, 10));
+        recordingNameField.setHorizontalAlignment(JTextField.CENTER);
+        panel.add(recordingNameField);
+
+        JButton nextButton = new JButton("Save");
+        nextButton.addActionListener(e -> {
+            if (recordingNameField.getText().equals("")) {
+                Menu.GUIpopUp("The name cannot be empty");
+                return;
+            }
+            saveRaceRecord(recordingNameField.getText());
+            frame.dispose();
+            Menu.GUImenu();
+        });
+
+        JButton cancelButton = new JButton("Do not Save");
+        cancelButton.addActionListener(e -> {
+            frame.dispose();
+            Menu.GUImenu();
+        });
+
+        panel.add(cancelButton);
+        panel.add(nextButton);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+    }
+
+    public void watchRecordingGUI() {
+        JFrame frame = new JFrame("Race");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(raceLength * 25, 600 + getLanesNum() * 25);
+        frame.setResizable(false);
+        Font raceFont = new Font("Ariel", Font.PLAIN, 20);
+
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(getLanesNum() + 4, 1, 5, 0));
+
+        String multipleFence = "";
+        for (int i = 0; i < raceLength; i++) multipleFence += fenceSymbol;
+
+        JLabel fenceLabel1 = new JLabel(multipleFence);
+        fenceLabel1.setFont(raceFont);
+        panel.add(fenceLabel1);
+
+        JLabel[] laneLabels = new JLabel[getLanesNum()];
+        String laneString;
+
+        for (int i = 0; i < getLanesNum(); i++) {
+            laneString = getLaneAsString(horseLanes[i]);
+            laneLabels[i] = new JLabel(laneString);
+            laneLabels[i].setFont(raceFont);
+            panel.add(laneLabels[i]);
+        }
+
+        JLabel fenceLabel2 = new JLabel(multipleFence);
+        fenceLabel2.setFont(raceFont);
+        panel.add(fenceLabel2);
+
+        JLabel winnerLabel = new JLabel("");
+        winnerLabel.setFont(raceFont);
+        panel.add(winnerLabel);
+
+        JButton nextButton = new JButton("Back");
+        nextButton.addActionListener(e -> {
+            Menu.GUIrecordsMenu();
+            frame.dispose();
+        });
+        panel.add(nextButton);
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
+
+
+        //declare a local variable to tell us when the race is finished
+        boolean finished = false;
+        raceEnd = false;
+        stepCount = 0;
+
+        //increment races count
+        totalRaces++;
+
+        //reset all the horseLanes (all horses not fallen and back to 0) and increment total number of taken races.
+        for (Horse horse : horseLanes) {
+            horse.goBackToStart();
+        }
+
+        Timer timer = new Timer(100, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                char c;
+
+                //no action if race ended
+                if (raceEnd) return;
+
+                //move each horse
+                for (Horse horse : horseLanes) {
+                    //check recording steps
+                    if (stepCount < horse.getCurrentRaceRecord().size()) {
+                        c = horse.getCurrentRaceRecord().get(stepCount);
+                        if (c == 'm') { //m represents movement
+                            horse.moveForward();
+                        } else if (c == 'f') { //f represents fall
+                            horse.fall();
+                        }
+                    }
+                }
+                stepCount++;
+
+                //update lanes
+                for (int i = 0; i < getLanesNum(); i++) {
+                    String laneString;
+                    laneString = getLaneAsString(horseLanes[i]);
+                    laneLabels[i].setText(laneString);
+                }
+
+                //if all the horses have fallen, the race is finished
+                boolean finished = true;
+                for (int i = 0; finished && i < horseLanes.length; i++) {
+                    if (!horseLanes[i].hasFallen()) finished = false;
+                }
+
+                //if any of the horses has won, the race is finished
+                for (Horse horse : horseLanes) {
+                    if (raceWonBy(horse)) finished = true;
+                }
+
+                if (finished && !raceEnd) {
+                    raceEnd = true;
+                }
+
+            }
+        });
+        timer.start();
+    }
+
 
     /**
      * Randomly make a horse move forward or fall depending
@@ -294,9 +677,10 @@ public class Race {
 
             theHorse.incTotalTime(); //increment total run time statistic of the horse
 
-            //the probability that the horse will fall is very small (max is 0.1)
+            //the probability that the horse will fall is very small (max is 0.05 when clear weather and 0.15 when storm)
             //but will also depend exponentially on confidence
             //so if you double the confidence, the probability that it will fall is *2
+            //weather condition can double or triple falling chances
             if (Math.random() < (0.05 * weatherCondition * theHorse.getConfidence() * theHorse.getConfidence())) {
                 theHorse.fall();
                 theHorse.addStepToCurrentRaceRecord('f'); //adds 'f' to record (representing fall)
@@ -364,6 +748,45 @@ public class Race {
 
         //print the | for the end of the track
         System.out.print('|');
+
+        //print horse name and confidence
+        System.out.print("     " + theHorse.getName() + " (" + theHorse.getConfidenceFormatted() + ")");
+    }
+
+    private String getLaneAsString(Horse theHorse) {
+        String lane = "";
+        int spacesBefore = theHorse.getDistanceTravelled();
+        int spacesAfter = raceLength - theHorse.getDistanceTravelled();
+
+        //add a | for the beginning of the lane
+        lane += '|';
+
+        //print the spaces before the horse
+        lane += multipleCharacters(' ', spacesBefore);
+
+        //if the horse has fallen then add fallen symbol
+        //else add the horse's symbol
+        if (theHorse.hasFallen()) {
+            lane += fallenSymbol;
+        } else {
+            lane += theHorse.getSymbol();
+        }
+
+        //add the spaces after the horse
+        lane += multipleCharacters(' ', spacesAfter);
+
+        //add the | for the end of the track
+        lane += '|';
+
+        //add horse name and confidence
+        lane += "     " + theHorse.getName() + " (" + theHorse.getConfidenceFormatted() + ")";
+        return lane;
+    }
+
+    private static String multipleCharacters(char aChar, int times) {
+        String s = "";
+        for (int i = 0; i < times; i++) s += ' ';
+        return s;
     }
 
 
@@ -388,26 +811,34 @@ public class Race {
      */
     private void printWinner(Horse winnerHorse) {
         winnerHorse.win();
+        winnerHorse.addFinishingTime(stepCount);
         System.out.println("\nThe Winner of the race is " + winnerHorse.getName() + "!\n");
     }
 
+    /**
+     * prints a message that one of the losing horses was very close to winning
+     *
+     * @param horse The horse that has almost won
+     */
     private void printAlmostWinner(Horse horse) {
         System.out.println("\n" + horse.getName() + " was close to winning, but finished finished less than a second late\n");
     }
 
     /**
-     *
+     * prints horses with their winning chances before the user would gamble
      */
-    public void printHorseLanes() {
+    private void printHorseLanes() {
         double totalWinRate = 0.0;
         boolean unpredictable = false;
         for (Horse horse : horseLanes) {
-            if (horse.getTotalRaces() == 0) unpredictable = true;
+            if (horse.getTotalRaces() == 0) unpredictable = true; //if horse has never participated before - unpredictable
             totalWinRate += horse.getWinRate();
         }
-        if (totalWinRate == 0.0) {unpredictable = true;}
+        if (totalWinRate == 0.0) {unpredictable = true;} //if none of the horses have ever won - unpredictable
         int i = 1;
         System.out.println("Lanes:");
+
+        //if race is unpredictable, give vague predictions based on win rate
         if (unpredictable) {
             String prediction = null;
             for (Horse horse : horseLanes) {
@@ -415,12 +846,12 @@ public class Race {
                 else if (horse.getWinRate() == 0) prediction = "Low";
                 else if (horse.getWinRate() / totalWinRate > 0.5) prediction = "High";
                 else prediction = "Medium";
-                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence() + "   [Predicted Win Chance: " + prediction + "]");
+                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidenceFormatted() + "   [Predicted Win Chance: " + prediction + "]");
             }
         }
-        else {
+        else { //give predictions based on win rate
             for (Horse horse : horseLanes) {
-                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence() + "   [Predicted Win Chance: " + (horse.getWinRate() / totalWinRate) + "]");
+                System.out.println(i++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidenceFormatted() + "   [Predicted Win Chance: " + (horse.getWinRate() / totalWinRate) + "]");
             }
         }
     }
@@ -430,7 +861,7 @@ public class Race {
     }
 
     /**
-     *
+     * prints general statistics
      */
     public static void printOverallStats() {
         System.out.println("\n---Overall Stats---");
@@ -442,9 +873,10 @@ public class Race {
     }
 
     /**
-     *
+     * prints how much each horse has travelled during the race
+     * used in watchRecording() method
      */
-    public void printDistances() {
+    private void printDistances() {
         System.out.println("Distances travelled:");
         for (Horse horse : horseLanes) {
             System.out.println(horse.getName() + ": " + horse.getDistanceTravelled());
@@ -452,12 +884,15 @@ public class Race {
     }
 
     /**
+     * shows a recording of the past race
+     * the recording identically replicates the race and shows additional info at the end
+     * the recordings are loaded from a text file
      *
      */
     public void watchRecording() {
         //declare a local variable to tell us when the race is finished
         boolean finished = false;
-        int stepCount = 0;
+        stepCount = 0;
         char c;
 
         //reset all the horseLanes (all horses not fallen and back to 0) and increment total number of taken races.
@@ -469,11 +904,12 @@ public class Race {
         while (!finished) {
             //move each horse
             for (Horse horse : horseLanes) {
+                //check recording steps
                 if (stepCount < horse.getCurrentRaceRecord().size()) {
                     c = horse.getCurrentRaceRecord().get(stepCount);
-                    if (c == 'm') {
+                    if (c == 'm') { //m represents movement
                         horse.moveForward();
-                    } else if (c == 'f') {
+                    } else if (c == 'f') { //f represents fall
                         horse.fall();
                     }
                 }
@@ -518,24 +954,30 @@ public class Race {
     }
 
     /**
+     * Saves recording of a race to a text file
      *
-     * @param saveFileName
+     * @param saveFileName name of the file
      */
-    public void saveRaceRecord(String saveFileName) {
+    private void saveRaceRecord(String saveFileName) {
         try (FileWriter writer = new FileWriter(saveFileName + ".txt")) {
             writer.write(horseLanes.length + "\n");
             writer.write(raceLength + "\n");
 
+            //saves horses information:
             for (Horse horse : horseLanes) {
                 writer.write(horse.getSymbol());
                 writer.write(horse.getName());
                 writer.write("\n");
             }
+
+            //saves horses steps:
             for (Horse horse : horseLanes) {
                 String s = horse.getCurrentRaceRecord().toString().replace(", ", "").replace(", ", "").replace("[", "").replace("]", "");
                 writer.write(s);
                 writer.write("\n");
             }
+
+            //saves recording name:
             addRecord(saveFileName);
             System.out.println("Race recording has been saved successfully\nYou can watch it in the statistics menu\n");
         } catch (IOException e) {
@@ -545,19 +987,26 @@ public class Race {
     }
 
     /**
+     * Loads recording of a race from a text file
      *
-     * @param saveFileName
-     * @return
+     * @param saveFileName name of the file
+     * @return the race that was recorded
      */
     public static Race loadRaceRecord(String saveFileName) {
         try (BufferedReader reader = new BufferedReader(new FileReader(saveFileName))) {
+            //loads number of lanes:
             int lanesNum = Integer.parseInt(reader.readLine());
+            //loads distance and initialises the race:
             Race recordedRace = new Race(Integer.parseInt(reader.readLine()), lanesNum);
+
             String s;
+            //loads horses:
             for (int i = 1; i <= lanesNum && (s = reader.readLine()) != null; i++) {
                 Horse newHorse = new Horse(s.charAt(0), s.substring(1));
                 recordedRace.addHorse(newHorse, i);
             }
+
+            //load horse steps:
             for (Horse horse : recordedRace.horseLanes) {
                 horse.loadCurrentRaceRecord(reader.readLine());
             }
@@ -570,7 +1019,7 @@ public class Race {
     }
 
     /**
-     *
+     * Saves all recording names to text file
      */
     public static void saveRecordingNames() {
         try (FileWriter writer = new FileWriter("recordings.txt")) {
@@ -582,10 +1031,11 @@ public class Race {
     }
 
     /**
+     * Loads all recording names from a text file
      *
-     * @return
+     * @return ArrayList with every recording name
      */
-    public static ArrayList<String> loadRecordingNames() {
+    private static ArrayList<String> loadRecordingNames() {
         try (BufferedReader reader = new BufferedReader(new FileReader("recordings.txt"))) {
             ArrayList<String> loadedRecords = new ArrayList<>();
             String line;
@@ -600,7 +1050,7 @@ public class Race {
     /**
      * adds money bonus for conducting a race
      */
-    public static void raceMoneyBonus() {
+    private static void raceMoneyBonus() {
         System.out.println("You have received " + moneyPerRace + " money bonus for conducting the race");
         addMoney(moneyPerRace);
     }
