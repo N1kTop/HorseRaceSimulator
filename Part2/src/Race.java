@@ -9,7 +9,10 @@ import java.lang.Math;
 
 /**
  * A horse race, each horse running in its own lane
- * for a given distance
+ * for a given distance.
+ * Distance and number of lanes can be chosen by the user.
+ * Some features of the class include:
+ * weather conditions that effect races, optional gambling and track customisation.
  *
  * @author Nikita Topolskis
  * @version 3.0

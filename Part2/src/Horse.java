@@ -99,8 +99,8 @@ public class Horse
     public void fall()
     {
         if (fallen) return;
-        if (confidence > 0.1) confidence -= 0.1;
-        else confidence = 0.0;
+        if (confidence > 0.2) confidence -= 0.1;
+        else confidence = 0.1;
         fallen = true;
         incTotalFalls();
     }

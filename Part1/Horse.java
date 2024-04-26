@@ -53,13 +53,13 @@ public class Horse
 
     /**
      * if the horse is not fallen, reduce its confidence by 0.1 and set it to fallen state
-     * if confidence is smaller than 0.1, it becomes 0.0 (lowest limit)
+     * if confidence is smaller than 0.2, it becomes 0.1 (lowest limit)
      */
     public void fall()
     {
         if (fallen) return;
-        if (confidence > 0.1) confidence -= 0.1;
-        else confidence = 0.0;
+        if (confidence > 0.2) confidence -= 0.1;
+        else confidence = 0.1;
         fallen = true;
     }
 
