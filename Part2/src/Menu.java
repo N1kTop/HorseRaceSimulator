@@ -898,7 +898,7 @@ public class Menu {
      * allows to choose a recording to watch.
      * List of recording names is taken from Race.getRecordFileNames()
      */
-    private static void GUIrecordsMenu() {
+    public static void GUIrecordsMenu() {
         JFrame frame = new JFrame("Records");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);

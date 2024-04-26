@@ -1,8 +1,3 @@
-import java.awt.*;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -25,7 +20,7 @@ public class Horse
     private boolean fallen = false;
     private ArrayList<Character> currentRaceRecord;
     //Customisation:
-    private String breed;
+    private final String breed;
     private String coatColor = "Brown";
     private String accessory = "None";
     //Statistics:
@@ -177,7 +172,6 @@ public class Horse
     public int getTotalWins() {return totalWins;}
     public int getTotalRaces() {return totalRaces;}
     public int getTotalDistance() {return totalDistance;}
-    public int getTotalTime() {return totalTime;}
     public double getAverageSpeed() {
         if (totalDistance == 0) return 0;
         return (double) totalDistance / (double) totalTime;

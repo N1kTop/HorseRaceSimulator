@@ -18,7 +18,7 @@ import java.lang.Math;
  * @version 3.0
  */
 public class Race {
-    private int raceLength;
+    private final int raceLength;
     private Horse[] horseLanes;
     private int betAmount;
     private int betLaneIndex;
@@ -788,7 +788,7 @@ public class Race {
 
     private static String multipleCharacters(char aChar, int times) {
         String s = "";
-        for (int i = 0; i < times; i++) s += ' ';
+        for (int i = 0; i < times; i++) s += aChar;
         return s;
     }
 
