@@ -566,7 +566,7 @@ public class Menu {
         distance.setHorizontalAlignment(JTextField.CENTER);
         textPanel.add(distance);
 
-        JLabel averageSpeed = new JLabel("Average Speed: " + theHorse.getAverageSpeed());
+        JLabel averageSpeed = new JLabel("Average Speed: " + String.format("%.2f", theHorse.getAverageSpeed()));
         averageSpeed.setHorizontalAlignment(JTextField.CENTER);
         textPanel.add(averageSpeed);
 
@@ -578,7 +578,7 @@ public class Menu {
         races.setHorizontalAlignment(JTextField.CENTER);
         textPanel.add(races);
 
-        JLabel winRate = new JLabel("Win Rate: " + theHorse.getWinRate());
+        JLabel winRate = new JLabel("Win Rate: " + String.format("%.2f", theHorse.getWinRate()));
         winRate.setHorizontalAlignment(JTextField.CENTER);
         textPanel.add(winRate);
 
