@@ -10,7 +10,7 @@ import java.util.*;
  * Customisation, Race Settings, Gambling and more
  *
  * The class provides 2 versions: textual and GUI
- * Menus include: menu, race setup, horses menu, shop, settings, statistics
+ * Menus include: main menu, race setup, horses menu, shop, settings, statistics
  *
  * @author Nikita Topolskis
  * @version v2.0
@@ -198,7 +198,7 @@ public class Menu {
      * allow to change race parameters such as length and number of lanes
      *
      */
-    public static void GUIraceMenu() {
+    private static void GUIraceMenu() {
         //initialise JFrame
         JFrame frame = new JFrame("Race Setup");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -260,7 +260,7 @@ public class Menu {
      *
      * @param race Race object
      */
-    public static void GUIhorsePick(Race race) {
+    private static void GUIhorsePick(Race race) {
         JFrame frame = new JFrame("Pick Horses");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -342,7 +342,7 @@ public class Menu {
      * Allows to choose between modifying existing horses and creating a new horse.
      *
      */
-    public static void GUIhorsesMenu() {
+    private static void GUIhorsesMenu() {
         JFrame frame = new JFrame("Horses");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -410,7 +410,7 @@ public class Menu {
      * provides a list of horses to choose from for horse customisations
      *
      */
-    public static void GUIhorsesList() {
+    private static void GUIhorsesList() {
         JFrame frame = new JFrame("Horses");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 600);
@@ -460,7 +460,7 @@ public class Menu {
      *
      * @param theHorse horse to be modified
      */
-    public static void GUImodifyHorse(Horse theHorse) {
+    private static void GUImodifyHorse(Horse theHorse) {
         JFrame frame = new JFrame("Horse");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -561,7 +561,7 @@ public class Menu {
      *
      * @param theHorse to change coat color for
      */
-    public static void GUIchooseCoatColor(Horse theHorse) {
+    private static void GUIchooseCoatColor(Horse theHorse) {
         JFrame frame = new JFrame("Coat Colors");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -593,7 +593,7 @@ public class Menu {
      *
      * @param theHorse to change accessory for
      */
-    public static void GUIchooseAccessory(Horse theHorse) {
+    private static void GUIchooseAccessory(Horse theHorse) {
         JFrame frame = new JFrame("Accessories");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -626,7 +626,7 @@ public class Menu {
      *
      * @param theHorse horse whose statistics are going to be shown
      */
-    public static void GUIhorseStats(Horse theHorse) {
+    private static void GUIhorseStats(Horse theHorse) {
         JFrame frame = new JFrame("Horse Statistics:");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 400);
@@ -697,7 +697,7 @@ public class Menu {
      * Coat color is initially set to "Brown" by default.
      * Accessory initially set to "None" by default.
      */
-    public static void GUIcreateHorse() {
+    private static void GUIcreateHorse() {
         JFrame frame = new JFrame("New Horse");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(400, 400);
@@ -779,7 +779,7 @@ public class Menu {
      * Provides overall statistics of all races.
      * Also provides option to see recordings through GUIrecordsMenu().
      */
-    public static void GUIstatsMenu() {
+    private static void GUIstatsMenu() {
         JFrame frame = new JFrame("Statistics");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -833,7 +833,7 @@ public class Menu {
      * Provides option to buy accessories.
      * Shows amount of money owned and all potential items to buy.
      */
-    public static void GUIshopMenu() {
+    private static void GUIshopMenu() {
         JFrame frame = new JFrame("Shop");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -898,7 +898,7 @@ public class Menu {
      * allows to choose a recording to watch.
      * List of recording names is taken from Race.getRecordFileNames()
      */
-    public static void GUIrecordsMenu() {
+    private static void GUIrecordsMenu() {
         JFrame frame = new JFrame("Records");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -947,7 +947,7 @@ public class Menu {
      * Allows to change fence symbol and fallen symbol
      * as well as change randomness of weather conditions (effect falling chances) during races,
      */
-    public static void GUIsettingsMenu() {
+    private static void GUIsettingsMenu() {
         JFrame frame = new JFrame("Settings");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
@@ -1012,7 +1012,7 @@ public class Menu {
      * GUI method that changes fence symbol to whatever the user types
      * Only the first character of user input will be considered
      */
-    public static void GUIchangeFenceSymbol() {
+    private static void GUIchangeFenceSymbol() {
         JFrame frame = new JFrame("Fence Symbol");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
@@ -1052,7 +1052,7 @@ public class Menu {
      * GUI method that changes fall symbol to whatever the user types
      * Only the first character of user input will be considered
      */
-    public static void GUIchangeFallenSymbol() {
+    private static void GUIchangeFallenSymbol() {
         JFrame frame = new JFrame("Fallen Symbol");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(300, 200);
@@ -1093,7 +1093,7 @@ public class Menu {
      * allows choice from 5 different options, use numbers to choose
      * runs other menu methods when needed, stops after entering 0
      */
-    public static void menu() {
+    private static void menu() {
         String message = """
                 
                 ---Main Menu---
@@ -1124,7 +1124,7 @@ public class Menu {
      * Provides list of horses to choose for customisation
      * Then provides list of parameters to modify
      */
-    public static void listHorses() {
+    private static void listHorses() {
         Horse.printHorses();
 
         //ask for horse index until valid input is received
@@ -1193,7 +1193,7 @@ public class Menu {
      * Allows to buy a new horse
      * If user has enough money, createHorse() method is used to create a horse instance
      */
-    public static void buyHorse() {
+    private static void buyHorse() {
         int cost = Horse.getHorseCost();
         Race.printMoney();
         System.out.println("Do you want to buy a horse (" + cost + ")");
@@ -1210,7 +1210,7 @@ public class Menu {
     /**
      * Asks user for name, symbol and breed, then creates an instance of a Horse class
      */
-    public static void createHorse() {
+    private static void createHorse() {
         String name = input("Enter name: ");
         char symbol = inputChar("Enter symbol: ");
 
@@ -1232,7 +1232,7 @@ public class Menu {
      * Allows to choose between modifying existing horses and buying a new horse
      * Uses listHorses() and buyHorse() methods
      */
-    public static void horsesMenu() {
+    private static void horsesMenu() {
         String message = """
                 
                 ---Horses Menu---
@@ -1256,7 +1256,7 @@ public class Menu {
      * Allows user to choose race parameters such as race length and lanes number
      * as well as allows to choose horses that will compete
      */
-    public static void raceMenu() {
+    private static void raceMenu() {
         int distance = 0;
         while (distance < 5 || distance > 200) {
             distance = inputInt("Enter race distance (between 5 and 200): ");
@@ -1291,7 +1291,7 @@ public class Menu {
      * Allows user to change fence and fall symbols
      * as well as toggle weather conditions (effect falling chances) during races
      */
-    public static void settingsMenu() {
+    private static void settingsMenu() {
         String weatherONorOFF = "OFF";
         if (Race.isWeatherChanging()) weatherONorOFF = "ON";
         String message = "\n" +
@@ -1324,7 +1324,7 @@ public class Menu {
      * Provides overall statistics of all races.
      * Also, allows to view past races records using recordsMenu() method
      */
-    public static void statsMenu() {
+    private static void statsMenu() {
         Race.printOverallStats();
         String message = """
 
@@ -1346,7 +1346,7 @@ public class Menu {
      * Uses Race.getRecordFileNames() to get names of all the record files
      * Uses watchRecording() method of Race class to watch the recording
      */
-    public static void recordsMenu() {
+    private static void recordsMenu() {
         if (Race.getNumberOfRecords() == 0) {
             System.out.println("You have no recordings yet");
             return;
@@ -1414,7 +1414,7 @@ public class Menu {
      * Bought accessories can then be equipped by horses in Horse Menu.
      * Restricts from buying accessories that are already owned or are too expensive for the user.
      */
-    public static void shopMenu() {
+    private static void shopMenu() {
         if (Horse.getNumberOfOwnedAccessories() == Horse.getNumberOfShopItems()) {
             System.out.println("There is no more items to buy");
             return;
