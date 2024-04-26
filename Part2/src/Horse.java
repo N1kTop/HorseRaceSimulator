@@ -220,7 +220,7 @@ public class Horse
         System.out.println("\n---Horse Info---");
         System.out.println("Name: " + getName());
         System.out.println("Symbol: " + getSymbol());
-        System.out.println("Confidence: " + getConfidence());
+        System.out.println("Confidence: " + getConfidenceFormatted());
         System.out.println("Breed: " + getBreed());
         System.out.println("Coat Color: " + getCoatColor());
         System.out.println("Accessory: " + getAccessory());
@@ -232,11 +232,11 @@ public class Horse
     public void printHorseStats() {
         System.out.println("\n---Horse Statistic---");
         System.out.println("Total Distance: " + getTotalDistance());
-        System.out.println("Average Speed: " + getAverageSpeed());
+        System.out.println("Average Speed: " + String.format("%.2f", getAverageSpeed()));
         System.out.println("Wins: " + getTotalWins());
         System.out.println("Races: " + getTotalRaces());
         System.out.println("Falls: " + getTotalFalls());
-        System.out.println("Win Rate: " + getWinRate());
+        System.out.println("Win Rate: " + String.format("%.2f", getWinRate()));
         System.out.println("\nFinishing Times:");
         for (int time : finishingTimes.keySet()) {
             System.out.println("- " + time + " seconds for a race length of " + finishingTimes.get(time));
@@ -274,7 +274,7 @@ public class Horse
         int count = 1;
         System.out.println("\nList of all horses:");
         for (Horse horse : allHorses) {
-            System.out.println(count++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidence());
+            System.out.println(count++ + " " + horse.getName() + " (" + horse.getBreed() + ") " + horse.getSymbol() + " - " + horse.getConfidenceFormatted());
         }
         System.out.println("");
     }
