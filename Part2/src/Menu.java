@@ -18,8 +18,8 @@ public class Menu {
      * @param args
      */
     public static void main(String[] args) throws IOException {
-        //if (inputChar("Enter 1 for textual version\nEnter anything else for GUI version\n") == '1') menu();
-        /*else*/ GUImenu();
+        if (inputChar("Enter 1 for textual version\nEnter anything else for GUI version\n") == '1') menu();
+        else GUImenu();
     }
 
 
@@ -147,7 +147,10 @@ public class Menu {
         });
 
         JButton exitButton = new JButton("Exit");
-        exitButton.addActionListener(e -> {System.exit(0);});
+        exitButton.addActionListener(e -> {
+            Race.saveRecordingNames();
+            System.exit(0);
+        });
 
         buttonsPanel.add(raceButton);
         buttonsPanel.add(horseButton);
@@ -202,7 +205,7 @@ public class Menu {
         JButton nextButton = new JButton("Next");
         nextButton.addActionListener(e -> {
             frame.dispose();
-            Race race = new Race(raceLengthSlider.getValue());
+            Race race = new Race(raceLengthSlider.getValue(), lanesNumberSlider.getValue());
             frame.dispose();
             GUIhorsePick(race);
         });
@@ -279,7 +282,8 @@ public class Menu {
                 }
             }
             frame.dispose();
-            race.gambleGUI();
+            if (race.getLanesNum() == 1) race.startRaceGUI();
+            else race.gambleGUI();
         });
          buttonPanel.add(startButton);
 
@@ -705,7 +709,10 @@ public class Menu {
 
 
         JButton recordsButton = new JButton("Race Records");
-        recordsButton.addActionListener(e -> {recordsMenu();});
+        recordsButton.addActionListener(e -> {
+            GUIrecordsMenu();
+            frame.dispose();
+        });
 
         JButton exitButton = new JButton("Back");
         exitButton.addActionListener(e -> {
@@ -782,7 +789,45 @@ public class Menu {
     }
 
     public static void GUIrecordsMenu() {
+        JFrame frame = new JFrame("Records");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(600, 400);
+        frame.setResizable(false);
 
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+
+        JLabel welcomeText = new JLabel("Choose record to load:");
+        welcomeText.setPreferredSize(new Dimension(300, 60));
+        welcomeText.setHorizontalAlignment(JTextField.CENTER);
+        welcomeText.setFont(new Font("Ariel", Font.PLAIN, 18));
+        panel.add(welcomeText, BorderLayout.NORTH);
+
+        JPanel buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(3, 2, 5, 5));
+
+        for (String recordName : Race.getRecordFileNames()) {
+            JButton recordButton = new JButton(recordName);
+            recordButton.addActionListener(e -> {
+                Race race = Race.loadRaceRecord(recordName + ".txt");
+                if (race != null) race.watchRecordingGUI();
+                frame.dispose();
+            });
+            buttonsPanel.add(recordButton);
+        }
+
+        JButton exitButton = new JButton("Back");
+        exitButton.addActionListener(e -> {
+            frame.dispose();
+            GUIstatsMenu();
+        });
+
+        panel.add(buttonsPanel, BorderLayout.CENTER);
+        panel.add(exitButton, BorderLayout.SOUTH);
+
+
+        frame.getContentPane().add(panel);
+        frame.setVisible(true);
     }
 
     public static void GUIsettingsMenu() {
