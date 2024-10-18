@@ -43,15 +43,13 @@ Upon starting the simulator, you will be asked to choose between textual and GUI
 
 **Showcase**
 
-\=\=\=\=\
+\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=
 
-       ♘                      |
+       ♘                      |    Anya (0.4)
+               ♞              |    Oliver (0.6)
+       X                       |    King (0.4)
        
-               ♞              |
-               
-       X                       |
-       
-\=\=\=\
+\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=
 
 **Note**
 
