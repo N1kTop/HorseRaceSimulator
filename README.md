@@ -3,8 +3,6 @@
 Welcome to the Horse Race Simulator! This Java-based application simulates dynamic horse races where horses compete over various lengths and tracks. Each horse has customisable attributes such as names, cosmetics and confidence levels that directly influence their performance. The confidence of a horse changes based on their race results, adding a layer of realism and strategy to the simulation.
 
 
-
-
 **Features**
 
 Variable Race Lengths: Simulate races on different track lengths.
