@@ -41,6 +41,14 @@ If you are using an IDE, simply open Main.java and run the main() method.
 
 Upon starting the simulator, you will be asked to choose between textual and GUI version of the program. To start a race, from the main menu choose "Race", enter race length and number of lanes, then choose desired horses. You will be given an option to gamble, after which the race will start. You can customise horses in "Horses Stables" menu. Additionally, you can view recordigns of past races in the "Satistics" menu.
 
+**Showcase**
+
+=====================================================
+|       ♘                                           |     Anya (0.4)
+|                 ♞                                 |     Oliver (0.6)
+| X                                                 |     King (0.4)
+=====================================================
+
 **Note**
 
 Default horse symbols can not be read by some terminals.
