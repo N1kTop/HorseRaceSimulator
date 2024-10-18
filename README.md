@@ -43,7 +43,7 @@ Upon starting the simulator, you will be asked to choose between textual and GUI
 
 **Showcase**
 
-\=\=\=\=\=
+\=\=\=\=\
 
        ♘                      |
        
@@ -51,7 +51,7 @@ Upon starting the simulator, you will be asked to choose between textual and GUI
                
        X                       |
        
-\=\=\=\=
+\=\=\=\
 
 **Note**
 
