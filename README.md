@@ -24,20 +24,32 @@ java -version
 
 Download the source code from the repository
 
+```
+git clone https://github.com/N1kTop/HorseRaceSimulator
+```
+
 
 ## Running the Program
 
 Navigate to the project directory:
+
+```
 cd HorseRaceSimulator/Part2
+```
 
 To run the program, execute the following command from the project root directory:
+```
 java -cp out/production/Part2 Main
+```
 
 This command sets the classpath to the compiled classes in the out/production/Part2 directory and runs the Main class.
 
 Alternatively, you could navigate to the output directory and run the code from there:
+
+```
 cd HorseRaceSimulator/Part1/out/production/Part2
 java Main
+```
 
 If you are using an IDE, simply open Main.java and run the main() method.
 
@@ -49,13 +61,15 @@ Upon starting the simulator, you will be asked to choose between textual and GUI
 
 ## Showcase
 
-\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=
+```
+\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=
 
-          ♘                   |    Anya (0.4)
-                  ♞           |    Oliver (0.6)
-       ♔                      |    King (0.4)
+          ♘                             |    Anya (0.4)
+                  ♞                     |    Oliver (0.6)
+       ♔                                |    King (0.4)
        
-\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=
+\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=\=
+```
 
 
 ## Note
